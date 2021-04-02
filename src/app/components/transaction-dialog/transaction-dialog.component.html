@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>Transaction details</h1>
+<div mat-dialog-content>
+  <table>
+    <tr>
+      <td>id</td>
+      <td>{{data.id}}</td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>{{data.date | date:'d-M-y'}}</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>{{data.type}}</td>
+    </tr>
+    <tr>
+      <td>amount</td>
+      <td>{{data.amount}}</td>
+    </tr>
+    <tr>
+      <td>balanceAfter</td>
+      <td>{{data.balanceAfter}}</td>
+    </tr>
+    <tr>
+      <td>currency</td>
+      <td>{{data.currency}}</td>
+    </tr>
+    <tr>
+      <td>accountNumber</td>
+      <td>{{data.accountNumber}}</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>{{data.name}}</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>
+        <pre>{{data.description | json}}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>comment</td>
+      <td>
+        <mat-form-field>
+          <input matInput name="comment" [(ngModel)]="data.comment">
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>tags</td>
+      <td width="350px"><app-chips [tags]="data.tags" [editMode]="true"></app-chips></td>
+    </tr>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" tabindex="1">Ok</button>
+  <button mat-button (click)="cancel()" tabindex="2">Cancel</button>
+</div>

@@ -18,6 +18,8 @@ import { TransactionsTableComponent } from './components/transactions-table/tran
 import { ChipsComponent } from './components/chips/chips.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     TagsTableComponent,
     TransactionsTableComponent,
     DataToolbarComponent,
-    ChipsComponent
+    ChipsComponent,
+    TransactionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
