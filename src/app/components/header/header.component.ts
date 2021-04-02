@@ -14,7 +14,8 @@ import { DataModelService } from 'src/app/services/data-model.service';
     <span class="fill-remaining-space"></span>
     <app-data-toolbar></app-data-toolbar>
   </mat-toolbar>`,
-  styles: ['.fill-remaining-space { flex: 1 1 auto;}']
+  styles: ['.fill-remaining-space { flex: 1 1 auto;}', 'mat-toolbar { padding: 5px}', 
+  'app-data-toolbar { margin-right: 10px; }']
 })
 export class HeaderComponent  { }
 
@@ -41,6 +42,7 @@ export class DataToolbarComponent {
   }
 
   clear() {
+    this.dataModelService.clear();
   }
 
 }
