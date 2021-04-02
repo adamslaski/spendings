@@ -13,7 +13,7 @@ import { RulesService } from 'src/app/services/rules.service';
       <input matInput #newPredicate placeholder="predykat" [(ngModel)]="predicate">
     </mat-form-field>
     <div style="width: 1000px">
-      <!-- <app-chips [tags]="tags" [editMode]="true"></app-chips> -->
+      <app-chips [tags]="tags" [editMode]="true"></app-chips>
     </div>
     <button mat-raised-button (click)="create(newName.value, newPredicate.value, tags)">dodaj</button>
 
@@ -22,7 +22,7 @@ import { RulesService } from 'src/app/services/rules.service';
         <td>{{ rule.name }}</td>
         <td>{{ rule.predicate }}</td>
         <td>
-          <!-- <app-chips [tags]="rule.tags"></app-chips> -->
+          <app-chips [tags]="rule.tags"></app-chips>
         </td>
         <td>
           <button mat-button (click)="delete(rule.name)">

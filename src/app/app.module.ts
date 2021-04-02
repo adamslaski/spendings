@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { RulesTableComponent } from './components/rules-table/rules-table.component';
 import { TagsTableComponent } from './components/tags-table/tags-table.component';
 import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
+import { ChipsComponent } from './components/chips/chips.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,7 @@ import { TransactionsTableComponent } from './components/transactions-table/tran
     TagsTableComponent,
     TransactionsTableComponent,
     DataToolbarComponent,
+    ChipsComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +39,9 @@ import { TransactionsTableComponent } from './components/transactions-table/tran
     FormsModule,
     NoopAnimationsModule,
     MatFormFieldModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

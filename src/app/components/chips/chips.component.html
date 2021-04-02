@@ -1,0 +1,26 @@
+<span *ngIf="!editMode">
+    <mat-chip-list>
+        <mat-chip *ngFor="let tag of enrichedTags" [selectable]="false" [removable]="false" >
+            {{tag.label}}
+        </mat-chip>
+    </mat-chip-list>
+</span>
+
+<mat-form-field *ngIf="editMode" style="width: 100%">
+<mat-chip-list matPrefix #chipList>
+    <mat-chip *ngFor="let tag of enrichedTags" [selectable]="true" [removable]="true" (remove)="remove(tag.id)" >
+    {{tag.label}}
+    <i class="material-icons" style="font-size: 18px" matChipRemove>cancel</i>
+    </mat-chip>
+</mat-chip-list>
+<input matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+    (matChipInputTokenEnd)="add($event)"
+    [matAutocomplete]="auto"
+    [formControl]="myControl"
+    />
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)"  mat-search-text="chipInput">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+    {{ option.label }}
+</mat-option>
+    </mat-autocomplete>
+</mat-form-field>

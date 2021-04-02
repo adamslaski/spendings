@@ -17,7 +17,9 @@ import { TagsService } from 'src/app/services/tags.service';
             <input matInput name="label" type="text" [(ngModel)]="tag.label">
           </mat-form-field>
         </td>
-        <td><button mat-button (click)="delete(tag.id)"><i class="material-icons" style="font-size: 18px">cancel</i></button></td>
+        <td><button mat-button (click)="delete(tag.id)">
+          <i class="material-icons" style="font-size: 18px">cancel</i>
+        </button></td>
       </tr>
     </table>`,
 })
