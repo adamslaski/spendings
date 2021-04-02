@@ -20,7 +20,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import {MatTableModule} from '@angular/material/table'; 
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +46,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatDialogModule,
-    
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -59,7 +59,19 @@ export class DataModelService {
   load(): void {
     const rawData = ''; // fs.readFileSync(dataFile);
     const dataModel: DataModel = 
-      {transactions: [],
+      {transactions: [ {
+        accountNumber: "1",
+        amount: 2,
+        id: 3,
+        balanceAfter: 17,
+        comment: "nic  takiego",
+        currency: "PLN",
+        date: new Date(),
+        description: ["opis"],
+        name: "nazwa",
+        type: "ww",
+        tags: []
+      }],
        rules: [],
        tags: [ {id: 1, color: 'blue', label: 'blah'} ]}
     // JSON.parse(rawData.toString(), (key, value) =>

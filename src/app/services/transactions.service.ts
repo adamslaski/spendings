@@ -10,7 +10,7 @@ export class TransactionsService {
 
   constructor(private dmService: DataModelService, private rulesService: RulesService) { }
 
-  readWorkbook(path) {
+  readWorkbook(path: any) {
     // const workbook = XLSX.read(fs.readFileSync(path[0]), { type: 'buffer' });
     // const first_sheet_name = workbook.SheetNames[0];
     // const ids = this.getIds();

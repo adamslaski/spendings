@@ -1,40 +1,60 @@
 import { Component, OnInit } from '@angular/core';
-import { Tag } from 'src/app/services/data-model.service';
-import { TagsService } from 'src/app/services/tags.service';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { Transaction, DataModelService,
+ObservableDataSource, compileAndFilter } from 'src/app/services/data-model.service';
+import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transactions-table',
-  template: `
-    <mat-form-field>
-      <input matInput name="newLabel" #newLabel>
-    </mat-form-field>
-    <button mat-raised-button (click)="create(newLabel.value)">dodaj</button>
-
-    <table>
-      <tr *ngFor="let tag of tags">
-        <td>
-          <mat-form-field>
-            <input matInput name="label" [(ngModel)]="tag.label">
-          </mat-form-field>
-        </td>
-        <td><button mat-button (click)="delete(tag.id)"><i class="material-icons" style="font-size: 18px">cancel</i></button></td>
-      </tr>
-    </table>`
+  templateUrl: './transactions-table.component.html',
+  styles: ['.mat-form-field.longField{ width: 1000px }']
 })
-export class TransactionsTableComponent {
-  readonly tags: Tag[];
+export class TransactionsTableComponent implements OnInit {
+  readonly displayedColumns = ['date', 'type', 'amount', 'name', 'description', 'chips', 'comment'];
+  dataSource = new ObservableDataSource(this.dmService.transactionsObservable);
+  query: string = "";
 
-  constructor(private tagService: TagsService) {
-    this.tags = tagService.tags;
+  constructor(private trsService: TransactionsService, private router: Router,
+    public dialog: MatDialog, private route: ActivatedRoute, private dmService: DataModelService) {
+      console.log('tr-table constructor');
+    }
+
+  ngOnInit(): void {
+    this.route.paramMap.forEach((params: ParamMap) => {
+      if (params.has('query')) {
+        this.query = 'tr.name === \'' + params.get('query') + '\'';
+        this.filter(this.query);
+      }
+    });
   }
 
-  public create(label: string) {
-    this.tagService.create(label);
+  openDialog(tr: Transaction ): void {
+    const trCopy = Object.assign({}, tr, { tags: tr.tags.slice() });
+    const dialogRef = this.dialog.open(TransactionDialogComponent, {
+      width: '550px',
+      data: trCopy
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        Object.assign(tr, result);
+        tr.tags.slice(0, tr.tags.length);
+        tr.tags.push(...result.tags);
+      }
+    });
   }
 
-  public delete(id: number) {
-    this.tagService.delete(id);
+  filter(query: string) {
+    this.dataSource =  new ObservableDataSource(this.dmService.transactionsObservable.pipe(
+      map(compileAndFilter<Transaction>(query))));
+  }
+
+  addRule(query: string) {
+    this.router.navigateByUrl('/rules/' + encodeURIComponent(query));
   }
 
 }
-
