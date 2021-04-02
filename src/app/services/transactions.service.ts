@@ -1,14 +1,40 @@
 import { Injectable } from '@angular/core';
 import { DataModelService } from './data-model.service';
 import { RulesService } from './rules.service';
-
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionsService {
   public readonly transactions = this.dmService.dataModel.transactions;
+  private parser = new DOMParser();
 
   constructor(private dmService: DataModelService, private rulesService: RulesService) { }
+
+  readXML(text: string) {
+    const doc = this.parser.parseFromString(text, "application/xml");
+    for (let i = 0; i < doc.documentElement.children.length; ++i) {
+      const transaction = doc.documentElement.children[i];
+      if (transaction.nodeName === "Transaction") {
+        console.log(transaction);
+        const date = transaction.getElementsByTagName("date")[0].innerHTML;
+        this.transactions.push({
+          date: moment(date, "DD/MM/YYYY").toDate(), 
+          id: 1,
+          tags: [],
+          accountNumber: "0",
+          amount: Number(transaction.getElementsByTagName("amount")[0].innerHTML.replace('.', '').replace(',','.')),
+          balanceAfter: Number(transaction.getElementsByTagName("running_balance")[0].innerHTML.replace('.', '').replace(',','.')),
+          type: transaction.getElementsByTagName("transaction_type")[0].innerHTML,
+          comment: '',
+          currency: 'PLN',
+          description: [transaction.getElementsByTagName("description")[0].innerHTML],
+          name: 'name'
+     });
+      }
+    }
+  }
+
 
   readWorkbook(path: any) {
     // const workbook = XLSX.read(fs.readFileSync(path[0]), { type: 'buffer' });

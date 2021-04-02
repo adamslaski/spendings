@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataModelService } from 'src/app/services/data-model.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
 
 @Component({
   selector: 'app-header',
@@ -22,16 +23,26 @@ export class HeaderComponent  { }
 @Component({
   selector: 'app-data-toolbar',
   template: `
-    <button mat-raised-button class="data-toolbar-button" (click)="import()"  color="accent">Importuj</button>
+    <span class="form-group">
+      <label for="file">
+        <span class="mat-focus-indicator data-toolbar-button mat-raised-button mat-button-base mat-accent _mat-animation-noopable" color="accent">Importuj wyciąg</span>
+        <input type="file" id="file" hidden (change)="import($event)">
+      </label>
+    </span>
     <button mat-raised-button class="data-toolbar-button" (click)="load()"  color="accent">Wczytaj</button>
     <button mat-raised-button class="data-toolbar-button" (click)="save()"  color="accent">Zapisz</button>
     <button mat-raised-button class="data-toolbar-button" (click)="clear()" color="accent">Wyczyść</button>`,
     styles: ['.data-toolbar-button { margin-left: 5px;}']
 })
 export class DataToolbarComponent {
-  constructor(private dataModelService: DataModelService) { }
+  constructor(private dataModelService: DataModelService, private transactionService: TransactionsService) { }
 
-  import() {
+  import(event:any) {
+    const list = event.target.files as FileList;
+    if (list.length>0) {
+      const file = list.item(0);
+      file?.text().then(text => this.transactionService.readXML(text));
+    }
   }
 
   load() {
