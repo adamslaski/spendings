@@ -33,9 +33,7 @@ export class BalanceChartComponent {
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
-  public lineChartLegend = false;
-  public lineChartType = 'line';
-
+ 
   constructor(private trsService: TransactionsService, private datePipe: DatePipe) {
     this.plot(computeBalanceForEachDay(this.trsService.transactions));
   }

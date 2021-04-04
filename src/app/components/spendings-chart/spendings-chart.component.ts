@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
+import { Component } from '@angular/core';
 import { Transaction } from 'src/app/services/data-model.service';
 import { TagsService } from 'src/app/services/tags.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
@@ -17,9 +16,6 @@ export class SpendingsChartComponent {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public chartLegend = true;
-  public chartType = 'bar';
-//  @ViewChild('baseChart') chart: BaseChartDirective;
 
   constructor(private trsService: TransactionsService, private datePipe: DatePipe, private tagService: TagsService) {
     if (trsService.transactions.length > 0) {
