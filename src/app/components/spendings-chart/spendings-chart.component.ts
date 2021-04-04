@@ -17,25 +17,28 @@ export class SpendingsChartComponent {
     responsive: true
   };
 
-  constructor(private trsService: TransactionsService, private datePipe: DatePipe, private tagService: TagsService) {
-    if (trsService.transactions.length > 0) {
-      const begin = new Date(trsService.transactions[0].date);
+  constructor(trsService: TransactionsService, private datePipe: DatePipe, tagService: TagsService) {
+    const transactions = trsService.transactions
+      .filter(tr => tr.amount < 0)
+      .map(tr => Object.assign({}, tr, { amount: -tr.amount }));
+    if (transactions.length > 0) {
+      const begin = new Date(transactions[0].date);
       const end = new Date();
       const data = tagService.tags.map(t => {
         return {
           label: t.label,
-          data: computeBalanceForEachDay(begin, end, trsService.transactions.filter(tr => tr.tags.indexOf(t.id)))
+          data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.tags.includes(t.id)))
         };
       });
       data.push({
         label: 'inne',
-        data: computeBalanceForEachDay(begin, end, trsService.transactions.filter(tr => tr.tags.length === 0))
+        data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.tags.length === 0))
       });
       this.plot(computeRangeLabels(begin, end), data);
     }
   }
 
-  private plot(rangeLabels: Date[], x: { label: string, data: number[]}[]): void {
+  private plot(rangeLabels: Date[], x: { label: string, data: number[] }[]): void {
     this.chartLabels = rangeLabels.map(d => this.datePipe.transform(d, 'M-y'));
     this.chartData = x;
   }

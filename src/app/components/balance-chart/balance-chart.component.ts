@@ -33,7 +33,7 @@ export class BalanceChartComponent {
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
- 
+
   constructor(private trsService: TransactionsService, private datePipe: DatePipe) {
     this.plot(computeBalanceForEachDay(this.trsService.transactions));
   }
@@ -43,14 +43,13 @@ export class BalanceChartComponent {
     const _lineChartData: Array<any> = new Array(1);
     const _lineChartLabels: Array<any> = new Array(len);
 
-    _lineChartData[0] = { data: new Array(len), label: 'Foo' };
+    _lineChartData[0] = { data: new Array(len), label: 'Stan konta' };
     for (let j = 0; j < len; j++) {
       _lineChartData[0].data[j] = data[j].balance;
       _lineChartLabels[j] = this.datePipe.transform(data[j].date, 'd-M-y');
     }
     this.lineChartData = _lineChartData;
-    this.lineChartLabels.splice(0, this.lineChartLabels.length);
-    this.lineChartLabels.push(..._lineChartLabels);
+    this.lineChartLabels.splice(0, this.lineChartLabels.length, ..._lineChartLabels);
   }
 }
 
