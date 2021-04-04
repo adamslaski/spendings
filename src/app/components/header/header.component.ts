@@ -9,7 +9,6 @@ import { TransactionsService } from 'src/app/services/transactions.service';
     <button mat-button routerLink="/list"  routerLinkActive="active">Lista transakcji</button>
     <button mat-button routerLink="/balance-chart"  routerLinkActive="active">Wykres stanu konta</button>
     <button mat-button routerLink="/spendings-chart"  routerLinkActive="active">Wykres wydatków</button>
-    <button mat-button routerLink="/receivers"  routerLinkActive="active">Odbiorcy</button>
     <button mat-button routerLink="/rules-table"  routerLinkActive="active">Reguły</button>
     <button mat-button routerLink="/tags-table"  routerLinkActive="active">Tagi</button>
     <span class="fill-remaining-space"></span>

@@ -20,7 +20,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table'; 
+import {MatTableModule} from '@angular/material/table';
+import { BalanceChartComponent } from './components/balance-chart/balance-chart.component';
+import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component'; 
+import { ChartsModule } from 'ng2-charts';
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +35,9 @@ import {MatTableModule} from '@angular/material/table';
     TransactionsTableComponent,
     DataToolbarComponent,
     ChipsComponent,
-    TransactionDialogComponent
+    TransactionDialogComponent,
+    BalanceChartComponent,
+    SpendingsChartComponent
   ],
   imports: [
     BrowserModule,
@@ -46,9 +52,10 @@ import {MatTableModule} from '@angular/material/table';
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
+    ChartsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
