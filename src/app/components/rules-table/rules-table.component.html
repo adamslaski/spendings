@@ -1,0 +1,25 @@
+<mat-form-field>
+    <input matInput #newName placeholder="nazwa">
+</mat-form-field>
+<mat-form-field class="longField">
+    <input matInput #newPredicate placeholder="predykat" [(ngModel)]="predicate">
+</mat-form-field>
+<div style="width: 1000px">
+    <app-chips [tags]="tags" [editMode]="true"></app-chips>
+</div>
+<button mat-raised-button (click)="create(newName.value, newPredicate.value, tags)">dodaj</button>
+
+<table>
+    <tr *ngFor="let rule of rules">
+        <td>{{ rule.name }}</td>
+        <td>{{ rule.predicate }}</td>
+        <td>
+            <app-chips [tags]="rule.tags"></app-chips>
+        </td>
+        <td>
+            <button mat-button (click)="delete(rule.name)">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </td>
+    </tr>
+</table>

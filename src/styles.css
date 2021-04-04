@@ -3,3 +3,4 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-form-field { margin-right: 8px;}
+.mat-form-field.longField{ width: 1000px }

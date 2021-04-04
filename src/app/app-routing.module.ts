@@ -9,9 +9,9 @@ import { TransactionsTableComponent } from './components/transactions-table/tran
 
 const routes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full' },
-  { path: 'list/:query', component: TransactionsTableComponent },
-  { path: 'list', component: TransactionsTableComponent },  
+  { path: 'list', component: TransactionsTableComponent },
   { path: 'tags-table', component: TagsTableComponent },
+  { path: 'rules-table/:predicate', component: RulesTableComponent },
   { path: 'rules-table', component: RulesTableComponent },
   { path: 'balance-chart', component: BalanceChartComponent },
   { path: 'spendings-chart', component: SpendingsChartComponent },

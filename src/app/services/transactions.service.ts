@@ -22,14 +22,11 @@ export class TransactionsService {
           date: moment(date, "DD/MM/YYYY").toDate(), 
           id: 1,
           tags: [],
-          accountNumber: "0",
           amount: Number(transaction.getElementsByTagName("amount")[0].innerHTML.replace('.', '').replace(',','.')),
           balanceAfter: Number(transaction.getElementsByTagName("running_balance")[0].innerHTML.replace('.', '').replace(',','.')),
           type: transaction.getElementsByTagName("transaction_type")[0].innerHTML,
           comment: '',
-          currency: 'PLN',
-          description: [transaction.getElementsByTagName("description")[0].innerHTML],
-          name: 'name'
+          description: transaction.getElementsByTagName("description")[0].innerHTML,
      });
       }
     }

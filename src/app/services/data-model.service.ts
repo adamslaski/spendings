@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { DataSource } from '@angular/cdk/collections';
+import { environment } from 'src/environments/environment';
 
 
 export interface Transaction {
@@ -9,10 +10,7 @@ export interface Transaction {
   readonly type: string;
   readonly amount: number;
   readonly balanceAfter: number;
-  readonly currency: string;
-  readonly accountNumber: string;
-  readonly name: string;
-  readonly description: string[];
+  readonly description: string;
   comment: string;
   readonly tags: number[]
 }
@@ -58,35 +56,8 @@ export class DataModelService {
 
   load(): void {
     const rawData = ''; // fs.readFileSync(dataFile);
-    const dataModel: DataModel = 
-      {transactions: [ 
-        {
-        accountNumber: "1",
-        amount: 2,
-        id: 3,
-        balanceAfter: 17,
-        comment: "nic  takiego",
-        currency: "PLN",
-        date: new Date(),
-        description: ["opis"],
-        name: "nazwa",
-        type: "ww",
-        tags: []},
-        {
-          accountNumber: "1",
-          amount: 2,
-          id: 4,
-          balanceAfter: 517,
-          comment: "nic  takiego",
-          currency: "PLN",
-          date: new Date(),
-          description: ["opis"],
-          name: "nazwa",
-          type: "ww",
-          tags: [1,2]
-        }],
-       rules: [],
-       tags: [ {id: 1, color: 'blue', label: 'blah'}, {id: 2, color: 'red', label: 'foo'} ]}
+    const dataModel: DataModel = environment.exampleData;
+      
     // JSON.parse(rawData.toString(), (key, value) =>
     //   key === 'date'
     //     ? new Date(value)

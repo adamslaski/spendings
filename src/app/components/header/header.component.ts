@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataModelService } from 'src/app/services/data-model.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -28,12 +29,13 @@ export class HeaderComponent  { }
         <input type="file" id="file" hidden (change)="import($event)">
       </label>
     </span>
-    <button mat-raised-button class="data-toolbar-button" (click)="load()"  color="accent">Wczytaj</button>
-    <button mat-raised-button class="data-toolbar-button" (click)="save()"  color="accent">Zapisz</button>
+    <button mat-raised-button class="data-toolbar-button" (click)="load()"  color="accent" [hidden]="isProduction">Wczytaj dane testowe</button>
     <button mat-raised-button class="data-toolbar-button" (click)="clear()" color="accent">Wyczyść</button>`,
     styles: ['.data-toolbar-button { margin-left: 5px;}']
 })
 export class DataToolbarComponent {
+  public isProduction = environment.production;
+
   constructor(private dataModelService: DataModelService, private transactionService: TransactionsService) { }
 
   import(event:any) {

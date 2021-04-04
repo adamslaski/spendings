@@ -2,25 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionsService } from 'src/app/services/transactions.service';
-import { Transaction, DataModelService,
-ObservableDataSource, compileAndFilter } from 'src/app/services/data-model.service';
+import {
+  Transaction, DataModelService,
+  ObservableDataSource, compileAndFilter
+} from 'src/app/services/data-model.service';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
-  styles: ['.mat-form-field.longField{ width: 1000px }']
 })
 export class TransactionsTableComponent implements OnInit {
-  readonly displayedColumns = ['date', 'type', 'amount', 'name', 'description', 'chips', 'comment'];
+  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
   dataSource = new ObservableDataSource(this.dmService.transactionsObservable);
   query: string = "";
 
   constructor(private trsService: TransactionsService, private router: Router,
     public dialog: MatDialog, private route: ActivatedRoute, private dmService: DataModelService) {
-      console.log('tr-table constructor');
-    }
+    console.log('tr-table constructor');
+  }
 
   ngOnInit(): void {
     this.route.paramMap.forEach((params: ParamMap) => {
@@ -31,7 +32,7 @@ export class TransactionsTableComponent implements OnInit {
     });
   }
 
-  openDialog(tr: Transaction ): void {
+  openDialog(tr: Transaction): void {
     const trCopy = Object.assign({}, tr, { tags: tr.tags.slice() });
     const dialogRef = this.dialog.open(TransactionDialogComponent, {
       width: '550px',
@@ -49,12 +50,12 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   filter(query: string) {
-    this.dataSource =  new ObservableDataSource(this.dmService.transactionsObservable.pipe(
+    this.dataSource = new ObservableDataSource(this.dmService.transactionsObservable.pipe(
       map(compileAndFilter<Transaction>(query))));
   }
 
   addRule(query: string) {
-    this.router.navigateByUrl('/rules/' + encodeURIComponent(query));
+    this.router.navigateByUrl('/rules-table/' + encodeURIComponent(query));
   }
 
 }

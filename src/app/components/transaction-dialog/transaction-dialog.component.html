@@ -2,10 +2,6 @@
 <div mat-dialog-content>
   <table>
     <tr>
-      <td>id</td>
-      <td>{{data.id}}</td>
-    </tr>
-    <tr>
       <td>date</td>
       <td>{{data.date | date:'d-M-y'}}</td>
     </tr>
@@ -22,21 +18,9 @@
       <td>{{data.balanceAfter}}</td>
     </tr>
     <tr>
-      <td>currency</td>
-      <td>{{data.currency}}</td>
-    </tr>
-    <tr>
-      <td>accountNumber</td>
-      <td>{{data.accountNumber}}</td>
-    </tr>
-    <tr>
-      <td>name</td>
-      <td>{{data.name}}</td>
-    </tr>
-    <tr>
       <td>description</td>
       <td>
-        <pre>{{data.description | json}}</pre>
+        <pre>{{data.description}}</pre>
       </td>
     </tr>
     <tr>
@@ -49,7 +33,9 @@
     </tr>
     <tr>
       <td>tags</td>
-      <td width="350px"><app-chips [tags]="data.tags" [editMode]="true"></app-chips></td>
+      <td width="350px">
+        <app-chips [tags]="data.tags" [editMode]="true"></app-chips>
+      </td>
     </tr>
   </table>
 </div>
