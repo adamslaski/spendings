@@ -1,24 +1,29 @@
 <mat-tab-group class="search-form-tabs mat-elevation-z4">
   <mat-tab label="Wyszukiwanie proste">
-    <div class="search-tab-description">
-      Wpisz poszukiwane wyrażenie. Na przykład: <code>ROSSMAN</code>
+    <div class="tab-body">
+      <div class="search-tab-description">
+        Wpisz poszukiwane wyrażenie. Na przykład: <code>ROSSMAN</code>
+      </div>
+      <mat-form-field>
+        <input matInput name="simpleQuery" [(ngModel)]="simpleQuery" placeholder="wyrażenie">
+      </mat-form-field><br />
+      <button mat-raised-button class="search-form-button" (click)="filter(makeQuery(simpleQuery))">filtruj</button>
+      <button mat-raised-button class="search-form-button" (click)="addRule(makeQuery(simpleQuery))">dodaj
+        regułę</button>
     </div>
-    <mat-form-field>
-      <input matInput name="simpleQuery" [(ngModel)]="simpleQuery">
-    </mat-form-field>
-    <button mat-raised-button (click)="filter(makeQuery(simpleQuery))">filtruj</button>
-    <button mat-raised-button (click)="addRule(makeQuery(simpleQuery))">dodaj regułę</button>
   </mat-tab>
   <mat-tab label="Zaawansowane">
-    <div class="search-tab-description">
-      Obiekt transakcji dostępny jako <code>tr</code>. Przykładowe zapytanie:
-      <code>tr.description.includes("ROSSMAN")</code>
+    <div class="tab-body">
+      <div class="search-tab-description">
+        Obiekt transakcji dostępny jako <code>tr</code>. Przykładowe zapytanie:
+        <code>tr.description.includes("ROSSMAN")</code>
+      </div>
+      <mat-form-field class="longField">
+        <input matInput name="query" [(ngModel)]="query" placeholder="predykat">
+      </mat-form-field><br />
+      <button mat-raised-button class="search-form-button" (click)="filter(query)">filtruj</button>
+      <button mat-raised-button class="search-form-button" (click)="addRule(query)">dodaj regułę</button>
     </div>
-    <mat-form-field class="longField">
-      <input matInput name="query" [(ngModel)]="query">
-    </mat-form-field>
-    <button mat-raised-button (click)="filter(query)">filtruj</button>
-    <button mat-raised-button (click)="addRule(query)">dodaj regułę</button>
   </mat-tab>
 </mat-tab-group>
 

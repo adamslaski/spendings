@@ -13,7 +13,9 @@ import { map } from 'rxjs/operators';
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styles: ['div.search-tab-description {margin: 10px 0px 10px 0px}',
-    '.search-form-tabs { max-width: 1200px; margin-bottom: 20px }']
+    '.search-form-tabs { max-width: 1020px; margin-bottom: 20px }',
+    '.search-form-button { margin-right: 5px;}',
+    '.tab-body { margin-left: 10px; margin-bottom: 10px }']
 })
 export class TransactionsTableComponent implements OnInit {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
