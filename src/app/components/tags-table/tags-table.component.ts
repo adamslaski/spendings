@@ -6,7 +6,7 @@ import { TagsService } from 'src/app/services/tags.service';
   selector: 'app-tags-table',
   template: `
     <mat-form-field>
-      <input matInput type="text" name="newLabel" #newLabel>
+      <input matInput type="text" name="newLabel" #newLabel placeholder="nazwa tagu">
     </mat-form-field>
     <button mat-raised-button (click)="create(newLabel.value); newLabel.value=''">dodaj</button>
 

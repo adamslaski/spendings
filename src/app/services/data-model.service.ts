@@ -24,7 +24,6 @@ export interface Rule {
 export interface Tag {
   readonly id: number,
   label: string,
-  color: string
 }
 
 export interface DataModel {
@@ -51,13 +50,13 @@ export class DataModelService {
   }
 
   save(): void {
-//    fs.writeFileSync(dataFile, JSON.stringify(this.dataModel));
+    //    fs.writeFileSync(dataFile, JSON.stringify(this.dataModel));
   }
 
   load(): void {
     const rawData = ''; // fs.readFileSync(dataFile);
     const dataModel: DataModel = environment.exampleData;
-      
+
     // JSON.parse(rawData.toString(), (key, value) =>
     //   key === 'date'
     //     ? new Date(value)
@@ -80,13 +79,13 @@ class ObservableArray<T> {
   private readonly modifyingMethods = 'pop push shift unshift splice reverse sort'.split(' ');
   private readonly handler: ProxyHandler<Array<T>> = {
     get: (target, prop, receiver) => {
-      const tmp =  Reflect.get(target, prop, receiver);
+      const tmp = Reflect.get(target, prop, receiver);
       // tslint:disable-next-line:triple-equals
-      if (this.modifyingMethods.find(it => it == prop )) {
+      if (this.modifyingMethods.find(it => it == prop)) {
         console.log('get', target, prop, receiver);
         const subject = this.subject;
         const table = this.table;
-        return (function() { tmp.apply(target, arguments); subject.next(table); });
+        return (function () { tmp.apply(target, arguments); subject.next(table); });
       }
       return tmp;
     },

@@ -16,7 +16,7 @@ export class TagsService {
   public create(label: string): number {
     let newId = 0;
     newId = this.tags.reduce((a, v) => Math.max(a, v.id + 1), 0);
-    this.tags.push({ label: label, color: 'grey', id: newId });
+    this.tags.push({ label: label, id: newId });
     return newId;
   }
 
@@ -24,11 +24,7 @@ export class TagsService {
     this.transformById(id, tag => tag.label = label);
   }
 
-  public setColor(id: number, color: string) {
-    this.transformById(id, tag => tag.color = color);
-  }
-
-  private transformById(id: number, f: (tag:Tag) => void) {
+  private transformById(id: number, f: (tag: Tag) => void) {
     const tag = this.tags.find(t => t.id === id);
     if (tag) {
       f(tag);
