@@ -12,11 +12,14 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
+  styles: ['div.search-tab-description {margin: 10px 0px 10px 0px}',
+    '.search-form-tabs { max-width: 1200px; margin-bottom: 20px }']
 })
 export class TransactionsTableComponent implements OnInit {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
   dataSource = new ObservableDataSource(this.dmService.transactionsObservable);
   query: string = "";
+  simpleQuery: string = "";
 
   constructor(private trsService: TransactionsService, private router: Router,
     public dialog: MatDialog, private route: ActivatedRoute, private dmService: DataModelService) {
@@ -49,13 +52,19 @@ export class TransactionsTableComponent implements OnInit {
     });
   }
 
+  makeQuery(simpleQuery: string) {
+    const upperCaseQuery = simpleQuery.toUpperCase();
+    return `tr.description.toUpperCase().includes("${upperCaseQuery}")`
+      + ` || tr.type.toUpperCase().includes("${upperCaseQuery}")`;
+  }
+
   filter(query: string) {
     this.dataSource = new ObservableDataSource(this.dmService.transactionsObservable.pipe(
       map(compileAndFilter<Transaction>(query))));
   }
 
   addRule(query: string) {
-    this.router.navigateByUrl('/rules-table/' + encodeURIComponent(query));
+    this.router.navigateByUrl('/rules-table/' + query);
   }
 
 }

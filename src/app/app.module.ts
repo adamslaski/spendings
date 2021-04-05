@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { MatTabsModule } from '@angular/material/tabs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent, DataToolbarComponent } from './components/header/header.component';
@@ -20,9 +20,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { BalanceChartComponent } from './components/balance-chart/balance-chart.component';
-import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component'; 
+import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
 @NgModule({
@@ -53,7 +53,8 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     MatDialogModule,
     MatTableModule,
-    ChartsModule
+    ChartsModule,
+    MatTabsModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
