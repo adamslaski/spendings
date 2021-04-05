@@ -1,13 +1,14 @@
 <mat-form-field>
     <input matInput #newName placeholder="nazwa">
-</mat-form-field>
+</mat-form-field><br />
 <mat-form-field class="longField">
     <input matInput #newPredicate placeholder="predykat" [(ngModel)]="predicate">
-</mat-form-field>
+</mat-form-field><br />
 <div style="width: 1000px">
     <app-chips [tags]="tags" [editMode]="true"></app-chips>
 </div>
-<button mat-raised-button (click)="create(newName.value, newPredicate.value, tags)">dodaj</button>
+<button mat-raised-button
+    (click)="create(newName.value, newPredicate.value, tags); newName.value = newPredicate.value = ''">dodaj</button>
 
 <table>
     <tr *ngFor="let rule of rules">

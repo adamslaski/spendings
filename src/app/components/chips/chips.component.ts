@@ -25,19 +25,17 @@ export class ChipsComponent {
   @Input()
   tags: number[] = [];
 
-  chipInput = '';
-
   myControl: FormControl = new FormControl();
 
   filteredOptions: Observable<Tag[]>;
 
-  constructor(private tagService: TagsService) { 
+  constructor(private tagService: TagsService) {
     this.filteredOptions = this.myControl.valueChanges
-    .pipe(
-       startWith(null),
-       map(val =>
-         this.tagService.tags.filter(tag => 
-           tag.label.includes(val) && this.tags.find(e => e === tag.id) === undefined)));
+      .pipe(
+        startWith(null),
+        map(val =>
+          this.tagService.tags.filter(tag =>
+            tag.label.includes(val) && this.tags.find(e => e === tag.id) === undefined)));
   }
 
   get enrichedTags(): Tag[] {
@@ -75,7 +73,6 @@ export class ChipsComponent {
   optionSelected(event: MatAutocompleteSelectedEvent) {
     console.log('optionSelected', event);
     this.tags.push(event.option.value.id);
-    this.chipInput = '';
   }
 
 }

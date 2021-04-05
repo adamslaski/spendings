@@ -22,7 +22,9 @@ export class RulesTableComponent {
   }
 
   public create(name: string, predicate: string, tags: number[]) {
-    this.rulesService.create(name, predicate, tags);
+    this.rulesService.create(name, predicate, tags.slice());
+    this.tags.splice(0, this.tags.length);
+    this.predicate = '';
   }
 
   public delete(name: string) {
