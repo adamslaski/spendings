@@ -8,7 +8,7 @@ import { TagsService } from 'src/app/services/tags.service';
     <mat-form-field>
       <input matInput type="text" name="newLabel" #newLabel>
     </mat-form-field>
-    <button mat-raised-button (click)="create(newLabel.value)">dodaj</button>
+    <button mat-raised-button (click)="create(newLabel.value); newLabel.value=''">dodaj</button>
 
     <table>
       <tr *ngFor="let tag of tags">
@@ -23,7 +23,7 @@ import { TagsService } from 'src/app/services/tags.service';
       </tr>
     </table>`,
 })
-export class TagsTableComponent{
+export class TagsTableComponent {
   readonly tags: Tag[];
 
   constructor(private tagService: TagsService) {
