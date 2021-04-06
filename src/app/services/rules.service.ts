@@ -4,13 +4,13 @@ import { compileAndFilter, DataModelService, Rule, Transaction } from './data-mo
 @Injectable({
   providedIn: 'root'
 })
-export class RulesService  {
+export class RulesService {
   public readonly rules = this.dmService.dataModel.rules;
 
   constructor(private dmService: DataModelService) { }
 
-  public create(name: string, predicate: string, tags: number[]) {
-    const rule = { name: name, predicate: predicate, tags: tags };
+  public create(ruleName: string, predicate: string, category: number) {
+    const rule = { name: ruleName, predicate: predicate, category: category };
     this.rules.push(rule);
     this.apply(this.dmService.dataModel.transactions, rule);
   }
@@ -18,10 +18,10 @@ export class RulesService  {
   public apply(trs: Transaction[], ...rules: Rule[]) {
     rules.forEach(rule =>
       compileAndFilter<Transaction>(rule.predicate)(trs)
-    .forEach(tr => {
-      tr.tags.push(...rule.tags);
-      tr.comment = tr.comment + ' ' + name + ' applied';
-    }));
+        .forEach(tr => {
+          tr.category = rule.category;
+          tr.comment = tr.comment + ' ' + rule.name + ' applied';
+        }));
   }
 
   public delete(name: string) {

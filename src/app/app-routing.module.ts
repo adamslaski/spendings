@@ -4,13 +4,13 @@ import { BalanceChartComponent } from './components/balance-chart/balance-chart.
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RulesTableComponent } from './components/rules-table/rules-table.component';
 import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component';
-import { TagsTableComponent } from './components/tags-table/tags-table.component';
+import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full' },
   { path: 'list', component: TransactionsTableComponent },
-  { path: 'tags-table', component: TagsTableComponent },
+  { path: 'categories-table', component: CategoriesTableComponent },
   { path: 'rules-table/:predicate', component: RulesTableComponent },
   { path: 'rules-table', component: RulesTableComponent },
   { path: 'balance-chart', component: BalanceChartComponent },

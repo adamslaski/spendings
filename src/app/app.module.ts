@@ -13,9 +13,9 @@ import { AppComponent } from './app.component';
 import { HeaderComponent, DataToolbarComponent } from './components/header/header.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RulesTableComponent } from './components/rules-table/rules-table.component';
-import { TagsTableComponent } from './components/tags-table/tags-table.component';
+import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
-import { ChipsComponent } from './components/chips/chips.component';
+import { SelectCategoryComponent } from './components/category/select-category.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
@@ -25,19 +25,21 @@ import { BalanceChartComponent } from './components/balance-chart/balance-chart.
 import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
+import { DisplayCategoryComponent } from './components/category/display-category.component';
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     PageNotFoundComponent,
     RulesTableComponent,
-    TagsTableComponent,
+    CategoriesTableComponent,
     TransactionsTableComponent,
     DataToolbarComponent,
-    ChipsComponent,
+    SelectCategoryComponent,
     TransactionDialogComponent,
     BalanceChartComponent,
-    SpendingsChartComponent
+    SpendingsChartComponent,
+    DisplayCategoryComponent
   ],
   imports: [
     BrowserModule,

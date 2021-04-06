@@ -2,29 +2,29 @@
 <div mat-dialog-content>
   <table>
     <tr>
-      <td>date</td>
+      <td>Data</td>
       <td>{{data.date | date:'d-M-y'}}</td>
     </tr>
     <tr>
-      <td>type</td>
+      <td>Typ</td>
       <td>{{data.type}}</td>
     </tr>
     <tr>
-      <td>amount</td>
+      <td>Kwota</td>
       <td>{{data.amount}}</td>
     </tr>
     <tr>
-      <td>balanceAfter</td>
+      <td>Stan rachunku po operacji</td>
       <td>{{data.balanceAfter}}</td>
     </tr>
     <tr>
-      <td>description</td>
+      <td>Opis</td>
       <td>
         <pre>{{data.description}}</pre>
       </td>
     </tr>
     <tr>
-      <td>comment</td>
+      <td>Komentarz</td>
       <td>
         <mat-form-field>
           <input matInput name="comment" [(ngModel)]="data.comment">
@@ -32,9 +32,9 @@
       </td>
     </tr>
     <tr>
-      <td>tags</td>
+      <td>Kategoria</td>
       <td width="350px">
-        <app-chips [tags]="data.tags" [editMode]="true"></app-chips>
+        <app-select-category [(ngModel)]="data.category"></app-select-category>
       </td>
     </tr>
   </table>

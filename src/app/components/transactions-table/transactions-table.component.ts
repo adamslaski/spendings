@@ -38,7 +38,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   openDialog(tr: Transaction): void {
-    const trCopy = Object.assign({}, tr, { tags: tr.tags.slice() });
+    const trCopy = Object.assign({}, tr);
     const dialogRef = this.dialog.open(TransactionDialogComponent, {
       width: '550px',
       data: trCopy
@@ -48,8 +48,6 @@ export class TransactionsTableComponent implements OnInit {
       console.log('The dialog was closed');
       if (result) {
         Object.assign(tr, result);
-        tr.tags.slice(0, tr.tags.length);
-        tr.tags.push(...result.tags);
       }
     });
   }

@@ -3,7 +3,6 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { DataSource } from '@angular/cdk/collections';
 import { environment } from 'src/environments/environment';
 
-
 export interface Transaction {
   readonly id: number;
   readonly date: Date;
@@ -12,16 +11,16 @@ export interface Transaction {
   readonly balanceAfter: number;
   readonly description: string;
   comment: string;
-  readonly tags: number[]
+  category: number
 }
 
 export interface Rule {
   readonly name: string,
   readonly predicate: string,
-  readonly tags: number[]
+  readonly category: number
 }
 
-export interface Tag {
+export interface Category {
   readonly id: number,
   label: string,
 }
@@ -29,47 +28,37 @@ export interface Tag {
 export interface DataModel {
   readonly transactions: Transaction[],
   readonly rules: Rule[],
-  readonly tags: Tag[]
+  readonly categories: Category[]
 }
-
-const dataFile = '/home/adam/.amperomierz/data.json';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataModelService {
   readonly observableTransactionsArray: ObservableArray<Transaction> = new ObservableArray();
-  public readonly dataModel: DataModel = { transactions: this.observableTransactionsArray.table, rules: [], tags: [] };
+  public readonly dataModel: DataModel = {
+    transactions: this.observableTransactionsArray.table,
+    rules: [],
+    categories: [{ id: 0, label: 'inne' }]
+  };
   get transactionsObservable(): Observable<Transaction[]> {
     return this.observableTransactionsArray.subject;
   }
 
-  constructor() {
-    // this.transactionsObservable.forEach(tr => console.log('tr listner:', tr));
-  }
+  constructor() { }
 
-  save(): void {
-    //    fs.writeFileSync(dataFile, JSON.stringify(this.dataModel));
-  }
+  save(): void { }
 
-  load(): void {
-    const rawData = ''; // fs.readFileSync(dataFile);
-    const dataModel: DataModel = environment.exampleData;
-
-    // JSON.parse(rawData.toString(), (key, value) =>
-    //   key === 'date'
-    //     ? new Date(value)
-    //     : value);
+  load(dataModel: DataModel): void {
     const dm = this.dataModel;
     dm.transactions.splice(0, dm.transactions.length, ...dataModel.transactions);
     dm.rules.splice(0, dm.rules.length, ...dataModel.rules);
-    dm.tags.splice(0, dm.tags.length, ...dataModel.tags);
+    dm.categories.splice(0, dm.categories.length, ...dataModel.categories);
   }
 
   clear(): void {
     this.dataModel.rules.splice(0, this.dataModel.rules.length);
-    this.dataModel.tags.splice(0, this.dataModel.tags.length);
+    this.dataModel.categories.splice(0, this.dataModel.categories.length);
     this.dataModel.transactions.splice(0, this.dataModel.transactions.length);
   }
 
@@ -100,10 +89,6 @@ export class ObservableDataSource<T> extends DataSource<T> {
     return this.obs;
   }
   disconnect() { }
-}
-
-export class SimpleDataSource<T> extends ObservableDataSource<T> {
-  constructor(private arr: T[]) { super(new BehaviorSubject(arr)); }
 }
 
 export function compileAndFilter<T>(exp: string): (arr: T[]) => T[] {

@@ -1,0 +1,19 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { CategoriesService } from 'src/app/services/categories.service';
+
+@Component({
+  selector: 'app-display-category',
+  template: `{{ displayCategory() }}`
+})
+export class DisplayCategoryComponent {
+  @Input()
+  category: number = 0;
+
+  constructor(private categoriesService: CategoriesService) {
+  }
+
+  displayCategory(): string {
+    return this.categoriesService.findTagById(this.category)?.label || '';
+  }
+
+}

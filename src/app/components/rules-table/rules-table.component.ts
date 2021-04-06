@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Rule } from 'src/app/services/data-model.service';
 import { RulesService } from 'src/app/services/rules.service';
@@ -9,8 +9,9 @@ import { RulesService } from 'src/app/services/rules.service';
 })
 export class RulesTableComponent {
   readonly rules: Rule[];
-  tags: number[] = [];
+  category: number = 0;
   predicate: string = '';
+  name: string = '';
 
   constructor(private rulesService: RulesService, private route: ActivatedRoute) {
     this.rules = rulesService.rules;
@@ -21,10 +22,13 @@ export class RulesTableComponent {
     });
   }
 
-  public create(name: string, predicate: string, tags: number[]) {
-    this.rulesService.create(name, predicate, tags.slice());
-    this.tags.splice(0, this.tags.length);
-    this.predicate = '';
+  public create() {
+    if (this.name !== '' && this.predicate !== '') {
+      this.rulesService.create(this.name, this.predicate, this.category);
+      this.category = 0;
+      this.predicate = '';
+      this.name = '';
+    }
   }
 
   public delete(name: string) {

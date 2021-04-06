@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Transaction } from 'src/app/services/data-model.service';
-import { TagsService } from 'src/app/services/tags.service';
+import { CategoriesService } from 'src/app/services/categories.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import * as Collections from 'typescript-collections';
 
@@ -17,22 +17,22 @@ export class SpendingsChartComponent {
     responsive: true
   };
 
-  constructor(trsService: TransactionsService, private datePipe: DatePipe, tagService: TagsService) {
+  constructor(trsService: TransactionsService, private datePipe: DatePipe, tagService: CategoriesService) {
     const transactions = trsService.transactions
       .filter(tr => tr.amount < 0)
       .map(tr => Object.assign({}, tr, { amount: -tr.amount }));
     if (transactions.length > 0) {
       const begin = new Date(transactions[0].date);
       const end = new Date();
-      const data = tagService.tags.map(t => {
+      const data = tagService.categories.map(t => {
         return {
           label: t.label,
-          data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.tags.includes(t.id)))
+          data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.category == t.id))
         };
       });
       data.push({
         label: 'inne',
-        data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.tags.length === 0))
+        data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.category == undefined))
       });
       this.plot(computeRangeLabels(begin, end), data);
     }
