@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataModelService } from 'src/app/services/data-model.service';
+import { Category, DataModelService } from 'src/app/services/data-model.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import { environment } from 'src/environments/environment';
 
@@ -48,7 +48,9 @@ export class DataToolbarComponent {
 
   loadExampleData() {
     if (environment['exampleData']) {
-      this.dataModelService.categoriesView.push(...environment['exampleData'].categories);
+      const exampleCategories: Category[] = environment['exampleData']
+        .categories.map(cat => { return { "id": 0, "label": cat }; });
+      this.dataModelService.categoriesView.push(...(exampleCategories));
       this.dataModelService.rulesView.push(...environment['exampleData'].rules);
     }
     if (environment['exampleStatement']) {
