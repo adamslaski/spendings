@@ -17,7 +17,7 @@ export class RulesTableComponent {
     this.rules = rulesService.rules;
     this.route.paramMap.forEach((params: ParamMap) => {
       if (params.has('predicate')) {
-        this.predicate = params.get('predicate') || '';
+        this.predicate = atob(params.get('predicate') || '');
       }
     });
   }

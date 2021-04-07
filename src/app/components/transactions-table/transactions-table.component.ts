@@ -64,7 +64,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   addRule(query: string) {
-    this.router.navigateByUrl('/rules-table/' + query);
+    this.router.navigateByUrl('/rules-table/' + btoa(query));
   }
 
 }
