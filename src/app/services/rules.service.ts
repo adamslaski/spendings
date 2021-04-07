@@ -36,9 +36,13 @@ export function apply(trs: Transaction[], ...rules: Rule[]) {
 }
 
 function applyWithFunction(fn: (tr: Transaction, rule: Rule) => void, trs: Transaction[], ...rules: Rule[]) {
-  rules.forEach(rule => {
-    let predicate = compile<Transaction>(rule.predicate);
-    trs.filter(predicate).forEach(tr => fn(tr, rule));
+  const compiledRules = rules.map(rule => Object.assign(rule, { compiledPredicate: compile<Transaction>(rule.predicate) }));
+
+  trs.forEach(tr => {
+    const rule = compiledRules.find(rule => rule.compiledPredicate(tr));
+    if (rule) {
+      fn(tr, rule);
+    }
   });
 }
 
