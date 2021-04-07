@@ -52,8 +52,8 @@ export class TransactionsTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if (result) {
-        Object.assign(tr, result);
+      if (result && JSON.stringify(tr) != JSON.stringify(result)) {
+        this.dmService.transactionsView.modify(result);
       }
     });
   }
