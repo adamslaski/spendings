@@ -2,7 +2,7 @@ import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { Category } from 'src/app/services/data-model.service';
+import { Category, DataModelService } from 'src/app/services/data-model.service';
 import { CategoriesService } from 'src/app/services/categories.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -29,12 +29,12 @@ export class SelectCategoryComponent implements OnInit, ControlValueAccessor {
 
   onTouched = () => { };
 
-  constructor(private categoriesService: CategoriesService) {
+  constructor(private categoriesService: CategoriesService, private dmService: DataModelService) {
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(null),
         map(val =>
-          this.categoriesService.categories.filter(cat => cat.label.includes(val)))
+          this.dmService.categoriesView.values().filter(cat => cat.label.includes(val)))
       );
   }
 

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { DataSource } from '@angular/cdk/collections';
-import { environment } from 'src/environments/environment';
+import { EntityViewWithTransactionsSupport } from '../utils/entity-view-with-transacations-support';
+import { EntityWithId } from '../utils/entity-with-id';
 
-export interface Transaction {
-  readonly id: number;
+export interface Transaction extends EntityWithId {
   readonly date: Date;
   readonly type: string;
   readonly amount: number;
@@ -14,92 +12,40 @@ export interface Transaction {
   category: number
 }
 
-export interface Rule {
-  readonly name: string,
+export interface Rule extends EntityWithId {
+  name: string,
   readonly predicate: string,
   readonly category: number
 }
 
-export interface Category {
-  readonly id: number,
+export interface Category extends EntityWithId {
   label: string,
 }
 
 export interface DataModel {
   readonly transactions: Transaction[],
+  transactionSequence: number,
   readonly rules: Rule[],
-  readonly categories: Category[]
+  ruleSequence: number,
+  readonly categories: Category[],
+  categorySequence: number,
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataModelService {
-  readonly observableTransactionsArray: ObservableArray<Transaction> = new ObservableArray();
-  public readonly dataModel: DataModel = {
-    transactions: this.observableTransactionsArray.table,
+  private readonly dataModel: DataModel = {
+    transactions: [],
+    transactionSequence: 1,
     rules: [],
-    categories: [{ id: 0, label: 'inne' }]
+    ruleSequence: 1,
+    categories: [{ id: 0, label: 'inne' }],
+    categorySequence: 1
   };
-  get transactionsObservable(): Observable<Transaction[]> {
-    return this.observableTransactionsArray.subject;
-  }
 
-  constructor() { }
-
-  save(): void { }
-
-  load(dataModel: DataModel): void {
-    const dm = this.dataModel;
-    dm.transactions.splice(0, dm.transactions.length, ...dataModel.transactions);
-    dm.rules.splice(0, dm.rules.length, ...dataModel.rules);
-    dm.categories.splice(0, dm.categories.length, ...dataModel.categories);
-  }
-
-  clear(): void {
-    this.dataModel.rules.splice(0, this.dataModel.rules.length);
-    this.dataModel.categories.splice(0, this.dataModel.categories.length);
-    this.dataModel.transactions.splice(0, this.dataModel.transactions.length);
-  }
+  readonly transactionsView = new EntityViewWithTransactionsSupport<Transaction>(this.dataModel.transactions, this.dataModel.transactionSequence);
+  readonly rulesView = new EntityViewWithTransactionsSupport<Rule>(this.dataModel.rules, this.dataModel.ruleSequence);
+  readonly categoriesView = new EntityViewWithTransactionsSupport<Category>(this.dataModel.categories, this.dataModel.categorySequence);
 
 }
-
-class ObservableArray<T> {
-  private readonly modifyingMethods = 'pop push shift unshift splice reverse sort'.split(' ');
-  private readonly handler: ProxyHandler<Array<T>> = {
-    get: (target, prop, receiver) => {
-      const tmp = Reflect.get(target, prop, receiver);
-      // tslint:disable-next-line:triple-equals
-      if (this.modifyingMethods.find(it => it == prop)) {
-        console.log('get', target, prop, receiver);
-        const subject = this.subject;
-        const table = this.table;
-        return (function () { tmp.apply(target, arguments); subject.next(table); });
-      }
-      return tmp;
-    },
-  };
-  readonly table = new Proxy(new Array<T>(), this.handler);
-  readonly subject: BehaviorSubject<T[]> = new BehaviorSubject(this.table);
-}
-
-export class ObservableDataSource<T> extends DataSource<T> {
-  constructor(private obs: Observable<T[]>) { super(); }
-  connect(): Observable<T[]> {
-    return this.obs;
-  }
-  disconnect() { }
-}
-
-export function compile<T>(exp: string): (a: T) => boolean {
-  return function (a: T) {
-    try {
-      // tslint:disable-next-line:no-eval
-      const f = eval('(function(tr) { return ' + exp + ';})');
-      return f(a);
-    } catch (error) {
-      console.log('Error while processing ${a} with predicate ${exp}: ', error);
-    }
-  }
-}
-

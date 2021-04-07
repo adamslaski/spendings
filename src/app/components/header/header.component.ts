@@ -29,8 +29,7 @@ export class HeaderComponent { }
         <input type="file" id="file" hidden (change)="import($event)">
       </label>
     </span>
-    <button mat-button class="data-toolbar-button" (click)="loadExampleData()" [hidden]="isProduction">Wczytaj dane testowe</button>
-    <button mat-button class="data-toolbar-button" (click)="clear()" >Wyczyść</button>`,
+    <button mat-button class="data-toolbar-button" (click)="loadExampleData()" [hidden]="isProduction">Wczytaj dane testowe</button>`,
   styles: ['.data-toolbar-button { margin-left: 5px;}']
 })
 export class DataToolbarComponent {
@@ -48,18 +47,12 @@ export class DataToolbarComponent {
 
   loadExampleData() {
     if (environment['exampleData']) {
-      this.dataModelService.load(environment['exampleData']);
+      this.dataModelService.categoriesView.push(...environment['exampleData'].categories);
+      this.dataModelService.rulesView.push(...environment['exampleData'].rules);
     }
     if (environment['exampleStatement']) {
       this.transactionService.readXML(environment['exampleStatement']);
     }
-  }
-
-  save() {
-  }
-
-  clear() {
-    this.dataModelService.clear();
   }
 
 }

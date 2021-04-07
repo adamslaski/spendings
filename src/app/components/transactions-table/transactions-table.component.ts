@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionsService } from 'src/app/services/transactions.service';
-import { Transaction, DataModelService, ObservableDataSource, compile } from 'src/app/services/data-model.service';
+import { Transaction, DataModelService } from 'src/app/services/data-model.service';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ObservableDataSource } from 'src/app/utils/observable-data-source';
+import { compile } from 'src/app/utils/functions';
 
 @Component({
   selector: 'app-transactions-table',
@@ -26,9 +28,8 @@ export class TransactionsTableComponent implements OnInit {
     public dialog: MatDialog, private route: ActivatedRoute, private dmService: DataModelService) {
     console.log('tr-table constructor');
 
-    let combined = combineLatest([this.dmService.transactionsObservable, this.filterSubject])
+    let combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
       .pipe(map(([a, b]) => a.filter(b)));
-
     this.dataSource = new ObservableDataSource(combined);
   }
 

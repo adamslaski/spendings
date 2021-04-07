@@ -13,7 +13,7 @@ export class DisplayCategoryComponent {
   }
 
   displayCategory(): string {
-    return this.categoriesService.findTagById(this.category)?.label || '';
+    return this.categoriesService.findCategoryById(this.category)?.label || '';
   }
 
 }

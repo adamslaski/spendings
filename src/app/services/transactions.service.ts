@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { DataModelService } from './data-model.service';
-import { RulesService } from './rules.service';
+import { apply } from './rules.service';
 import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionsService {
-  public readonly transactions = this.dmService.dataModel.transactions;
   private parser = new DOMParser();
 
-  constructor(private dmService: DataModelService, private rulesService: RulesService) { }
+  constructor(private dmService: DataModelService) { }
 
   readXML(text: string) {
     const doc = this.parser.parseFromString(text, "application/xml");
+    const transactions = [];
     for (let i = 0; i < doc.documentElement.children.length; ++i) {
       const transaction = doc.documentElement.children[i];
       if (transaction.nodeName === "Transaction") {
         const date = transaction.getElementsByTagName("date")[0].innerHTML;
-        this.transactions.push({
+        transactions.push({
           date: moment(date, "DD/MM/YYYY").toDate(),
           id: 1,
           amount: Number(transaction.getElementsByTagName("amount")[0].innerHTML.replace('.', '').replace(',', '.')),
@@ -29,6 +29,8 @@ export class TransactionsService {
         });
       }
     }
-    this.transactions.sort((tr1, tr2) => tr1.date.getTime() - tr2.date.getTime());
+    apply(transactions, ...this.dmService.rulesView.values());
+    transactions.sort((tr1, tr2) => tr1.date.getTime() - tr2.date.getTime());
+    this.dmService.transactionsView.push(...transactions);
   }
 }

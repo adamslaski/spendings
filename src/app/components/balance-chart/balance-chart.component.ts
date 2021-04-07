@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { Transaction } from 'src/app/services/data-model.service';
+import { DataModelService, Transaction } from 'src/app/services/data-model.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import * as Collections from 'typescript-collections';
 
@@ -34,8 +34,9 @@ export class BalanceChartComponent {
     }
   ];
 
-  constructor(private trsService: TransactionsService, private datePipe: DatePipe) {
-    this.plot(computeBalanceForEachDay(this.trsService.transactions));
+  constructor(private datePipe: DatePipe, dmService: DataModelService) {
+    dmService.transactionsView.observableValues().subscribe(transactions =>
+      this.plot(computeBalanceForEachDay(transactions)));
   }
 
   private plot(data: DayBalance[]): void {

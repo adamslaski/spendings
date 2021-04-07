@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Rule } from 'src/app/services/data-model.service';
+import { DataModelService, Rule } from 'src/app/services/data-model.service';
 import { RulesService } from 'src/app/services/rules.service';
 
 @Component({
@@ -8,13 +8,13 @@ import { RulesService } from 'src/app/services/rules.service';
   templateUrl: './rules-table.component.html'
 })
 export class RulesTableComponent {
-  readonly rules: Rule[];
+  readonly rules;
   category: number = 0;
   predicate: string = '';
   name: string = '';
 
-  constructor(private rulesService: RulesService, private route: ActivatedRoute) {
-    this.rules = rulesService.rules;
+  constructor(private rulesService: RulesService, private route: ActivatedRoute, private dmService: DataModelService) {
+    this.rules = this.dmService.rulesView.observableValues();
     this.route.paramMap.forEach((params: ParamMap) => {
       if (params.has('predicate')) {
         this.predicate = atob(params.get('predicate') || '');
@@ -31,8 +31,8 @@ export class RulesTableComponent {
     }
   }
 
-  public delete(name: string) {
-    this.rulesService.delete(name);
+  public delete(id: number) {
+    this.rulesService.delete(id);
   }
 
 }

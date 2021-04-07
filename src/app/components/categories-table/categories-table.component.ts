@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Category } from 'src/app/services/data-model.service';
+import { Category, DataModelService } from 'src/app/services/data-model.service';
 import { CategoriesService } from 'src/app/services/categories.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
     <button mat-flat-button (click)="create(newLabel.value); newLabel.value=''" color="primary">dodaj</button>
 
     <table>
-      <tr *ngFor="let cat of categories">
+      <tr *ngFor="let cat of categories | async">
         <td>
           <mat-form-field>
             <input matInput name="label" type="text" [(ngModel)]="cat.label">
@@ -24,10 +24,10 @@ import { CategoriesService } from 'src/app/services/categories.service';
     </table>`,
 })
 export class CategoriesTableComponent {
-  readonly categories: Category[];
+  readonly categories;
 
-  constructor(private categoriesService: CategoriesService) {
-    this.categories = categoriesService.categories;
+  constructor(private categoriesService: CategoriesService, private dmService: DataModelService) {
+    this.categories = dmService.categoriesView.observableValues();
   }
 
   public create(label: string) {

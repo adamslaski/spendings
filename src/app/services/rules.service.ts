@@ -1,33 +1,44 @@
-import { Injectable } from '@angular/core';
-import { compile, DataModelService, Rule, Transaction } from './data-model.service';
+import { Injectable, OnInit } from '@angular/core';
+import { compile } from '../utils/functions';
+import { DataModelService, Rule, Transaction } from './data-model.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RulesService {
-  public readonly rules = this.dmService.dataModel.rules;
-
-  constructor(private dmService: DataModelService) { }
+  constructor(private dmService: DataModelService) {
+    this.dmService.rulesView.observableValues().subscribe(rules =>
+      this.dmService.transactionsView.runInTransaction(view =>
+        applyWithFunction((tr, rule) => {
+          tr.category = rule.category;
+          tr.comment = tr.comment + ' ' + rule.name + ' applied';
+          view.modify(tr);
+        }, view.values(), ...rules))
+    );
+  }
 
   public create(ruleName: string, predicate: string, category: number) {
-    const rule = { name: ruleName, predicate: predicate, category: category };
-    this.rules.push(rule);
-    this.apply(this.dmService.dataModel.transactions, rule);
+    const rule = { id: 0, name: ruleName, predicate: predicate, category: category };
+    this.dmService.rulesView.push(rule);
   }
 
-  public apply(trs: Transaction[], ...rules: Rule[]) {
-    rules.forEach(rule => {
-      let predicate = compile<Transaction>(rule.predicate);
-      trs.filter(predicate).forEach(tr => {
-        tr.category = rule.category;
-        tr.comment = tr.comment + ' ' + rule.name + ' applied';
-      });
-    });
+  public delete(id: number) {
+    this.dmService.rulesView.delete(id);
   }
 
-  public delete(name: string) {
-    this.rules.splice(0, this.rules.length, ...this.rules.filter(t => t.name !== name));
-  }
+}
 
+export function apply(trs: Transaction[], ...rules: Rule[]) {
+  applyWithFunction((tr, rule) => {
+    tr.category = rule.category;
+    tr.comment = tr.comment + ' ' + rule.name + ' applied';
+  }, trs, ...rules);
+}
+
+function applyWithFunction(fn: (tr: Transaction, rule: Rule) => void, trs: Transaction[], ...rules: Rule[]) {
+  rules.forEach(rule => {
+    let predicate = compile<Transaction>(rule.predicate);
+    trs.filter(predicate).forEach(tr => fn(tr, rule));
+  });
 }
 
