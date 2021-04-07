@@ -43,4 +43,11 @@ export class EntityView<T extends EntityWithId> {
         }
         this.emitNext()
     }
+
+    moveItemInArray(prevIndex: number, newIndex: number) {
+        const tmp = this._values[prevIndex];
+        this._values.splice(prevIndex, 1);
+        this._values.splice(newIndex, 0, tmp);
+        this.emitNext();
+    }
 }

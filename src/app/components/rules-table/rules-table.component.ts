@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { DataModelService, Rule } from 'src/app/services/data-model.service';
+import { DataModelService } from 'src/app/services/data-model.service';
 import { RulesService } from 'src/app/services/rules.service';
 
 @Component({
   selector: 'app-rules-table',
-  templateUrl: './rules-table.component.html'
+  templateUrl: './rules-table.component.html',
+  styleUrls: ['./rules-table.component.css']
 })
 export class RulesTableComponent {
   readonly rules;
@@ -33,6 +35,11 @@ export class RulesTableComponent {
 
   public delete(id: number) {
     this.rulesService.delete(id);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    this.dmService.rulesView.moveItemInArray(event.previousIndex, event.currentIndex);
   }
 
 }

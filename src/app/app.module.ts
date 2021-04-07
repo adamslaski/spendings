@@ -26,6 +26,7 @@ import { SpendingsChartComponent } from './components/spendings-chart/spendings-
 import { ChartsModule } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
 import { DisplayCategoryComponent } from './components/category/display-category.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,7 @@ import { DisplayCategoryComponent } from './components/category/display-category
     TransactionDialogComponent,
     BalanceChartComponent,
     SpendingsChartComponent,
-    DisplayCategoryComponent
+    DisplayCategoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,7 +57,8 @@ import { DisplayCategoryComponent } from './components/category/display-category
     MatDialogModule,
     MatTableModule,
     ChartsModule,
-    MatTabsModule
+    MatTabsModule,
+    DragDropModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

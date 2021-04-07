@@ -9,17 +9,14 @@
 </div>
 <button mat-flat-button (click)="create()" color="primary">dodaj</button>
 
-<table>
-    <tr *ngFor="let rule of rules | async">
-        <td>{{ rule.name }}</td>
-        <td>{{ rule.predicate }}</td>
-        <td>
-            <app-display-category [category]="rule.category"></app-display-category>
-        </td>
-        <td>
-            <button mat-button (click)="delete(rule.id)">
-                <i class="material-icons" style="font-size: 18px">cancel</i>
-            </button>
-        </td>
-    </tr>
-</table>
+
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let rule of rules | async" cdkDrag>
+        {{ rule.name }}
+        <app-display-category [category]="rule.category"></app-display-category>
+        <button mat-button (click)="delete(rule.id)">
+            <i class="material-icons" style="font-size: 18px">cancel</i>
+        </button>
+        <div>{{ rule.predicate }}</div>
+    </div>
+</div>
