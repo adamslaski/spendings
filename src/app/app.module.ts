@@ -27,6 +27,7 @@ import { ChartsModule } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
 import { DisplayCategoryComponent } from './components/category/display-category.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { OverlayModule } from '@angular/cdk/overlay';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +59,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatTableModule,
     ChartsModule,
     MatTabsModule,
-    DragDropModule
+    DragDropModule,
+    OverlayModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

@@ -3,6 +3,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DataModelService } from 'src/app/services/data-model.service';
 import { RulesService } from 'src/app/services/rules.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rules-table',
@@ -11,12 +12,15 @@ import { RulesService } from 'src/app/services/rules.service';
 })
 export class RulesTableComponent {
   readonly rules;
+  readonly isOverlayOpen: boolean[] = [];
   category: number = 0;
   predicate: string = '';
   name: string = '';
 
   constructor(private rulesService: RulesService, private route: ActivatedRoute, private dmService: DataModelService) {
     this.rules = this.dmService.rulesView.observableValues();
+    this.dmService.rulesView.observableValues()
+      .subscribe(rules => rules.forEach(rule => this.isOverlayOpen[rule.id] = false));
     this.route.paramMap.forEach((params: ParamMap) => {
       if (params.has('predicate')) {
         this.predicate = atob(params.get('predicate') || '');
