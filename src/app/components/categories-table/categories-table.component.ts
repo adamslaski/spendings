@@ -14,7 +14,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
       <tr *ngFor="let cat of categories | async">
         <td>
           <mat-form-field>
-            <input matInput name="label" type="text" [(ngModel)]="cat.label">
+            <input matInput name="label" type="text" [(ngModel)]="cat.label" (blur)="onChange(cat)">
           </mat-form-field>
         </td>
         <td><button *ngIf="cat.id > 0" mat-button (click)="delete(cat.id)">
@@ -36,6 +36,10 @@ export class CategoriesTableComponent {
 
   public delete(id: number) {
     this.categoriesService.delete(id);
+  }
+
+  public onChange(cat: Category) {
+    this.dmService.categoriesView.modify(cat);
   }
 
 }
