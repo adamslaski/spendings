@@ -19,7 +19,8 @@ import { compile } from 'src/app/utils/functions';
 })
 export class TransactionsTableComponent implements OnInit {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
-  readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>((x: Transaction) => true);
+  readonly passAllFilter = (x: Transaction) => true;
+  readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(this.passAllFilter);
   readonly dataSource: ObservableDataSource<Transaction>;
   query: string = "";
   simpleQuery: string = "";
@@ -69,6 +70,12 @@ export class TransactionsTableComponent implements OnInit {
 
   addRule(query: string) {
     this.router.navigateByUrl('/rules-table/' + btoa(query));
+  }
+
+  clearFiltering() {
+    this.filterSubject.next(this.passAllFilter);
+    this.query = "";
+    this.simpleQuery = "";
   }
 
 }
