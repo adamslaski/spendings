@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { compileAndFilter, DataModelService, Rule, Transaction } from './data-model.service';
+import { compile, DataModelService, Rule, Transaction } from './data-model.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +16,13 @@ export class RulesService {
   }
 
   public apply(trs: Transaction[], ...rules: Rule[]) {
-    rules.forEach(rule =>
-      compileAndFilter<Transaction>(rule.predicate)(trs)
-        .forEach(tr => {
-          tr.category = rule.category;
-          tr.comment = tr.comment + ' ' + rule.name + ' applied';
-        }));
+    rules.forEach(rule => {
+      let predicate = compile<Transaction>(rule.predicate);
+      trs.filter(predicate).forEach(tr => {
+        tr.category = rule.category;
+        tr.comment = tr.comment + ' ' + rule.name + ' applied';
+      });
+    });
   }
 
   public delete(name: string) {

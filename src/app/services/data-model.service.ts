@@ -91,22 +91,15 @@ export class ObservableDataSource<T> extends DataSource<T> {
   disconnect() { }
 }
 
-export function compileAndFilter<T>(exp: string): (arr: T[]) => T[] {
-  return function (arr: T[]) {
+export function compile<T>(exp: string): (a: T) => boolean {
+  return function (a: T) {
     try {
       // tslint:disable-next-line:no-eval
       const f = eval('(function(tr) { return ' + exp + ';})');
-
-      return arr.filter(tr => {
-        try {
-          return f(tr);
-        } catch (error) {
-          console.log('Error while processing ${tr} with predicate ${exp}: ', error);
-        }
-      });
+      return f(a);
     } catch (error) {
-      console.log('Error while compiling predicate:', error);
+      console.log('Error while processing ${a} with predicate ${exp}: ', error);
     }
-    return arr;
   }
 }
+

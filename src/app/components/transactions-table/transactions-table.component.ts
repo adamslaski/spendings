@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionsService } from 'src/app/services/transactions.service';
-import {
-  Transaction, DataModelService,
-  ObservableDataSource, compileAndFilter
-} from 'src/app/services/data-model.service';
+import { Transaction, DataModelService, ObservableDataSource, compile } from 'src/app/services/data-model.service';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-transactions-table',
@@ -19,13 +17,19 @@ import { map } from 'rxjs/operators';
 })
 export class TransactionsTableComponent implements OnInit {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
-  dataSource = new ObservableDataSource(this.dmService.transactionsObservable);
+  readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>((x: Transaction) => true);
+  readonly dataSource: ObservableDataSource<Transaction>;
   query: string = "";
   simpleQuery: string = "";
 
   constructor(private trsService: TransactionsService, private router: Router,
     public dialog: MatDialog, private route: ActivatedRoute, private dmService: DataModelService) {
     console.log('tr-table constructor');
+
+    let combined = combineLatest([this.dmService.transactionsObservable, this.filterSubject])
+      .pipe(map(([a, b]) => a.filter(b)));
+
+    this.dataSource = new ObservableDataSource(combined);
   }
 
   ngOnInit(): void {
@@ -59,8 +63,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   filter(query: string) {
-    this.dataSource = new ObservableDataSource(this.dmService.transactionsObservable.pipe(
-      map(compileAndFilter<Transaction>(query))));
+    this.filterSubject.next(compile<Transaction>(query));
   }
 
   addRule(query: string) {
