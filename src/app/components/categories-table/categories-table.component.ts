@@ -17,7 +17,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
             <input matInput name="label" type="text" [(ngModel)]="cat.label" (blur)="onChange(cat)">
           </mat-form-field>
         </td>
-        <td><button *ngIf="cat.id > 0" mat-button (click)="delete(cat.id)">
+        <td><button *ngIf="cat.id > 0" mat-flat-button (click)="delete(cat.id)" color="primary">
           <i class="material-icons" style="font-size: 18px">cancel</i>
         </button></td>
       </tr>

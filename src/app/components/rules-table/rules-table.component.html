@@ -12,15 +12,17 @@
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
     <div class="example-box" *ngFor="let rule of rules | async" cdkDrag>
-        {{ rule.name }}
-        <app-display-category [category]="rule.category"></app-display-category>
+        <div style="width: 10em;">{{ rule.name }}</div>
+        <app-display-category [category]="rule.category" style="width: 30em;"></app-display-category>
+        <span class="fill-remaining-space"></span>
         <button mat-flat-button (click)="isOverlayOpen[rule.id] = !isOverlayOpen[rule.id]" cdkOverlayOrigin
-            #trigger="cdkOverlayOrigin">Predykat</button>
+            #trigger="cdkOverlayOrigin" color="primary" class="box-button">
+            <i class="material-icons" style="font-size: 18px">preview</i></button>
         <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
             [cdkConnectedOverlayOpen]="isOverlayOpen[rule.id]">
             <div class="predicate-overlay">{{ rule.predicate }}</div>
         </ng-template>
-        <button mat-button (click)="delete(rule.id)">
+        <button mat-flat-button (click)="delete(rule.id)" color="primary" class="box-button">
             <i class="material-icons" style="font-size: 18px">cancel</i>
         </button>
 

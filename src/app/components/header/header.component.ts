@@ -16,9 +16,9 @@ import { environment } from 'src/environments/environment';
     <span class="fill-remaining-space"></span>
     <app-data-toolbar></app-data-toolbar>
   </mat-toolbar>`,
-  styles: ['.fill-remaining-space { flex: 1 1 auto;}', 'mat-toolbar { padding: 5px}',
+  styles: ['mat-toolbar { padding: 5px}',
     'app-data-toolbar { margin-right: 10px; }',
-    '.active { background-color: #858585; }']
+    '.active { background-color: var(--primary-darker-color); }']
 })
 export class HeaderComponent { }
 
