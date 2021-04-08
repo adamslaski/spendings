@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,8 +16,6 @@ import { RulesTableComponent } from './components/rules-table/rules-table.compon
 import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
 import { SelectCategoryComponent } from './components/category/select-category.component';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
@@ -28,6 +26,7 @@ import { DatePipe } from '@angular/common';
 import { DisplayCategoryComponent } from './components/category/display-category.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,15 +51,13 @@ import { OverlayModule } from '@angular/cdk/overlay';
     FormsModule,
     NoopAnimationsModule,
     MatFormFieldModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
     MatDialogModule,
     MatTableModule,
     ChartsModule,
     MatTabsModule,
     DragDropModule,
     OverlayModule,
+    MatSelectModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

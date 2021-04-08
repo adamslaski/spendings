@@ -1,10 +1,6 @@
-import { Component, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
-import { Category, DataModelService } from 'src/app/services/data-model.service';
-import { CategoriesService } from 'src/app/services/categories.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Component, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DataModelService } from 'src/app/services/data-model.service';
 
 @Component({
   selector: 'app-select-category',
@@ -18,24 +14,14 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   ]
 
 })
-export class SelectCategoryComponent implements OnInit, ControlValueAccessor {
+export class SelectCategoryComponent implements ControlValueAccessor {
   category: number = 0;
-
-  myControl: FormControl = new FormControl();
-
-  filteredOptions: Observable<Category[]>;
-
+  categories;
   onChange = (v: number) => { };
-
   onTouched = () => { };
 
-  constructor(private categoriesService: CategoriesService, private dmService: DataModelService) {
-    this.filteredOptions = this.myControl.valueChanges
-      .pipe(
-        startWith(null),
-        map(val =>
-          this.dmService.categoriesView.values().filter(cat => cat.label.includes(val)))
-      );
+  constructor(private dmService: DataModelService) {
+    this.categories = this.dmService.categoriesView.observableValues();
   }
 
   get value() { return this.category; };
@@ -56,23 +42,6 @@ export class SelectCategoryComponent implements OnInit, ControlValueAccessor {
   }
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
-  }
-
-  ngOnInit(): void {
-    this.reset();
-  }
-
-  reset(): void {
-    this.myControl.setValue('');
-  }
-
-  optionSelected(event: MatAutocompleteSelectedEvent) {
-    console.log('optionSelected', event);
-    this.value = (event.option.value.id);
-  }
-
-  displayFn(category: Category): string {
-    return category.label;
   }
 
 }
