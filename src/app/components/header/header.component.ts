@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CategoriesService } from 'src/app/services/categories.service';
 import { Category, DataModelService } from 'src/app/services/data-model.service';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import { environment } from 'src/environments/environment';
@@ -36,7 +37,7 @@ export class HeaderComponent { }
 export class DataToolbarComponent {
   public isProduction = environment.production;
 
-  constructor(private dataModelService: DataModelService, private transactionService: TransactionsService) { }
+  constructor(private dataModelService: DataModelService, private transactionService: TransactionsService, private categoriesService: CategoriesService) { }
 
   import(event: any) {
     const list = event.target.files as FileList;
@@ -49,9 +50,17 @@ export class DataToolbarComponent {
   loadExampleData() {
     if (environment['exampleData']) {
       const exampleCategories: Category[] = environment['exampleData']
-        .categories.map(cat => { return { "id": 0, "label": cat }; });
-      this.dataModelService.categoriesView.push(...(exampleCategories));
-      this.dataModelService.rulesView.push(...environment['exampleData'].rules);
+        .categories.map(cat => { return { id: 0, label: cat }; });
+      this.dataModelService.categoriesView.push(...exampleCategories);
+      const exampleRules = environment['exampleData'].rules
+        .map(rule => {
+          return {
+            id: 0, name: rule.name,
+            predicate: `tr.description.toUpperCase().includes('${rule.name.toUpperCase()}')`,
+            category: this.categoriesService.findCategoryByLabel(rule.category)?.id || 0,
+          };
+        });
+      this.dataModelService.rulesView.push(...exampleRules);
     }
     if (environment['exampleStatement']) {
       this.transactionService.readXML(environment['exampleStatement']);
