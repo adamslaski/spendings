@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { TransactionsService } from 'src/app/services/transactions.service';
 import { Transaction, DataModelService } from 'src/app/services/data-model.service';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
@@ -17,30 +16,22 @@ import { compile } from 'src/app/utils/functions';
     '.search-form-button { margin-right: 5px;}',
     '.tab-body { margin-left: 10px; margin-bottom: 10px }']
 })
-export class TransactionsTableComponent implements OnInit {
+export class TransactionsTableComponent {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
   readonly passAllFilter = (x: Transaction) => true;
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(this.passAllFilter);
   readonly dataSource: ObservableDataSource<Transaction>;
-  query: string = "";
-  simpleQuery: string = "";
+  advancedQuery: string = "";
+  descriptionQuery: string = "";
+  typeQuery: string = "";
 
-  constructor(private trsService: TransactionsService, private router: Router,
-    public dialog: MatDialog, private route: ActivatedRoute, private dmService: DataModelService) {
+  constructor(private router: Router,
+    public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
 
     let combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
       .pipe(map(([a, b]) => a.filter(b)));
     this.dataSource = new ObservableDataSource(combined);
-  }
-
-  ngOnInit(): void {
-    this.route.paramMap.forEach((params: ParamMap) => {
-      if (params.has('query')) {
-        this.query = 'tr.name === \'' + params.get('query') + '\'';
-        this.filter(this.query);
-      }
-    });
   }
 
   openDialog(tr: Transaction): void {
@@ -58,10 +49,14 @@ export class TransactionsTableComponent implements OnInit {
     });
   }
 
-  makeQuery(simpleQuery: string) {
-    const upperCaseQuery = simpleQuery.toUpperCase();
-    return `tr.description.toUpperCase().includes("${upperCaseQuery}")`
-      + ` || tr.type.toUpperCase().includes("${upperCaseQuery}")`;
+  makeDescriptionQuery(query: string) {
+    const upperCaseQuery = query.toUpperCase();
+    return `tr.description.toUpperCase().includes("${upperCaseQuery}")`;
+  }
+
+  makeTypeQuery(query: string) {
+    const upperCaseQuery = query.toUpperCase();
+    return `tr.type.toUpperCase().includes("${upperCaseQuery}")`;
   }
 
   filter(query: string) {
@@ -74,8 +69,9 @@ export class TransactionsTableComponent implements OnInit {
 
   clearFiltering() {
     this.filterSubject.next(this.passAllFilter);
-    this.query = "";
-    this.simpleQuery = "";
+    this.advancedQuery = "";
+    this.descriptionQuery = "";
+    this.typeQuery = "";
   }
 
 }
