@@ -7,19 +7,12 @@ import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { ObservableDataSource } from 'src/app/utils/observable-data-source';
 import { compile } from 'src/app/utils/functions';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
-  styles: [
-    'div.search-tab-description {margin: 10px 0px 10px 0px}',
-    '.search-form-tabs { max-width: 1020px; margin-bottom: 20px }',
-    '.search-form-button { margin-right: 5px;}',
-    '.tab-body { margin-left: 10px; margin-bottom: 10px }',
-    '.amount-radio-group { display: flex; flex-direction: column; margin: 0px 20px 20px 0px }',
-    '.amount-radio-button { margin: 5px; }',
-    '.amount-form { display: inline-flex; margin-top: 10px }',
-  ],
+  styleUrls: ['./transactions-table.component.css'],
 })
 export class TransactionsTableComponent {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
@@ -31,6 +24,10 @@ export class TransactionsTableComponent {
   typeQuery = '';
   categoryQuery = 0;
   amountQuery: AmountRange = { type: 'debit', minAmount: 0 };
+  dateRangeQuery = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   constructor(private router: Router, public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
@@ -79,6 +76,10 @@ export class TransactionsTableComponent {
     } else {
       return `tr.amount <= ${-min} && tr.amount >= ${-max}`;
     }
+  }
+
+  makeDateRangeQuery(range: { start: Date; end: Date }) {
+    return `tr.date.getTime() >= ${range.start.getTime()} && tr.date.getTime() <= ${range.end.getTime()}`;
   }
 
   filter(query: string) {
