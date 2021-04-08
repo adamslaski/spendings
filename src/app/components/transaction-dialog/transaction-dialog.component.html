@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Transaction details</h1>
 <div mat-dialog-content>
-  <table>
+  <table id="transaction-dialog-table">
     <tr>
       <td>Data</td>
       <td>{{data.date | date:'d-M-y'}}</td>
@@ -40,6 +40,6 @@
   </table>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" tabindex="1">Ok</button>
-  <button mat-button (click)="cancel()" tabindex="2">Cancel</button>
+  <button mat-flat-button [mat-dialog-close]="data" tabindex="1" color="primary">Ok</button>
+  <button mat-flat-button (click)="cancel()" tabindex="2" color="primary">Cancel</button>
 </div>

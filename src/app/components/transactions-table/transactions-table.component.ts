@@ -11,10 +11,12 @@ import { compile } from 'src/app/utils/functions';
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
-  styles: ['div.search-tab-description {margin: 10px 0px 10px 0px}',
+  styles: [
+    'div.search-tab-description {margin: 10px 0px 10px 0px}',
     '.search-form-tabs { max-width: 1020px; margin-bottom: 20px }',
     '.search-form-button { margin-right: 5px;}',
-    '.tab-body { margin-left: 10px; margin-bottom: 10px }']
+    '.tab-body { margin-left: 10px; margin-bottom: 10px }',
+  ],
 })
 export class TransactionsTableComponent {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
@@ -26,12 +28,12 @@ export class TransactionsTableComponent {
   typeQuery = '';
   categoryQuery = 0;
 
-  constructor(private router: Router,
-    public dialog: MatDialog, private dmService: DataModelService) {
+  constructor(private router: Router, public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
 
-    const combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
-      .pipe(map(([a, b]) => a.filter(b)));
+    const combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject]).pipe(
+      map(([a, b]) => a.filter(b)),
+    );
     this.dataSource = new ObservableDataSource(combined);
   }
 
@@ -39,10 +41,11 @@ export class TransactionsTableComponent {
     const trCopy = Object.assign({}, tr);
     const dialogRef = this.dialog.open(TransactionDialogComponent, {
       width: '550px',
-      data: trCopy
+      height: '550px',
+      data: trCopy,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       if (result && JSON.stringify(tr) !== JSON.stringify(result)) {
         this.dmService.transactionsView.modify(result);
@@ -78,5 +81,4 @@ export class TransactionsTableComponent {
     this.descriptionQuery = '';
     this.typeQuery = '';
   }
-
 }
