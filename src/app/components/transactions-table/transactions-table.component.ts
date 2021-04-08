@@ -16,6 +16,9 @@ import { compile } from 'src/app/utils/functions';
     '.search-form-tabs { max-width: 1020px; margin-bottom: 20px }',
     '.search-form-button { margin-right: 5px;}',
     '.tab-body { margin-left: 10px; margin-bottom: 10px }',
+    '.amount-radio-group { display: flex; flex-direction: column; margin: 0px 20px 20px 0px }',
+    '.amount-radio-button { margin: 5px; }',
+    '.amount-form { display: inline-flex; margin-top: 10px }',
   ],
 })
 export class TransactionsTableComponent {
@@ -27,6 +30,7 @@ export class TransactionsTableComponent {
   descriptionQuery = '';
   typeQuery = '';
   categoryQuery = 0;
+  amountQuery: AmountRange = { type: 'debit', minAmount: 0 };
 
   constructor(private router: Router, public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
@@ -67,6 +71,16 @@ export class TransactionsTableComponent {
     return `tr.category === ${category}`;
   }
 
+  makeAmountQuery(amountRange: AmountRange) {
+    const max = amountRange.maxAmount === undefined ? Number.MAX_VALUE : amountRange.maxAmount;
+    const min = amountRange.minAmount;
+    if (amountRange.type === 'credit') {
+      return `tr.amount >= ${min} && tr.amount <= ${max}`;
+    } else {
+      return `tr.amount <= ${-min} && tr.amount >= ${-max}`;
+    }
+  }
+
   filter(query: string) {
     this.filterSubject.next(compile<Transaction>(query));
   }
@@ -81,4 +95,10 @@ export class TransactionsTableComponent {
     this.descriptionQuery = '';
     this.typeQuery = '';
   }
+}
+
+interface AmountRange {
+  type: 'credit' | 'debit';
+  minAmount: number;
+  maxAmount?: number;
 }

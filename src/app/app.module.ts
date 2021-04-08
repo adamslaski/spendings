@@ -27,6 +27,8 @@ import { DisplayCategoryComponent } from './components/category/display-category
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,8 +60,9 @@ import { MatSelectModule } from '@angular/material/select';
     DragDropModule,
     OverlayModule,
     MatSelectModule,
+    MatRadioModule,
   ],
   providers: [DatePipe],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
