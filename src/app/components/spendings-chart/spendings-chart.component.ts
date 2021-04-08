@@ -12,30 +12,34 @@ export class SpendingsChartComponent {
   public chartLabels: Array<any> = [];
   public chartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
   };
 
   constructor(dmService: DataModelService, private datePipe: DatePipe) {
-    dmService.transactionsView.observableValues().subscribe(_transactions => {
-      const transactions = _transactions.filter(tr => tr.amount < 0)
-        .map(tr => Object.assign({}, tr, { amount: -tr.amount }));
+    dmService.transactionsView.observableValues().subscribe((_transactions) => {
+      const transactions = _transactions
+        .filter((tr) => tr.amount < 0)
+        .map((tr) => Object.assign({}, tr, { amount: -tr.amount }));
       if (transactions.length > 0) {
         const begin = new Date(transactions[0].date);
         const end = new Date();
-        const data = dmService.categoriesView.values().map(t => ({
-            label: t.label,
-            data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.category === t.id))
-          }));
+        const data = dmService.categoriesView.values().map((t) => ({
+          label: t.label,
+          data: computeBalanceForEachDay(
+            begin,
+            end,
+            transactions.filter((tr) => tr.category === t.id),
+          ),
+        }));
         this.plot(computeRangeLabels(begin, end), data);
       }
     });
   }
 
   private plot(rangeLabels: Date[], x: { label: string; data: number[] }[]): void {
-    this.chartLabels = rangeLabels.map(d => this.datePipe.transform(d, 'M-y'));
+    this.chartLabels = rangeLabels.map((d) => this.datePipe.transform(d, 'M-y'));
     this.chartData = x;
   }
-
 }
 
 function computeRangeLabels(begin: Date, end: Date): Date[] {
@@ -49,8 +53,7 @@ function computeRangeLabels(begin: Date, end: Date): Date[] {
 
 function computeBalanceForEachDay(begin: Date, end: Date, data: Transaction[]): number[] {
   const mm = new Collections.MultiDictionary<Date, number>(undefined, undefined, true);
-  data.forEach(v => mm.setValue(truncateDate(v.date), v.amount));
-  const now = new Date();
+  data.forEach((v) => mm.setValue(truncateDate(v.date), v.amount));
   const result: number[] = [];
   for (const d = truncateDate(begin); d <= end; d.setMonth(d.getMonth() + 1)) {
     const month = truncateDate(d);
