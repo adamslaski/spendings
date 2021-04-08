@@ -24,6 +24,7 @@ export class TransactionsTableComponent {
   advancedQuery: string = "";
   descriptionQuery: string = "";
   typeQuery: string = "";
+  categoryQuery: number = 0;
 
   constructor(private router: Router,
     public dialog: MatDialog, private dmService: DataModelService) {
@@ -57,6 +58,10 @@ export class TransactionsTableComponent {
   makeTypeQuery(query: string) {
     const upperCaseQuery = query.toUpperCase();
     return `tr.type.toUpperCase().includes("${upperCaseQuery}")`;
+  }
+
+  makeCategoryQuery(category: number) {
+    return `tr.category === ${category}`;
   }
 
   filter(query: string) {

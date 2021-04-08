@@ -10,8 +10,7 @@
       <button mat-flat-button class="search-form-button" (click)="filter(makeDescriptionQuery(descriptionQuery))"
         color="primary">filtruj</button>
       <button mat-flat-button class="search-form-button" (click)="addRule(makeDescriptionQuery(descriptionQuery))"
-        color="primary">dodaj
-        regułę</button>
+        color="primary">dodaj regułę</button>
       <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
         <i class="material-icons" style="font-size: 18px">cancel</i></button>
     </div>
@@ -27,8 +26,21 @@
       <button mat-flat-button class="search-form-button" (click)="filter(makeTypeQuery(typeQuery))"
         color="primary">filtruj</button>
       <button mat-flat-button class="search-form-button" (click)="addRule(makeTypeQuery(typeQuery))"
-        color="primary">dodaj
-        regułę</button>
+        color="primary">dodaj regułę</button>
+      <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+        <i class="material-icons" style="font-size: 18px">cancel</i></button>
+    </div>
+  </mat-tab>
+  <mat-tab label="Wyszukiwanie po kategorii">
+    <div class="tab-body">
+      <div class="search-tab-description">
+        Wybierz kategorię.
+      </div>
+      <app-select-category [(ngModel)]="categoryQuery"></app-select-category><br />
+      <button mat-flat-button class="search-form-button" (click)="filter(makeCategoryQuery(categoryQuery))"
+        color="primary">filtruj</button>
+      <button mat-flat-button class="search-form-button" (click)="addRule(makeCategoryQuery(categoryQuery))"
+        color="primary">dodaj regułę</button>
       <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
         <i class="material-icons" style="font-size: 18px">cancel</i></button>
     </div>
