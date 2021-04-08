@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { DataModelService, Transaction } from 'src/app/services/data-model.service';
-import { TransactionsService } from 'src/app/services/transactions.service';
 import * as Collections from 'typescript-collections';
 
 @Component({
@@ -41,22 +40,22 @@ export class BalanceChartComponent {
 
   private plot(data: DayBalance[]): void {
     const len = data.length;
-    const _lineChartData: Array<any> = new Array(1);
-    const _lineChartLabels: Array<any> = new Array(len);
+    const lineChartData: Array<any> = new Array(1);
+    const lineChartLabels: Array<any> = new Array(len);
 
-    _lineChartData[0] = { data: new Array(len), label: 'Stan konta' };
+    lineChartData[0] = { data: new Array(len), label: 'Stan konta' };
     for (let j = 0; j < len; j++) {
-      _lineChartData[0].data[j] = data[j].balance;
-      _lineChartLabels[j] = this.datePipe.transform(data[j].date, 'd-M-y');
+      lineChartData[0].data[j] = data[j].balance;
+      lineChartLabels[j] = this.datePipe.transform(data[j].date, 'd-M-y');
     }
-    this.lineChartData = _lineChartData;
-    this.lineChartLabels.splice(0, this.lineChartLabels.length, ..._lineChartLabels);
+    this.lineChartData = lineChartData;
+    this.lineChartLabels.splice(0, this.lineChartLabels.length, ...lineChartLabels);
   }
 }
 
 interface DayBalance {
-  date: Date,
-  balance: number
+  date: Date;
+  balance: number;
 }
 
 function computeBalanceForEachDay(data: Transaction[]): DayBalance[] {

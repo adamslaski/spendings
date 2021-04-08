@@ -1,11 +1,11 @@
-import { BehaviorSubject, Observable } from "rxjs";
-import { EntityWithId } from "./entity-with-id";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { EntityWithId } from './entity-with-id';
 
 export class EntityView<T extends EntityWithId> {
     private readonly subject;
 
-    constructor(private readonly _values: T[], private sequence: number) {
-        this.subject = new BehaviorSubject<T[]>(_values);
+    constructor(private readonly internalValues: T[], private sequence: number) {
+        this.subject = new BehaviorSubject<T[]>(internalValues);
     }
 
     observableValues(): Observable<T[]> {
@@ -13,7 +13,7 @@ export class EntityView<T extends EntityWithId> {
     }
 
     values(): T[] {
-        return this._values.map(x => Object.assign({}, x));
+        return this.internalValues.map(x => Object.assign({}, x));
     }
 
     protected emitNext() {
@@ -22,32 +22,32 @@ export class EntityView<T extends EntityWithId> {
 
     push(...values: T[]) {
         values.forEach(tr =>
-            this._values.push(Object.assign(tr, { id: this.sequence++ })));
-        this.emitNext()
+            this.internalValues.push(Object.assign(tr, { id: this.sequence++ })));
+        this.emitNext();
     }
 
     modify(v: T) {
-        this._values
+        this.internalValues
             .filter(x => x.id === v.id)
             .forEach(x => Object.assign(x, v));
-        this.emitNext()
+        this.emitNext();
     }
 
     delete(id: number) {
         if (id === 0) {
-            throw new Error("can't delete entity with id = 0");
+            throw new Error('can\'t delete entity with id = 0');
         }
-        let index = this._values.findIndex(x => x.id === id);
-        if (index != -1) {
-            this._values.splice(index, 1);
+        const index = this.internalValues.findIndex(x => x.id === id);
+        if (index !== -1) {
+            this.internalValues.splice(index, 1);
         }
-        this.emitNext()
+        this.emitNext();
     }
 
     moveItemInArray(prevIndex: number, newIndex: number) {
-        const tmp = this._values[prevIndex];
-        this._values.splice(prevIndex, 1);
-        this._values.splice(newIndex, 0, tmp);
+        const tmp = this.internalValues[prevIndex];
+        this.internalValues.splice(prevIndex, 1);
+        this.internalValues.splice(newIndex, 0, tmp);
         this.emitNext();
     }
 }

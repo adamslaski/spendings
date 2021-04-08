@@ -12,10 +12,10 @@ import { RulesService } from 'src/app/services/rules.service';
 export class RulesTableComponent {
   readonly rules;
   readonly isOverlayOpen: boolean[] = [];
-  category: number = 0;
-  predicate: string = '';
-  name: string = '';
-  selected: number = 0;
+  category = 0;
+  predicate = '';
+  name = '';
+  selected = 0;
   categories;
 
   constructor(private rulesService: RulesService, private route: ActivatedRoute, private dmService: DataModelService) {

@@ -1,17 +1,17 @@
-import { EntityView } from "./entity-view";
-import { EntityWithId } from "./entity-with-id";
+import { EntityView } from './entity-view';
+import { EntityWithId } from './entity-with-id';
 
 export class EntityViewWithTransactionsSupport<T extends EntityWithId> extends EntityView<T> {
-    constructor(private readonly __values: T[], private _sequence: number) {
-        super(__values, _sequence);
+    constructor(private readonly valuesRef: T[], private sequenceRef: number) {
+        super(valuesRef, sequenceRef);
     }
 
     runInTransaction(fn: (view: EntityView<T>) => void): void {
-        const trSequence = this._sequence;
+        const trSequence = this.sequenceRef;
         const trValues = this.values();
         fn(new EntityView<T>(trValues, trSequence));
-        this._sequence = trSequence;
-        this.__values.splice(0, this.__values.length, ...trValues);
+        this.sequenceRef = trSequence;
+        this.valuesRef.splice(0, this.valuesRef.length, ...trValues);
         this.emitNext();
     }
 }

@@ -16,13 +16,13 @@ export class CategoriesService {
   }
 
   public create(label: string) {
-    this.dmService.categoriesView.push({ id: 0, label: label });
+    this.dmService.categoriesView.push({ id: 0, label });
   }
 
   public setLabel(id: number, label: string) {
-    let cat = this.findCategoryById(id);
+    const cat = this.findCategoryById(id);
     if (cat) {
-      cat.label = label
+      cat.label = label;
       this.dmService.categoriesView.modify(cat);
     }
   }

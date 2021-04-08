@@ -21,16 +21,16 @@ export class TransactionsTableComponent {
   readonly passAllFilter = (x: Transaction) => true;
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(this.passAllFilter);
   readonly dataSource: ObservableDataSource<Transaction>;
-  advancedQuery: string = "";
-  descriptionQuery: string = "";
-  typeQuery: string = "";
-  categoryQuery: number = 0;
+  advancedQuery = '';
+  descriptionQuery = '';
+  typeQuery = '';
+  categoryQuery = 0;
 
   constructor(private router: Router,
     public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
 
-    let combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
+    const combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
       .pipe(map(([a, b]) => a.filter(b)));
     this.dataSource = new ObservableDataSource(combined);
   }
@@ -44,7 +44,7 @@ export class TransactionsTableComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      if (result && JSON.stringify(tr) != JSON.stringify(result)) {
+      if (result && JSON.stringify(tr) !== JSON.stringify(result)) {
         this.dmService.transactionsView.modify(result);
       }
     });
@@ -74,9 +74,9 @@ export class TransactionsTableComponent {
 
   clearFiltering() {
     this.filterSubject.next(this.passAllFilter);
-    this.advancedQuery = "";
-    this.descriptionQuery = "";
-    this.typeQuery = "";
+    this.advancedQuery = '';
+    this.descriptionQuery = '';
+    this.typeQuery = '';
   }
 
 }

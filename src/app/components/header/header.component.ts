@@ -27,17 +27,20 @@ export class HeaderComponent { }
   template: `
     <span class="form-group">
       <label for="file">
-        <span class="mat-focus-indicator data-toolbar-button mat-button mat-button-base _mat-animation-noopable" color="accent">Importuj wyciąg</span>
+        <span class="mat-focus-indicator data-toolbar-button mat-button mat-button-base
+          _mat-animation-noopable" color="accent">Importuj wyciąg</span>
         <input type="file" id="file" hidden (change)="import($event)">
       </label>
     </span>
-    <button mat-button class="data-toolbar-button" (click)="loadExampleData()" [hidden]="isProduction">Wczytaj dane testowe</button>`,
+    <button mat-button class="data-toolbar-button" (click)="loadExampleData()"
+      [hidden]="isProduction">Wczytaj dane testowe</button>`,
   styles: ['.data-toolbar-button { margin-left: 5px;}']
 })
 export class DataToolbarComponent {
   public isProduction = environment.production;
 
-  constructor(private dataModelService: DataModelService, private transactionService: TransactionsService, private categoriesService: CategoriesService) { }
+  constructor(private dataModelService: DataModelService, private transactionService: TransactionsService,
+    private categoriesService: CategoriesService) { }
 
   import(event: any) {
     const list = event.target.files as FileList;
@@ -48,22 +51,20 @@ export class DataToolbarComponent {
   }
 
   loadExampleData() {
-    if (environment['exampleData']) {
-      const exampleCategories: Category[] = environment['exampleData']
-        .categories.map(cat => { return { id: 0, label: cat }; });
+    if (environment.exampleData) {
+      const exampleCategories: Category[] = environment.exampleData
+        .categories.map(cat => ({ id: 0, label: cat }));
       this.dataModelService.categoriesView.push(...exampleCategories);
-      const exampleRules = environment['exampleData'].rules
-        .map(rule => {
-          return {
+      const exampleRules = environment.exampleData.rules
+        .map(rule => ({
             id: 0, name: rule.name,
             predicate: `tr.description.toUpperCase().includes('${rule.name.toUpperCase()}')`,
             category: this.categoriesService.findCategoryByLabel(rule.category)?.id || 0,
-          };
-        });
+          }));
       this.dataModelService.rulesView.push(...exampleRules);
     }
-    if (environment['exampleStatement']) {
-      this.transactionService.readXML(environment['exampleStatement']);
+    if (environment.exampleStatement) {
+      this.transactionService.readXML(environment.exampleStatement);
     }
   }
 

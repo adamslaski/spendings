@@ -9,26 +9,26 @@ export interface Transaction extends EntityWithId {
   readonly balanceAfter: number;
   readonly description: string;
   comment: string;
-  category: number
+  category: number;
 }
 
 export interface Rule extends EntityWithId {
-  name: string,
-  readonly predicate: string,
-  readonly category: number
+  name: string;
+  readonly predicate: string;
+  readonly category: number;
 }
 
 export interface Category extends EntityWithId {
-  label: string,
+  label: string;
 }
 
 export interface DataModel {
-  readonly transactions: Transaction[],
-  transactionSequence: number,
-  readonly rules: Rule[],
-  ruleSequence: number,
-  readonly categories: Category[],
-  categorySequence: number,
+  readonly transactions: Transaction[];
+  transactionSequence: number;
+  readonly rules: Rule[];
+  ruleSequence: number;
+  readonly categories: Category[];
+  categorySequence: number;
 }
 
 @Injectable({
@@ -44,8 +44,10 @@ export class DataModelService {
     categorySequence: 1
   };
 
-  readonly transactionsView = new EntityViewWithTransactionsSupport<Transaction>(this.dataModel.transactions, this.dataModel.transactionSequence);
+  readonly transactionsView =
+    new EntityViewWithTransactionsSupport<Transaction>(this.dataModel.transactions, this.dataModel.transactionSequence);
   readonly rulesView = new EntityViewWithTransactionsSupport<Rule>(this.dataModel.rules, this.dataModel.ruleSequence);
-  readonly categoriesView = new EntityViewWithTransactionsSupport<Category>(this.dataModel.categories, this.dataModel.categorySequence);
+  readonly categoriesView =
+    new EntityViewWithTransactionsSupport<Category>(this.dataModel.categories, this.dataModel.categorySequence);
 
 }

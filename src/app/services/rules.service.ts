@@ -18,7 +18,7 @@ export class RulesService {
   }
 
   public create(ruleName: string, predicate: string, category: number) {
-    const rule = { id: 0, name: ruleName, predicate: predicate, category: category };
+    const rule = { id: 0, name: ruleName, predicate, category };
     this.dmService.rulesView.push(rule);
   }
 
@@ -36,10 +36,11 @@ export function apply(trs: Transaction[], ...rules: Rule[]) {
 }
 
 function applyWithFunction(fn: (tr: Transaction, rule: Rule) => void, trs: Transaction[], ...rules: Rule[]) {
-  const compiledRules = rules.map(rule => Object.assign(rule, { compiledPredicate: compile<Transaction>(rule.predicate) }));
+  const compiledRules = rules
+    .map(rule => Object.assign(rule, { compiledPredicate: compile<Transaction>(rule.predicate) }));
 
   trs.forEach(tr => {
-    const rule = compiledRules.find(rule => rule.compiledPredicate(tr));
+    const rule = compiledRules.find(r => r.compiledPredicate(tr));
     if (rule) {
       fn(tr, rule);
     }

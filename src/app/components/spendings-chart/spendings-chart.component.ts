@@ -22,18 +22,16 @@ export class SpendingsChartComponent {
       if (transactions.length > 0) {
         const begin = new Date(transactions[0].date);
         const end = new Date();
-        const data = dmService.categoriesView.values().map(t => {
-          return {
+        const data = dmService.categoriesView.values().map(t => ({
             label: t.label,
-            data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.category == t.id))
-          };
-        });
+            data: computeBalanceForEachDay(begin, end, transactions.filter(tr => tr.category === t.id))
+          }));
         this.plot(computeRangeLabels(begin, end), data);
       }
     });
   }
 
-  private plot(rangeLabels: Date[], x: { label: string, data: number[] }[]): void {
+  private plot(rangeLabels: Date[], x: { label: string; data: number[] }[]): void {
     this.chartLabels = rangeLabels.map(d => this.datePipe.transform(d, 'M-y'));
     this.chartData = x;
   }

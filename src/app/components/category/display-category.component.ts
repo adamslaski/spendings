@@ -7,7 +7,7 @@ import { CategoriesService } from 'src/app/services/categories.service';
 })
 export class DisplayCategoryComponent {
   @Input()
-  category: number = 0;
+  category = 0;
 
   constructor(private categoriesService: CategoriesService) {
   }

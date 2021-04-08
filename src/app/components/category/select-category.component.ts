@@ -15,7 +15,7 @@ import { DataModelService } from 'src/app/services/data-model.service';
 
 })
 export class SelectCategoryComponent implements ControlValueAccessor {
-  category: number = 0;
+  category = 0;
   categories;
   onChange = (v: number) => { };
   onTouched = () => { };
