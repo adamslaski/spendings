@@ -6,6 +6,7 @@ import { TransactionDialogComponent } from 'src/app/components/transaction-dialo
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-transactions-table',
@@ -17,6 +18,7 @@ export class TransactionsTableComponent implements AfterViewInit {
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
   dataSource: MatTableDataSource<Transaction>;
   @ViewChild(MatSort) sort?: MatSort;
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
 
   constructor(public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
@@ -27,6 +29,7 @@ export class TransactionsTableComponent implements AfterViewInit {
       .subscribe((x) => {
         this.dataSource = new MatTableDataSource<Transaction>(x);
         this.dataSource.sort = this.sort ? this.sort : null;
+        this.dataSource.paginator = this.paginator ? this.paginator : null;
         const sortData = this.dataSource.sortData;
         this.dataSource.sortData = (data, sort) => {
           const active = sort.active;
@@ -58,6 +61,7 @@ export class TransactionsTableComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort ? this.sort : null;
+    this.dataSource.paginator = this.paginator ? this.paginator : null;
   }
 }
 

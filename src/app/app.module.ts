@@ -32,6 +32,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TransactionsFilteringComponent } from './components/transactions-filtering/transactions-filtering.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { MatSortModule } from '@angular/material/sort';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatSortModule,
+    MatPaginatorModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
