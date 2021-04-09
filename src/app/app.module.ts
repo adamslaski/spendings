@@ -31,6 +31,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TransactionsFilteringComponent } from './components/transactions-filtering/transactions-filtering.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatNativeDateModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatSortModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

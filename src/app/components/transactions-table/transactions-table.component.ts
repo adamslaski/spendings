@@ -1,28 +1,43 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { Transaction, DataModelService } from 'src/app/services/data-model.service';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { ObservableDataSource } from 'src/app/utils/observable-data-source';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.css'],
 })
-export class TransactionsTableComponent {
-  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'chips', 'comment'];
+export class TransactionsTableComponent implements AfterViewInit {
+  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment'];
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
-  readonly dataSource: ObservableDataSource<Transaction>;
+  dataSource: MatTableDataSource<Transaction>;
+  @ViewChild(MatSort) sort?: MatSort;
 
   constructor(public dialog: MatDialog, private dmService: DataModelService) {
     console.log('tr-table constructor');
 
-    const combined = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject]).pipe(
-      map(([a, b]) => a.filter(b)),
-    );
-    this.dataSource = new ObservableDataSource(combined);
+    this.dataSource = new MatTableDataSource<Transaction>([]);
+    combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
+      .pipe(map(([a, b]) => a.filter(b)))
+      .subscribe((x) => {
+        this.dataSource = new MatTableDataSource<Transaction>(x);
+        this.dataSource.sort = this.sort ? this.sort : null;
+        const sortData = this.dataSource.sortData;
+        this.dataSource.sortData = (data, sort) => {
+          const active = sort.active;
+          const direction = sort.direction;
+          if (active === 'category' && direction) {
+            return data.sort((a, b) => (a.category - b.category) * (direction === 'asc' ? 1 : -1));
+          } else {
+            return sortData(data, sort);
+          }
+        };
+      });
   }
 
   openDialog(tr: Transaction): void {
@@ -39,6 +54,10 @@ export class TransactionsTableComponent {
         this.dmService.transactionsView.modify(result);
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort ? this.sort : null;
   }
 }
 
