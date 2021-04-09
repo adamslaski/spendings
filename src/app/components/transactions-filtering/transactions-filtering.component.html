@@ -1,5 +1,5 @@
 <mat-tab-group class="search-form-tabs mat-elevation-z4">
-    <mat-tab label="Wyszukiwanie w opisie">
+    <mat-tab label="Filtrowanie po opisie">
         <div class="tab-body">
             <div class="search-tab-description">Wpisz poszukiwane wyrażenie. Na przykład: <code>ROSSMAN</code></div>
             <mat-form-field>
@@ -18,7 +18,7 @@
             </button>
         </div>
     </mat-tab>
-    <mat-tab label="Wyszukiwanie po typie">
+    <mat-tab label="Filtrowanie po typie">
         <div class="tab-body">
             <div class="search-tab-description">Wpisz poszukiwane wyrażenie. Na przykład: <code>ZAKUP</code></div>
             <mat-form-field> <input matInput name="typeQuery" [(ngModel)]="typeQuery" placeholder="typ" />
@@ -37,7 +37,7 @@
             </button>
         </div>
     </mat-tab>
-    <mat-tab label="Wyszukiwanie po kategorii">
+    <mat-tab label="Filtrowanie po kategorii">
         <div class="tab-body">
             <div class="search-tab-description">Wybierz kategorię.</div>
             <app-select-category [(ngModel)]="categoryQuery"></app-select-category><br />
@@ -54,7 +54,7 @@
             </button>
         </div>
     </mat-tab>
-    <mat-tab label="Wyszukiwanie po kwocie">
+    <mat-tab label="Filtrowanie po kwocie">
         <div class="tab-body">
             <div class="search-tab-description">Wybierz zakres kwot.</div>
             <mat-button-toggle-group #group="matButtonToggleGroup" value="debit" class="mat-form-field">
@@ -86,7 +86,7 @@
             </button>
         </div>
     </mat-tab>
-    <mat-tab label="Wyszukiwanie po dacie">
+    <mat-tab label="Filtrowanie po dacie">
         <div class="tab-body">
             <div class="search-tab-description">Wybierz zakres dat.</div>
             <mat-form-field>

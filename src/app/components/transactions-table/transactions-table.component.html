@@ -7,7 +7,7 @@
   <ng-container matColumnDef="date">
     <mat-header-cell *matHeaderCellDef [ngClass]="'slimColumn'" mat-sort-header> Data </mat-header-cell>
     <mat-cell *matCellDef="let element" [ngClass]="'slimColumn'" (click)="openDialog(element)">
-      {{ element.date | date: 'd-M-y' }}
+      {{ element.date | date: 'dd-MM-y' }}
     </mat-cell>
   </ng-container>
 
