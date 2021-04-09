@@ -1,4 +1,6 @@
+import { transition } from '@angular/animations';
 import { Injectable } from '@angular/core';
+import { EntityView } from '../utils/entity-view';
 import { EntityViewWithTransactionsSupport } from '../utils/entity-view-with-transacations-support';
 import { EntityWithId } from '../utils/entity-with-id';
 
@@ -22,32 +24,62 @@ export interface Category extends EntityWithId {
   label: string;
 }
 
+export interface Sequence {
+  n: number;
+}
+
 export interface DataModel {
   readonly transactions: Transaction[];
-  transactionSequence: number;
+  transactionSequence: Sequence;
   readonly rules: Rule[];
-  ruleSequence: number;
+  ruleSequence: Sequence;
   readonly categories: Category[];
-  categorySequence: number;
+  categorySequence: Sequence;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataModelService {
   private readonly dataModel: DataModel = {
     transactions: [],
-    transactionSequence: 1,
+    transactionSequence: { n: 1 },
     rules: [],
-    ruleSequence: 1,
+    ruleSequence: { n: 1 },
     categories: [{ id: 0, label: 'inne' }],
-    categorySequence: 1
+    categorySequence: { n: 1 },
   };
 
-  readonly transactionsView =
-    new EntityViewWithTransactionsSupport<Transaction>(this.dataModel.transactions, this.dataModel.transactionSequence);
+  readonly transactionsView = new EntityViewWithTransactionsSupport<Transaction>(
+    this.dataModel.transactions,
+    this.dataModel.transactionSequence,
+  );
   readonly rulesView = new EntityViewWithTransactionsSupport<Rule>(this.dataModel.rules, this.dataModel.ruleSequence);
-  readonly categoriesView =
-    new EntityViewWithTransactionsSupport<Category>(this.dataModel.categories, this.dataModel.categorySequence);
+  readonly categoriesView = new EntityView<Category>(this.dataModel.categories, this.dataModel.categorySequence);
 
+  saveToLocalStorage() {
+    window.localStorage.setItem('categories', JSON.stringify(this.dataModel.categories));
+    window.localStorage.setItem('categorySequence', JSON.stringify(this.dataModel.categorySequence));
+    window.localStorage.setItem('rules', JSON.stringify(this.dataModel.rules));
+    window.localStorage.setItem('ruleSequence', JSON.stringify(this.dataModel.ruleSequence));
+    window.localStorage.setItem('transactions', JSON.stringify(this.dataModel.transactions));
+    window.localStorage.setItem('transactionSequence', JSON.stringify(this.dataModel.transactionSequence));
+  }
+
+  loadFromLocalStorage() {
+    const categories = JSON.parse(window.localStorage.getItem('categories') || '');
+    this.dataModel.categories.splice(0, this.dataModel.categories.length, ...categories);
+    this.dataModel.categorySequence = JSON.parse(window.localStorage.getItem('categorySequence') || '');
+    const rules = JSON.parse(window.localStorage.getItem('rules') || '');
+    this.dataModel.rules.splice(0, this.dataModel.rules.length, ...rules);
+    this.dataModel.ruleSequence = JSON.parse(window.localStorage.getItem('ruleSequence') || '');
+    const transactions = JSON.parse(window.localStorage.getItem('transactions') || '', (key, value) =>
+      key === 'date' && typeof value === 'string' ? new Date(value) : value,
+    );
+    this.dataModel.transactions.splice(0, this.dataModel.transactions.length, ...transactions);
+    this.dataModel.transactionSequence = JSON.parse(window.localStorage.getItem('transactionSequence') || '');
+    this.categoriesView.emitNext();
+    this.rulesView.emitNext();
+    this.transactionsView.emitNext();
+  }
 }

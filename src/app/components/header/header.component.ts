@@ -38,6 +38,8 @@ export class HeaderComponent {}
         <input type="file" id="file" hidden (change)="import($event)" />
       </label>
     </span>
+    <button mat-button class="data-toolbar-button" (click)="loadData()">Wczytaj dane z local storage</button>
+    <button mat-button class="data-toolbar-button" (click)="saveData()">Zapisz dane do local storage</button>
     <button mat-button class="data-toolbar-button" (click)="loadExampleData()" [hidden]="isProduction">
       Wczytaj dane testowe
     </button>`,
@@ -63,6 +65,14 @@ export class DataToolbarComponent {
         this.messageService.info('Ukończono importowanie wyciągu.');
       });
     }
+  }
+
+  loadData() {
+    this.dataModelService.loadFromLocalStorage();
+  }
+
+  saveData() {
+    this.dataModelService.saveToLocalStorage();
   }
 
   loadExampleData() {
