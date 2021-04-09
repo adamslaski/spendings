@@ -57,27 +57,28 @@
     <mat-tab label="Wyszukiwanie po kwocie">
         <div class="tab-body">
             <div class="search-tab-description">Wybierz zakres kwot.</div>
-            <div class="amount-form">
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="amount-radio-group"
-                    [(ngModel)]="amountQuery.type">
-                    <mat-radio-button class="amount-radio-button" value="credit"> uznanie </mat-radio-button>
-                    <mat-radio-button class="amount-radio-button" value="debit"> obciążenie </mat-radio-button>
-                </mat-radio-group>
-                <mat-form-field>
-                    <input matInput name="minAmountQuery" [(ngModel)]="amountQuery.minAmount" placeholder="od" />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput name="maxAmountQuery" [(ngModel)]="amountQuery.maxAmount" placeholder="do" />
-                </mat-form-field>
-            </div>
+            <mat-button-toggle-group #group="matButtonToggleGroup" value="debit" class="mat-form-field">
+                <mat-button-toggle value="credit">
+                    uznania
+                </mat-button-toggle>
+                <mat-button-toggle value="debit">
+                    obciążenia
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field>
+                <input matInput name="minAmountQuery" [(ngModel)]="amountQuery.minAmount" placeholder="od" />
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput name="maxAmountQuery" [(ngModel)]="amountQuery.maxAmount" placeholder="do" />
+            </mat-form-field>
             <br />
 
-            <button mat-flat-button class="search-form-button" (click)="filter(makeAmountQuery(amountQuery))"
-                color="primary">
+            <button mat-flat-button class="search-form-button"
+                (click)="filter(makeAmountQuery(amountQuery, group.value))" color="primary">
                 filtruj
             </button>
-            <button mat-flat-button class="search-form-button" (click)="addRule(makeAmountQuery(amountQuery))"
-                color="primary">
+            <button mat-flat-button class="search-form-button"
+                (click)="addRule(makeAmountQuery(amountQuery, group.value))" color="primary">
                 dodaj regułę
             </button>
             <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">

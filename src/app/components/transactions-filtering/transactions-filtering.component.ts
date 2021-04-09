@@ -18,7 +18,7 @@ export class TransactionsFilteringComponent implements OnInit {
   descriptionQuery = '';
   typeQuery = '';
   categoryQuery = 0;
-  amountQuery: AmountRange = { type: 'debit', minAmount: 0 };
+  amountQuery: AmountRange = { type: 'debit' };
   dateRangeQuery = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
@@ -42,10 +42,10 @@ export class TransactionsFilteringComponent implements OnInit {
     return `tr.category === ${category}`;
   }
 
-  makeAmountQuery(amountRange: AmountRange) {
+  makeAmountQuery(amountRange: AmountRange, type: 'credit' | 'debit') {
     const max = amountRange.maxAmount === undefined ? Number.MAX_VALUE : amountRange.maxAmount;
-    const min = amountRange.minAmount;
-    if (amountRange.type === 'credit') {
+    const min = amountRange.minAmount ? amountRange.minAmount : 0;
+    if (type === 'credit') {
       return `tr.amount >= ${min} && tr.amount <= ${max}`;
     } else {
       return `tr.amount <= ${-min} && tr.amount >= ${-max}`;
@@ -74,6 +74,6 @@ export class TransactionsFilteringComponent implements OnInit {
 
 interface AmountRange {
   type: 'credit' | 'debit';
-  minAmount: number;
+  minAmount?: number;
   maxAmount?: number;
 }

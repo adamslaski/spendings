@@ -33,6 +33,7 @@ import { TransactionsFilteringComponent } from './components/transactions-filter
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSnackBarModule,
     MatSortModule,
     MatPaginatorModule,
+    MatButtonToggleModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

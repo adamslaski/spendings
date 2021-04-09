@@ -12,15 +12,3 @@ div.search-tab-description {
   margin-left: 10px;
   margin-bottom: 10px;
 }
-.amount-radio-group {
-  display: none;
-  flex-direction: row;
-  margin: 0px 20px 20px 0px;
-}
-.amount-radio-button {
-  margin: 5px;
-}
-.amount-form {
-  display: inline-flex;
-  margin-top: 10px;
-}
