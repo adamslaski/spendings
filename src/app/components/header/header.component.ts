@@ -38,15 +38,15 @@ export class HeaderComponent {}
         <input type="file" id="file" hidden (change)="import($event)" />
       </label>
     </span>
-    <button mat-button class="data-toolbar-button" (click)="loadData()">Wczytaj dane z local storage</button>
-    <button mat-button class="data-toolbar-button" (click)="saveData()">Zapisz dane do local storage</button>
-    <button mat-button class="data-toolbar-button" (click)="loadExampleData()" [hidden]="isProduction">
-      Wczytaj dane testowe
+    <button mat-button class="data-toolbar-button" (click)="loadData()">Wczytaj</button>
+    <button mat-button class="data-toolbar-button" (click)="saveData()">Zapisz</button>
+    <button mat-button class="data-toolbar-button" (click)="loadExampleData()" *ngIf="!isProduction">
+      Dane testowe
     </button>`,
   styles: ['.data-toolbar-button { margin-left: 5px;}'],
 })
 export class DataToolbarComponent {
-  public isProduction = environment.production;
+  isProduction = environment.production;
 
   constructor(
     private dataModelService: DataModelService,
