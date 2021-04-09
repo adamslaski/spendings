@@ -21,3 +21,11 @@ body {
   background-color: orangered;
   color: black;
 }
+.warn-message {
+  background-color: greenyellow;
+  color: black;
+}
+.info-message {
+  background-color: lightskyblue;
+  color: black;
+}
