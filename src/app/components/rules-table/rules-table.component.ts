@@ -7,7 +7,7 @@ import { RulesService } from 'src/app/services/rules.service';
 @Component({
   selector: 'app-rules-table',
   templateUrl: './rules-table.component.html',
-  styleUrls: ['./rules-table.component.css']
+  styleUrls: ['./rules-table.component.css'],
 })
 export class RulesTableComponent {
   readonly rules;
@@ -20,8 +20,9 @@ export class RulesTableComponent {
 
   constructor(private rulesService: RulesService, private route: ActivatedRoute, private dmService: DataModelService) {
     this.rules = this.dmService.rulesView.observableValues();
-    this.dmService.rulesView.observableValues()
-      .subscribe(rules => rules.forEach(rule => this.isOverlayOpen[rule.id] = false));
+    this.dmService.rulesView
+      .observableValues()
+      .subscribe((rules) => rules.forEach((rule) => (this.isOverlayOpen[rule.id] = false)));
     this.categories = this.dmService.categoriesView.observableValues();
     this.route.paramMap.forEach((params: ParamMap) => {
       if (params.has('predicate')) {
@@ -47,5 +48,4 @@ export class RulesTableComponent {
     console.log(event);
     this.dmService.rulesView.moveItemInArray(event.previousIndex, event.currentIndex);
   }
-
 }

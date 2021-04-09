@@ -8,34 +8,37 @@ import * as Collections from 'typescript-collections';
   templateUrl: './balance-chart.component.html',
 })
 export class BalanceChartComponent {
-
   public lineChartData: Array<any> = [];
   public lineChartLabels: Array<any> = [];
   public lineChartOptions: any = {
     scales: {
-      yAxes: [{
-        ticks: {
-          suggestedMin: 0,
-          suggestedMax: 250
-        }
-      }]
+      yAxes: [
+        {
+          ticks: {
+            suggestedMin: 0,
+            suggestedMax: 250,
+          },
+        },
+      ],
     },
-    responsive: true
+    responsive: true,
   };
   public lineChartColors: Array<any> = [
-    { // grey
+    {
+      // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
       pointBackgroundColor: 'rgba(148,159,177,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+    },
   ];
 
   constructor(private datePipe: DatePipe, dmService: DataModelService) {
-    dmService.transactionsView.observableValues().subscribe(transactions =>
-      this.plot(computeBalanceForEachDay(transactions)));
+    dmService.transactionsView
+      .observableValues()
+      .subscribe((transactions) => this.plot(computeBalanceForEachDay(transactions)));
   }
 
   private plot(data: DayBalance[]): void {
@@ -60,7 +63,7 @@ interface DayBalance {
 
 function computeBalanceForEachDay(data: Transaction[]): DayBalance[] {
   const mm = new Collections.MultiDictionary<Date, number>(undefined, undefined, true);
-  data.forEach(v => mm.setValue(truncateDate(v.date), v.amount));
+  data.forEach((v) => mm.setValue(truncateDate(v.date), v.amount));
   const now = new Date();
   const result: DayBalance[] = [];
   if (data.length > 0) {

@@ -5,10 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: '<p>404 page not found</p>',
 })
 export class PageNotFoundComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

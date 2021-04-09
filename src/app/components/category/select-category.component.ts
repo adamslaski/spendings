@@ -10,21 +10,22 @@ import { DataModelService } from 'src/app/services/data-model.service';
       provide: NG_VALUE_ACCESSOR,
       multi: true,
       useExisting: forwardRef(() => SelectCategoryComponent),
-    }
-  ]
-
+    },
+  ],
 })
 export class SelectCategoryComponent implements ControlValueAccessor {
   category = 0;
   categories;
-  onChange = (v: number) => { };
-  onTouched = () => { };
+  onChange = (v: number) => {};
+  onTouched = () => {};
 
   constructor(private dmService: DataModelService) {
     this.categories = this.dmService.categoriesView.observableValues();
   }
 
-  get value() { return this.category; };
+  get value() {
+    return this.category;
+  }
 
   set value(v: number) {
     if (v !== this.category) {
@@ -43,5 +44,4 @@ export class SelectCategoryComponent implements ControlValueAccessor {
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
 }

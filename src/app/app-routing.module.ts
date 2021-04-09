@@ -15,11 +15,11 @@ const routes: Routes = [
   { path: 'rules-table', component: RulesTableComponent },
   { path: 'balance-chart', component: BalanceChartComponent },
   { path: 'spendings-chart', component: SpendingsChartComponent },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

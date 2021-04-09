@@ -1,3 +1,3 @@
 export interface EntityWithId {
-    readonly id: number;
+  readonly id: number;
 }
