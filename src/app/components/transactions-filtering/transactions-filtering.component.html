@@ -1,0 +1,137 @@
+<mat-tab-group class="search-form-tabs mat-elevation-z4">
+    <mat-tab label="Wyszukiwanie w opisie">
+        <div class="tab-body">
+            <div class="search-tab-description">Wpisz poszukiwane wyrażenie. Na przykład: <code>ROSSMAN</code></div>
+            <mat-form-field>
+                <input matInput name="descriptionQuery" [(ngModel)]="descriptionQuery" placeholder="opis" />
+            </mat-form-field><br />
+            <button mat-flat-button class="search-form-button" (click)="filter(makeDescriptionQuery(descriptionQuery))"
+                color="primary">
+                filtruj
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="addRule(makeDescriptionQuery(descriptionQuery))"
+                color="primary">
+                dodaj regułę
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Wyszukiwanie po typie">
+        <div class="tab-body">
+            <div class="search-tab-description">Wpisz poszukiwane wyrażenie. Na przykład: <code>ZAKUP</code></div>
+            <mat-form-field> <input matInput name="typeQuery" [(ngModel)]="typeQuery" placeholder="typ" />
+            </mat-form-field>
+            <br />
+            <button mat-flat-button class="search-form-button" (click)="filter(makeTypeQuery(typeQuery))"
+                color="primary">
+                filtruj
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="addRule(makeTypeQuery(typeQuery))"
+                color="primary">
+                dodaj regułę
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Wyszukiwanie po kategorii">
+        <div class="tab-body">
+            <div class="search-tab-description">Wybierz kategorię.</div>
+            <app-select-category [(ngModel)]="categoryQuery"></app-select-category><br />
+            <button mat-flat-button class="search-form-button" (click)="filter(makeCategoryQuery(categoryQuery))"
+                color="primary">
+                filtruj
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="addRule(makeCategoryQuery(categoryQuery))"
+                color="primary">
+                dodaj regułę
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Wyszukiwanie po kwocie">
+        <div class="tab-body">
+            <div class="search-tab-description">Wybierz zakres kwot.</div>
+            <div class="amount-form">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="amount-radio-group"
+                    [(ngModel)]="amountQuery.type">
+                    <mat-radio-button class="amount-radio-button" value="credit"> uznanie </mat-radio-button>
+                    <mat-radio-button class="amount-radio-button" value="debit"> obciążenie </mat-radio-button>
+                </mat-radio-group>
+                <mat-form-field>
+                    <input matInput name="minAmountQuery" [(ngModel)]="amountQuery.minAmount" placeholder="od" />
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput name="maxAmountQuery" [(ngModel)]="amountQuery.maxAmount" placeholder="do" />
+                </mat-form-field>
+            </div>
+            <br />
+
+            <button mat-flat-button class="search-form-button" (click)="filter(makeAmountQuery(amountQuery))"
+                color="primary">
+                filtruj
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="addRule(makeAmountQuery(amountQuery))"
+                color="primary">
+                dodaj regułę
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Wyszukiwanie po dacie">
+        <div class="tab-body">
+            <div class="search-tab-description">Wybierz zakres dat.</div>
+            <mat-form-field>
+                <mat-date-range-input [formGroup]="dateRangeQuery" [rangePicker]="picker">
+                    <input matStartDate formControlName="start" placeholder="Start date">
+                    <input matEndDate formControlName="end" placeholder="End date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="dateRangeQuery.controls.start.hasError('matStartDateInvalid')">Nieprawidłowa data
+                    początkowa
+                </mat-error>
+                <mat-error *ngIf="dateRangeQuery.controls.end.hasError('matEndDateInvalid')">Nieprawidłowa data końcowa
+                </mat-error>
+            </mat-form-field><br />
+            <button mat-flat-button class="search-form-button"
+                (click)="filter(makeDateRangeQuery(dateRangeQuery.value))" color="primary">
+                filtruj
+            </button>
+            <button mat-flat-button class="search-form-button"
+                (click)="addRule(makeDateRangeQuery(dateRangeQuery.value))" color="primary">
+                dodaj regułę
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Zaawansowane">
+        <div class="tab-body">
+            <div class="search-tab-description">
+                Obiekt transakcji dostępny jako <code>tr</code>. Przykładowe zapytanie:
+                <code>tr.description.includes("ROSSMAN")</code>
+            </div>
+            <mat-form-field class="longField">
+                <input matInput name="advancedQuery" [(ngModel)]="advancedQuery" placeholder="predykat" />
+            </mat-form-field><br />
+            <button mat-flat-button class="search-form-button" (click)="filter(advancedQuery)" color="primary">
+                filtruj
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="addRule(advancedQuery)" color="primary">
+                dodaj regułę
+            </button>
+            <button mat-flat-button class="search-form-button" (click)="clearFiltering()" color="primary">
+                <i class="material-icons" style="font-size: 18px">cancel</i>
+            </button>
+        </div>
+    </mat-tab>
+</mat-tab-group>

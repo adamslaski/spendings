@@ -29,6 +29,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { TransactionsFilteringComponent } from './components/transactions-filtering/transactions-filtering.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     BalanceChartComponent,
     SpendingsChartComponent,
     DisplayCategoryComponent,
+    TransactionsFilteringComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
