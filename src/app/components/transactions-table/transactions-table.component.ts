@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { Transaction, DataModelService } from 'src/app/services/data-model.service';
@@ -13,20 +13,21 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.css'],
 })
-export class TransactionsTableComponent implements AfterViewInit {
+export class TransactionsTableComponent implements AfterViewInit, OnDestroy, OnInit {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment'];
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
   dataSource: MatTableDataSource<Transaction>;
   @ViewChild(MatSort) sort?: MatSort;
   @ViewChild(MatPaginator) paginator?: MatPaginator;
+  private readonly subscription;
 
   constructor(public dialog: MatDialog, private dmService: DataModelService) {
-    console.log('tr-table constructor');
-
+    console.log('tr table constructor');
     this.dataSource = new MatTableDataSource<Transaction>([]);
-    combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
+    this.subscription = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
       .pipe(map(([a, b]) => a.filter(b)))
       .subscribe((x) => {
+        console.log('tr table subscribe', x);
         this.dataSource = new MatTableDataSource<Transaction>(x);
         this.dataSource.sort = this.sort ? this.sort : null;
         this.dataSource.paginator = this.paginator ? this.paginator : null;
@@ -41,6 +42,13 @@ export class TransactionsTableComponent implements AfterViewInit {
           }
         };
       });
+  }
+  ngOnInit(): void {
+    console.log('tr table init');
+  }
+  ngOnDestroy(): void {
+    console.log('tr table ondestroy');
+    this.subscription.unsubscribe();
   }
 
   openDialog(tr: Transaction): void {

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { DataModelService, Transaction } from 'src/app/services/data-model.service';
 import * as Collections from 'typescript-collections';
 
@@ -7,16 +7,17 @@ import * as Collections from 'typescript-collections';
   selector: 'app-spendings-chart',
   templateUrl: './spendings-chart.component.html',
 })
-export class SpendingsChartComponent {
+export class SpendingsChartComponent implements OnDestroy {
   public chartData: Array<any> = [];
   public chartLabels: Array<any> = [];
   public chartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
   };
+  private readonly subscription;
 
   constructor(dmService: DataModelService, private datePipe: DatePipe) {
-    dmService.transactionsView.observableValues().subscribe((_transactions) => {
+    this.subscription = dmService.transactionsView.observableValues().subscribe((_transactions) => {
       const transactions = _transactions
         .filter((tr) => tr.amount < 0)
         .map((tr) => Object.assign({}, tr, { amount: -tr.amount }));
@@ -34,6 +35,9 @@ export class SpendingsChartComponent {
         this.plot(computeRangeLabels(begin, end), data);
       }
     });
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private plot(rangeLabels: Date[], x: { label: string; data: number[] }[]): void {

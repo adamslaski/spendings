@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Category, DataModelService } from 'src/app/services/data-model.service';
@@ -9,7 +9,7 @@ import { RulesService } from 'src/app/services/rules.service';
   templateUrl: './rules-table.component.html',
   styleUrls: ['./rules-table.component.css'],
 })
-export class RulesTableComponent {
+export class RulesTableComponent implements OnDestroy {
   readonly rules;
   readonly isOverlayOpen: boolean[] = [];
   category = 0;
@@ -17,10 +17,11 @@ export class RulesTableComponent {
   name = '';
   selected = 0;
   categories;
+  private readonly subscription;
 
   constructor(private rulesService: RulesService, private route: ActivatedRoute, private dmService: DataModelService) {
     this.rules = this.dmService.rulesView.observableValues();
-    this.dmService.rulesView
+    this.subscription = this.dmService.rulesView
       .observableValues()
       .subscribe((rules) => rules.forEach((rule) => (this.isOverlayOpen[rule.id] = false)));
     this.categories = this.dmService.categoriesView.observableValues();
@@ -29,6 +30,9 @@ export class RulesTableComponent {
         this.predicate = atob(params.get('predicate') || '');
       }
     });
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   public create() {

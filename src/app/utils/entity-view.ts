@@ -1,12 +1,16 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { publish, refCount, tap } from 'rxjs/operators';
 import { Sequence } from '../services/data-model.service';
 import { EntityWithId } from './entity-with-id';
 
 export class EntityView<T extends EntityWithId> {
-  private readonly subject;
-
-  constructor(private readonly internalValues: T[], private sequence: Sequence) {
-    this.subject = new BehaviorSubject<T[]>(internalValues);
+  constructor(
+    private readonly internalValues: T[],
+    private sequence: Sequence,
+    public readonly name: string,
+    private readonly subject: Subject<T[]> = new BehaviorSubject<T[]>(internalValues),
+  ) {
+    subject.subscribe((x) => console.log(`debug subscriber for ${this.name}, value:  `, x));
   }
 
   observableValues(): Observable<T[]> {
@@ -18,6 +22,7 @@ export class EntityView<T extends EntityWithId> {
   }
 
   emitNext() {
+    console.log('emitting from ', this.name);
     this.subject.next(this.values());
   }
 

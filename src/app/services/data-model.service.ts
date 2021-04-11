@@ -1,5 +1,5 @@
-import { transition } from '@angular/animations';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { EntityView } from '../utils/entity-view';
 import { EntityViewWithTransactionsSupport } from '../utils/entity-view-with-transacations-support';
 import { EntityWithId } from '../utils/entity-with-id';
@@ -53,9 +53,18 @@ export class DataModelService {
   readonly transactionsView = new EntityViewWithTransactionsSupport<Transaction>(
     this.dataModel.transactions,
     this.dataModel.transactionSequence,
+    'transactions',
   );
-  readonly rulesView = new EntityViewWithTransactionsSupport<Rule>(this.dataModel.rules, this.dataModel.ruleSequence);
-  readonly categoriesView = new EntityView<Category>(this.dataModel.categories, this.dataModel.categorySequence);
+  readonly rulesView = new EntityViewWithTransactionsSupport<Rule>(
+    this.dataModel.rules,
+    this.dataModel.ruleSequence,
+    'rules',
+  );
+  readonly categoriesView = new EntityView<Category>(
+    this.dataModel.categories,
+    this.dataModel.categorySequence,
+    'categories',
+  );
 
   saveToLocalStorage() {
     window.localStorage.setItem('categories', JSON.stringify(this.dataModel.categories));
@@ -68,16 +77,22 @@ export class DataModelService {
 
   loadFromLocalStorage() {
     const categories = JSON.parse(window.localStorage.getItem('categories') || '');
-    this.dataModel.categories.splice(0, this.dataModel.categories.length, ...categories);
-    this.dataModel.categorySequence = JSON.parse(window.localStorage.getItem('categorySequence') || '');
+    const categorySequence = JSON.parse(window.localStorage.getItem('categorySequence') || '');
     const rules = JSON.parse(window.localStorage.getItem('rules') || '');
-    this.dataModel.rules.splice(0, this.dataModel.rules.length, ...rules);
-    this.dataModel.ruleSequence = JSON.parse(window.localStorage.getItem('ruleSequence') || '');
+    const ruleSequence = JSON.parse(window.localStorage.getItem('ruleSequence') || '');
     const transactions = JSON.parse(window.localStorage.getItem('transactions') || '', (key, value) =>
       key === 'date' && typeof value === 'string' ? new Date(value) : value,
     );
+    const transactionSequence = JSON.parse(window.localStorage.getItem('transactionSequence') || '');
+
+    this.dataModel.categories.splice(0, this.dataModel.categories.length, ...categories);
+    this.dataModel.categorySequence = categorySequence;
+    this.dataModel.rules.splice(0, this.dataModel.rules.length, ...rules);
+    this.dataModel.ruleSequence = ruleSequence;
     this.dataModel.transactions.splice(0, this.dataModel.transactions.length, ...transactions);
-    this.dataModel.transactionSequence = JSON.parse(window.localStorage.getItem('transactionSequence') || '');
+    this.dataModel.transactionSequence = transactionSequence;
+
+    console.log('load from local storage emit next');
     this.categoriesView.emitNext();
     this.rulesView.emitNext();
     this.transactionsView.emitNext();
