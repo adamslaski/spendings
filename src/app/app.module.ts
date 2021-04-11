@@ -34,6 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SummaryChartComponent } from './components/summary-chart/summary-chart.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     SpendingsChartComponent,
     DisplayCategoryComponent,
     TransactionsFilteringComponent,
+    SummaryChartComponent,
   ],
   imports: [
     BrowserModule,

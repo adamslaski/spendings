@@ -6,6 +6,7 @@ import { RulesTableComponent } from './components/rules-table/rules-table.compon
 import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component';
 import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
+import { SummaryChartComponent } from './components/summary-chart/summary-chart.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'rules-table', component: RulesTableComponent },
   { path: 'balance-chart', component: BalanceChartComponent },
   { path: 'spendings-chart', component: SpendingsChartComponent },
+  { path: 'summary-chart', component: SummaryChartComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
