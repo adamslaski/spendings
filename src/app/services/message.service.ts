@@ -1,15 +1,30 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
+
+type MessageType = 'info' | 'warn' | 'error';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
   ref?: MatSnackBarRef<TextOnlySnackBar>;
-  callbacks: (() => MatSnackBarRef<TextOnlySnackBar>)[] = [];
-  constructor(private snackBar: MatSnackBar) {}
+  private readonly messages: { message: string; type: MessageType }[] = [];
+  private readonly notification: Subject<Record<string, never>> = new Subject();
+  private token = true;
+  constructor(private snackBar: MatSnackBar) {
+    this.notification.subscribe((x) => {
+      if (this.token && this.messages.length > 0) {
+        const msg = this.messages.shift();
+        if (msg) {
+          this.open(msg?.message, msg?.type);
+        }
+      }
+    });
+  }
 
   private open(message: string, type: 'info' | 'warn' | 'error') {
+    this.token = false;
     const ref = this.snackBar.open(message, '', {
       duration: 5000,
       horizontalPosition: 'center',
@@ -17,23 +32,15 @@ export class MessageService {
       panelClass: [`${type}-message`],
     });
     ref.afterDismissed().subscribe((x) => {
-      if (this.callbacks.length > 0) {
-        const next = this.callbacks[0];
-        this.callbacks.splice(0, 1);
-        this.ref = next();
-      } else {
-        this.ref = undefined;
-      }
+      this.token = true;
+      this.notification.next({});
     });
     return ref;
   }
 
-  private register(message: string, type: 'info' | 'warn' | 'error') {
-    if (!this.ref) {
-      this.ref = this.open(message, type);
-    } else {
-      this.callbacks.push(() => this.open(message, type));
-    }
+  private register(message1: string, type1: MessageType) {
+    this.messages.push({ message: message1, type: type1 });
+    this.notification.next({});
   }
 
   info(message: string) {
