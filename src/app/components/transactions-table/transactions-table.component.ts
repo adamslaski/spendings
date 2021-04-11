@@ -22,12 +22,10 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy, OnI
   private readonly subscription;
 
   constructor(public dialog: MatDialog, private dmService: DataModelService) {
-    console.log('tr table constructor');
     this.dataSource = new MatTableDataSource<Transaction>([]);
     this.subscription = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
       .pipe(map(([a, b]) => a.filter(b)))
       .subscribe((x) => {
-        console.log('tr table subscribe', x);
         this.dataSource = new MatTableDataSource<Transaction>(x);
         this.dataSource.sort = this.sort ? this.sort : null;
         this.dataSource.paginator = this.paginator ? this.paginator : null;
@@ -43,11 +41,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy, OnI
         };
       });
   }
-  ngOnInit(): void {
-    console.log('tr table init');
-  }
   ngOnDestroy(): void {
-    console.log('tr table ondestroy');
     this.subscription.unsubscribe();
   }
 
@@ -60,7 +54,6 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy, OnI
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result && JSON.stringify(tr) !== JSON.stringify(result)) {
         this.dmService.transactionsView.modify(result);
       }

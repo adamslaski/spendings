@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Category, DataModelService } from 'src/app/services/data-model.service';
+import { DataModelService } from 'src/app/services/data-model.service';
 import { RulesService } from 'src/app/services/rules.service';
 
 @Component({
@@ -49,7 +49,6 @@ export class RulesTableComponent implements OnDestroy {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event);
     this.dmService.rulesView.moveItemInArray(event.previousIndex, event.currentIndex);
   }
 }

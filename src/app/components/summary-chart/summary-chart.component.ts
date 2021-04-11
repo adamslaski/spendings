@@ -33,21 +33,17 @@ export class SummaryChartComponent implements OnDestroy {
   private readonly subscribtions: Subscription[];
 
   constructor(dmService: DataModelService, catsService: CategoriesService) {
-    console.log('sm chart constructor');
     const catSubscribtion = dmService.categoriesView.observableValues().subscribe((cats) => {
-      console.log('categories subscriber from sm chart');
       this.labels.splice(0, this.labels.length);
       cats.map((cat) => cat.label).forEach((cat) => this.labels.push(cat));
     });
     const trSubscribtion = dmService.transactionsView.observableValues().subscribe((trs) => {
-      console.log('transactions subscriber from sm chart', trs);
       const m = trs
         .filter((tr) => tr.amount < 0)
         .map((tr) => Object.assign({}, tr, { amount: -tr.amount }))
         .reduce((acc, tr) => {
           const old = acc.get(tr.category) || 0;
           const result = Math.round((old + tr.amount) * 100) / 100;
-          console.log(`old: ${old} current: ${tr.amount} sum: ${result}`, tr);
           acc.set(tr.category, result);
           return acc;
         }, new Map<number, number>());
@@ -61,7 +57,6 @@ export class SummaryChartComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('sm ondestroy');
     this.subscribtions.forEach((s) => {
       s.unsubscribe();
     });

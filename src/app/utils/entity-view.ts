@@ -9,9 +9,7 @@ export class EntityView<T extends EntityWithId> {
     private sequence: Sequence,
     public readonly name: string,
     private readonly subject: Subject<T[]> = new BehaviorSubject<T[]>(internalValues),
-  ) {
-    subject.subscribe((x) => console.log(`debug subscriber for ${this.name}, value:  `, x));
-  }
+  ) {}
 
   observableValues(): Observable<T[]> {
     return this.subject;
@@ -22,7 +20,6 @@ export class EntityView<T extends EntityWithId> {
   }
 
   emitNext() {
-    console.log('emitting from ', this.name);
     this.subject.next(this.values());
   }
 

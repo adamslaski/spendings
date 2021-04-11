@@ -92,7 +92,6 @@ export class DataModelService {
     this.dataModel.transactions.splice(0, this.dataModel.transactions.length, ...transactions);
     this.dataModel.transactionSequence = transactionSequence;
 
-    console.log('load from local storage emit next');
     this.categoriesView.emitNext();
     this.rulesView.emitNext();
     this.transactionsView.emitNext();
