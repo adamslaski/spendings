@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.css'],
 })
-export class TransactionsTableComponent implements AfterViewInit, OnDestroy, OnInit {
+export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment'];
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
   dataSource: MatTableDataSource<Transaction>;
