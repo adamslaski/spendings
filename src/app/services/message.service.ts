@@ -10,10 +10,10 @@ type MessageType = 'info' | 'warn' | 'error';
 export class MessageService {
   ref?: MatSnackBarRef<TextOnlySnackBar>;
   private readonly messages: { message: string; type: MessageType }[] = [];
-  private readonly notification: Subject<[]> = new Subject();
+  private readonly notification$: Subject<[]> = new Subject();
   private token = true;
   constructor(private snackBar: MatSnackBar) {
-    this.notification.subscribe((x) => {
+    this.notification$.subscribe((x) => {
       if (this.token && this.messages.length > 0) {
         const msg = this.messages.shift();
         if (msg) {
@@ -33,14 +33,14 @@ export class MessageService {
     });
     ref.afterDismissed().subscribe((x) => {
       this.token = true;
-      this.notification.next([]);
+      this.notification$.next([]);
     });
     return ref;
   }
 
   private register(message1: string, type1: MessageType) {
     this.messages.push({ message: message1, type: type1 });
-    this.notification.next([]);
+    this.notification$.next([]);
   }
 
   info(message: string) {
