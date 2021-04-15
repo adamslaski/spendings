@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, zip } from 'rxjs';
 
 type MessageType = 'info' | 'warn' | 'error';
 
@@ -9,22 +9,15 @@ type MessageType = 'info' | 'warn' | 'error';
 })
 export class MessageService {
   ref?: MatSnackBarRef<TextOnlySnackBar>;
-  private readonly messages: { message: string; type: MessageType }[] = [];
-  private readonly notification$: Subject<[]> = new Subject();
-  private token = true;
+  private readonly tokens$: Subject<[]> = new BehaviorSubject([]);
+  private readonly messages$: Subject<{ message: string; type: MessageType }> = new Subject();
   constructor(private snackBar: MatSnackBar) {
-    this.notification$.subscribe((x) => {
-      if (this.token && this.messages.length > 0) {
-        const msg = this.messages.shift();
-        if (msg) {
-          this.open(msg?.message, msg?.type);
-        }
-      }
+    zip(this.tokens$, this.messages$).subscribe(([[], msg]) => {
+      this.open(msg.message, msg.type);
     });
   }
 
   private open(message: string, type: 'info' | 'warn' | 'error') {
-    this.token = false;
     const ref = this.snackBar.open(message, '', {
       duration: 5000,
       horizontalPosition: 'center',
@@ -32,15 +25,12 @@ export class MessageService {
       panelClass: [`${type}-message`],
     });
     ref.afterDismissed().subscribe((x) => {
-      this.token = true;
-      this.notification$.next([]);
+      this.tokens$.next([]);
     });
-    return ref;
   }
 
   private register(message1: string, type1: MessageType) {
-    this.messages.push({ message: message1, type: type1 });
-    this.notification$.next([]);
+    this.messages$.next({ message: message1, type: type1 });
   }
 
   info(message: string) {
