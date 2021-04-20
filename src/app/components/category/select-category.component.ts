@@ -1,6 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DataModelService } from 'src/app/services/data-model.service';
+import { AppState, Store } from 'src/app/store/reducer';
+import { selectCategories } from 'src/app/store/selectors';
 
 @Component({
   selector: 'app-select-category',
@@ -15,13 +16,11 @@ import { DataModelService } from 'src/app/services/data-model.service';
 })
 export class SelectCategoryComponent implements ControlValueAccessor {
   category = 0;
-  categories;
+  categories$ = this.store.select(selectCategories);
   onChange = (v: number) => {};
   onTouched = () => {};
 
-  constructor(private dmService: DataModelService) {
-    this.categories = this.dmService.categoriesView.observableValues();
-  }
+  constructor(private store: Store<AppState>) {}
 
   get value() {
     return this.category;

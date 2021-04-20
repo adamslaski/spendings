@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { Category, Rule, Transaction } from '../services/data-model.service';
 import * as actions from './actions';
+export { Store } from '@ngrx/store';
 
 export interface SpendingsState {
   readonly transactions: Transaction[];
@@ -39,4 +40,20 @@ export const spendingsReducer = createReducer(
     ...state,
     categories: state.categories.filter((c) => c.id !== id || c.notEditable),
   })),
+
+  on(actions.createRule, (state, { rule }) => ({
+    ...state,
+    rules: [...state.rules, { ...rule, id: state.ruleSequence }],
+    ruleSequence: state.ruleSequence + 1,
+  })), //todo recount transactions
+  on(actions.deleteRule, (state, { id }) => ({
+    ...state,
+    rules: state.rules.filter((r) => r.id !== id),
+  })), //todo recount transactions
+  on(actions.moveRule, (state, { prevIndex, newIndex }) => {
+    const rules = [...state.rules];
+    const tmp = rules.splice(prevIndex, 1);
+    rules.splice(newIndex, 0, ...tmp);
+    return { ...state, rules };
+  }), //todo recount transactions
 );

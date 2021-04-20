@@ -12,7 +12,7 @@
 
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let rule of rules | async" cdkDrag>
+    <div class="example-box" *ngFor="let rule of rules$ | async" cdkDrag>
         <div style="width: 10em;">{{ rule.name }}</div>
         <app-display-category [category]="rule.category" style="width: 30em;"></app-display-category>
         <span class="fill-remaining-space"></span>
