@@ -1,8 +1,9 @@
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 import { Category } from 'src/app/services/data-model.service';
-import { SpendingsState } from 'src/app/store/reducer';
+import { AppState } from 'src/app/store/reducer';
 import { createCategory, deleteCategory, updateCategory } from 'src/app/store/actions';
+import { selectCategories } from 'src/app/store/selectors';
 
 @Component({
   selector: 'app-categories-table',
@@ -34,9 +35,9 @@ import { createCategory, deleteCategory, updateCategory } from 'src/app/store/ac
     </table>`,
 })
 export class CategoriesTableComponent {
-  readonly categories$ = this.store.select((state) => state?.spendings.categories);
+  readonly categories$ = this.store.select(selectCategories);
 
-  constructor(private store: Store<{ spendings: SpendingsState }>) {}
+  constructor(private store: Store<AppState>) {}
 
   public create(label: string) {
     this.store.dispatch(createCategory({ category: { id: 0, label } }));

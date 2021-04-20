@@ -20,6 +20,10 @@ const initialState: SpendingsState = {
   categorySequence: 1,
 };
 
+export interface AppState {
+  spendings: SpendingsState;
+}
+
 export const spendingsReducer = createReducer(
   initialState,
   on(actions.createCategory, (state, { category }) => ({
