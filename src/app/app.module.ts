@@ -35,6 +35,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { SummaryChartComponent } from './components/summary-chart/summary-chart.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { spendingsReducer } from './store/reducer';
+import { LoggingEffect } from './store/logging-effect';
 
 @NgModule({
   declarations: [
@@ -77,6 +81,8 @@ import { SummaryChartComponent } from './components/summary-chart/summary-chart.
     MatSortModule,
     MatPaginatorModule,
     MatButtonToggleModule,
+    StoreModule.forRoot({ spendings: spendingsReducer }),
+    EffectsModule.forRoot([LoggingEffect]),
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

@@ -1,6 +1,8 @@
+import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
-import { Category, DataModelService } from 'src/app/services/data-model.service';
-import { CategoriesService } from 'src/app/services/categories.service';
+import { Category } from 'src/app/services/data-model.service';
+import { SpendingsState } from 'src/app/store/reducer';
+import { createCategory, deleteCategory, updateCategory } from 'src/app/store/actions';
 
 @Component({
   selector: 'app-categories-table',
@@ -10,14 +12,21 @@ import { CategoriesService } from 'src/app/services/categories.service';
     <button mat-flat-button (click)="create(newLabel.value); newLabel.value = ''" color="primary">dodaj</button>
 
     <table>
-      <tr *ngFor="let cat of categories | async">
+      <tr *ngFor="let cat of categories$ | async">
         <td>
           <mat-form-field>
-            <input matInput name="label" type="text" [(ngModel)]="cat.label" (blur)="onChange(cat)" />
+            <input
+              matInput
+              name="label"
+              type="text"
+              [ngModel]="cat.label"
+              (blur)="onChange($event, cat)"
+              [readonly]="cat.notEditable"
+            />
           </mat-form-field>
         </td>
         <td>
-          <button *ngIf="cat.id > 0" mat-flat-button (click)="delete(cat.id)" color="primary">
+          <button *ngIf="!cat.notEditable" mat-flat-button (click)="delete(cat.id)" color="primary">
             <i class="material-icons" style="font-size: 18px">cancel</i>
           </button>
         </td>
@@ -25,21 +34,22 @@ import { CategoriesService } from 'src/app/services/categories.service';
     </table>`,
 })
 export class CategoriesTableComponent {
-  readonly categories;
+  readonly categories$ = this.store.select((state) => state?.spendings.categories);
 
-  constructor(private categoriesService: CategoriesService, private dmService: DataModelService) {
-    this.categories = dmService.categoriesView.observableValues();
-  }
+  constructor(private store: Store<{ spendings: SpendingsState }>) {}
 
   public create(label: string) {
-    this.categoriesService.create(label);
+    this.store.dispatch(createCategory({ category: { id: 0, label } }));
   }
 
   public delete(id: number) {
-    this.categoriesService.delete(id);
+    this.store.dispatch(deleteCategory({ id }));
   }
 
-  public onChange(cat: Category) {
-    this.dmService.categoriesView.modify(cat);
+  public onChange($event: FocusEvent, cat: Category) {
+    const newValue = ($event.target as HTMLInputElement).value;
+    if (newValue !== cat.label) {
+      this.store.dispatch(updateCategory({ category: { ...cat, label: newValue } }));
+    }
   }
 }

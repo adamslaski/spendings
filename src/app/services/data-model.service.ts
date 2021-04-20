@@ -22,6 +22,7 @@ export interface Rule extends EntityWithId {
 
 export interface Category extends EntityWithId {
   label: string;
+  notEditable?: `don't edit or delete this item`;
 }
 
 export interface Sequence {
@@ -46,7 +47,7 @@ export class DataModelService {
     transactionSequence: { n: 1 },
     rules: [],
     ruleSequence: { n: 1 },
-    categories: [{ id: 0, label: 'inne' }],
+    categories: [{ id: 0, label: 'inne', notEditable: `don't edit or delete this item` }],
     categorySequence: { n: 1 },
   };
 
