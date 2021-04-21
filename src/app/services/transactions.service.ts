@@ -39,7 +39,7 @@ export class TransactionsService {
         }
       }
     } catch (e) {
-      this.messageService.error((e as Error).message);
+      // this.messageService.error((e as Error).message);
     }
     return transactions;
   }
@@ -65,7 +65,7 @@ export class TransactionsService {
     });
     const numberOfDuplicates = newTransactions.length - withoutDuplicates.length;
     if (numberOfDuplicates > 0) {
-      this.messageService.warn(`Pominięto ${numberOfDuplicates} zduplikowane transakcje.`);
+      // this.messageService.warn(`Pominięto ${numberOfDuplicates} zduplikowane transakcje.`);
     }
     return withoutDuplicates;
   }

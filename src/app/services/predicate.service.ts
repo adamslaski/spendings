@@ -15,7 +15,7 @@ export class PredicateService {
         const f = eval('(function(tr) { return ' + exp + ';})');
         return f(a);
       } catch (error) {
-        this.messageService.error(`Error while processing ${a} with predicate ${exp}`);
+        // this.messageService.error(`Error while processing ${a} with predicate ${exp}`);
       }
     };
   }

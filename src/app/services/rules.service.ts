@@ -36,7 +36,7 @@ export class RulesService {
     try {
       this.dmService.rulesView.delete(id);
     } catch (error) {
-      this.messageService.error((error as Error).message);
+      //this.messageService.error((error as Error).message);
     }
   }
 

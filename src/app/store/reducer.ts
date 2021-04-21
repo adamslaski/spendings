@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { Category, Rule, Transaction } from '../services/data-model.service';
 import * as actions from './actions';
+import { Message } from '../services/message.service';
 export { Store } from '@ngrx/store';
 
 export interface SpendingsState {
@@ -10,6 +11,7 @@ export interface SpendingsState {
   ruleSequence: number;
   readonly categories: Category[];
   categorySequence: number;
+  message?: Message;
 }
 
 const initialState: SpendingsState = {
@@ -19,6 +21,7 @@ const initialState: SpendingsState = {
   ruleSequence: 0,
   categories: [{ id: 0, label: 'inne', notEditable: `don't edit or delete this item` }],
   categorySequence: 1,
+  message: undefined,
 };
 
 export interface AppState {
@@ -57,5 +60,16 @@ export const spendingsReducer = createReducer(
     return { ...state, rules };
   }), //todo recount transactions
 
+  on(actions.createTransactions, (state, { transactions }) => ({
+    ...state,
+    transactions: [...transactions],
+  })),
+  on(actions.updateTransaction, (state, { transaction }) => ({
+    ...state,
+    transactions: state.transactions.map((t) => (t.id === transaction.id ? transaction : t)),
+  })),
+
   on(actions.resetState, (state, { state: newState }) => (newState ? newState : initialState)),
+
+  on(actions.sendMessage, (state, { message }) => ({ ...state, message })),
 );
