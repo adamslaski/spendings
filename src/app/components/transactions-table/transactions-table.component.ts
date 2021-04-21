@@ -1,12 +1,15 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Transaction, DataModelService } from 'src/app/services/data-model.service';
+import { Transaction } from 'src/app/services/data-model.service';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { AppState, Store } from 'src/app/store/reducer';
+import { selectTransactions } from '../../store/selectors';
+import { updateTransaction } from '../../store/actions';
 
 @Component({
   selector: 'app-transactions-table',
@@ -21,9 +24,9 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   private readonly subscription;
 
-  constructor(public dialog: MatDialog, private dmService: DataModelService) {
+  constructor(public dialog: MatDialog, private store: Store<AppState>) {
     this.dataSource = new MatTableDataSource<Transaction>([]);
-    this.subscription = combineLatest([this.dmService.transactionsView.observableValues(), this.filterSubject])
+    this.subscription = combineLatest([this.store.select(selectTransactions), this.filterSubject])
       .pipe(map(([a, b]) => a.filter(b)))
       .subscribe((x) => {
         this.dataSource = new MatTableDataSource<Transaction>(x);
@@ -55,7 +58,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && JSON.stringify(tr) !== JSON.stringify(result)) {
-        this.dmService.transactionsView.modify(result);
+        this.store.dispatch(updateTransaction({ transaction: result }));
       }
     });
   }
