@@ -11,7 +11,7 @@ export const parseCitibankXML = (text: string) => {
       const date = transaction.getElementsByTagName('date')[0].innerHTML;
       transactions.push({
         date: moment(date, 'DD/MM/YYYY').toDate(),
-        id: 1,
+        id: 0,
         amount: Number(transaction.getElementsByTagName('amount')[0].innerHTML.replace('.', '').replace(',', '.')),
         balanceAfter: Number(
           transaction.getElementsByTagName('running_balance')[0].innerHTML.replace('.', '').replace(',', '.'),
@@ -23,5 +23,5 @@ export const parseCitibankXML = (text: string) => {
       });
     }
   }
-  return transactions;
+  return transactions.reverse();
 };

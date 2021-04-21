@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { Category, Rule, Transaction } from '../services/data-model.service';
 import * as actions from './actions';
 import { Message } from '../services/message.service';
+import { removeDuplicates } from '../utils/transactions.helper';
 export { Store } from '@ngrx/store';
 
 export interface SpendingsState {
@@ -42,6 +43,8 @@ export const spendingsReducer = createReducer(
   on(actions.deleteCategory, (state, { id }) => ({
     ...state,
     categories: state.categories.filter((c) => c.id !== id || c.notEditable),
+    rules: state.rules.map((r) => (r.category === id ? { ...r, category: 0 } : r)),
+    //todo recount transactions
   })),
 
   on(actions.createRule, (state, { rule }) => ({
@@ -60,10 +63,18 @@ export const spendingsReducer = createReducer(
     return { ...state, rules };
   }), //todo recount transactions
 
-  on(actions.createTransactions, (state, { transactions }) => ({
-    ...state,
-    transactions: [...transactions],
-  })),
+  on(actions.createTransactions, (state, { transactions }) => {
+    const withoutDuplicatesResult = removeDuplicates(transactions, state.transactions);
+    const trs = [...state.transactions];
+    let seq = state.transactionSequence;
+    withoutDuplicatesResult.withoutDuplicates.forEach((tr) => trs.push({ ...tr, id: seq++ }));
+    return {
+      ...state,
+      transactions: trs, //todo recount transactions
+      transactionSequence: seq,
+      message: withoutDuplicatesResult.message,
+    };
+  }),
   on(actions.updateTransaction, (state, { transaction }) => ({
     ...state,
     transactions: state.transactions.map((t) => (t.id === transaction.id ? transaction : t)),

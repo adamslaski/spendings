@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/operators';
-import { MessageService } from 'src/app/services/message.service';
 import { loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from 'src/app/store/actions';
 import { AppState } from 'src/app/store/reducer';
 import { parseCitibankXML } from 'src/app/utils/citi-bank.helper';
@@ -33,7 +32,7 @@ import { findCategoryByLabel } from '../../utils/utils';
 export class DataToolbarComponent {
   isProduction = environment.production;
 
-  constructor(private store: Store<AppState>, private messageService: MessageService) {}
+  constructor(private store: Store<AppState>) {}
 
   import(event: any) {
     this.store.dispatch(sendMessage({ message: { message: 'Info test', type: 'info' } }));
@@ -43,15 +42,20 @@ export class DataToolbarComponent {
     if (list.length > 0) {
       const file = list.item(0);
       if (file) {
-        //this.store.dispatch(importStatement({ file }));
+        try {
+          file?.text().then((text) => {
+            const transactions = parseCitibankXML(text);
+            this.store.dispatch(createTransactions({ transactions }));
+            this.store.dispatch(sendMessage({ message: { message: 'Ukończono importowanie wyciągu.', type: 'info' } }));
+          });
+        } catch (e) {
+          this.store.dispatch(
+            sendMessage({ message: { message: `Błąd w czasie imporowania: ${(e as Error)?.message}`, type: 'error' } }),
+          );
+        }
       } else {
         this.store.dispatch(sendMessage({ message: { message: 'Plik nie istnieje', type: 'error' } }));
       }
-      // file?.text().then((text) => {
-      //   const transactions = this.transactionService.parseCitibankXML(text);
-      //   this.transactionService.importTransactions(transactions);
-      //   this.messageService.info('Ukończono importowanie wyciągu.');
-      // });
     }
   }
 
