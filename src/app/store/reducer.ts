@@ -56,4 +56,6 @@ export const spendingsReducer = createReducer(
     rules.splice(newIndex, 0, ...tmp);
     return { ...state, rules };
   }), //todo recount transactions
+
+  on(actions.resetState, (state, { state: newState }) => (newState ? newState : initialState)),
 );

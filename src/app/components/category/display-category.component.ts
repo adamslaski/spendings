@@ -10,7 +10,7 @@ import { findCategoryById } from 'src/app/utils/utils';
   template: `{{ displayCategory$ | async }}`,
 })
 export class DisplayCategoryComponent {
-  categoryIdSubject$ = new BehaviorSubject<number>(0);
+  private categoryIdSubject$ = new BehaviorSubject<number>(0);
   displayCategory$ = combineLatest([this.categoryIdSubject$, this.store.select(selectCategories)]).pipe(
     map(([id, cats]) => findCategoryById(id, cats)?.label),
   );

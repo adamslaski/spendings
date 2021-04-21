@@ -5,7 +5,12 @@ import { selectCategories } from 'src/app/store/selectors';
 
 @Component({
   selector: 'app-select-category',
-  templateUrl: './select-category.component.html',
+  template: `<mat-form-field>
+    <mat-label>Kategoria</mat-label>
+    <mat-select [(value)]="value">
+      <mat-option *ngFor="let cat of categories$ | async" [value]="cat.id">{{ cat.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>`,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

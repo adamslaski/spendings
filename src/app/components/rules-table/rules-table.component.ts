@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AppState, Store } from 'src/app/store/reducer';
@@ -10,27 +10,20 @@ import { createRule, deleteRule, moveRule } from 'src/app/store/actions';
   templateUrl: './rules-table.component.html',
   styleUrls: ['./rules-table.component.css'],
 })
-export class RulesTableComponent implements OnDestroy {
+export class RulesTableComponent {
   readonly rules$ = this.store.select(selectRules);
   readonly isOverlayOpen: boolean[] = [];
   category = 0;
   predicate = '';
   name = '';
   selected = 0;
-  // private readonly subscription;
 
   constructor(private store: Store<AppState>, private route: ActivatedRoute) {
-    // this.subscription = this.dmService.rulesView
-    //   .observableValues()
-    //   .subscribe((rules) => rules.forEach((rule) => (this.isOverlayOpen[rule.id] = false)));
     this.route.paramMap.forEach((params: ParamMap) => {
       if (params.has('predicate')) {
         this.predicate = atob(params.get('predicate') || '');
       }
     });
-  }
-  ngOnDestroy(): void {
-    // this.subscription.unsubscribe();
   }
 
   public create() {

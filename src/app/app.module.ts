@@ -40,6 +40,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { spendingsReducer } from './store/reducer';
 import { LoggingEffect } from './store/logging-effect';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -84,6 +86,7 @@ import { LoggingEffect } from './store/logging-effect';
     MatButtonToggleModule,
     StoreModule.forRoot({ spendings: spendingsReducer }),
     EffectsModule.forRoot([LoggingEffect]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

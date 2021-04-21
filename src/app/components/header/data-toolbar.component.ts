@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Category } from 'src/app/services/data-model.service';
+import { first } from 'rxjs/operators';
 import { MessageService } from 'src/app/services/message.service';
-import { importStatement, loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from 'src/app/store/actions';
+import { loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from 'src/app/store/actions';
+import { AppState } from 'src/app/store/reducer';
+import { parseCitibankXML } from 'src/app/utils/citi-bank.helper';
 import { environment } from 'src/environments/environment';
+import { createCategory, createRule, createTransactions } from '../../store/actions';
+import { selectCategories } from '../../store/selectors';
+import { findCategoryByLabel } from '../../utils/utils';
 
 @Component({
   selector: 'app-data-toolbar',
@@ -28,14 +33,14 @@ import { environment } from 'src/environments/environment';
 export class DataToolbarComponent {
   isProduction = environment.production;
 
-  constructor(private store: Store, private messageService: MessageService) {}
+  constructor(private store: Store<AppState>, private messageService: MessageService) {}
 
   import(event: any) {
     const list = event.target.files as FileList;
     if (list.length > 0) {
       const file = list.item(0);
       if (file) {
-        this.store.dispatch(importStatement({ file }));
+        //this.store.dispatch(importStatement({ file }));
       } else {
         this.messageService.error('Plik nie istnieje');
       }
@@ -57,21 +62,29 @@ export class DataToolbarComponent {
 
   loadExampleData() {
     if (environment.exampleData) {
-      const exampleCategories: Category[] = environment.exampleData.categories.map((cat) => ({ id: 0, label: cat }));
-      //    this.dataModelService.categoriesView.push(...exampleCategories);
-      const exampleRules = environment.exampleData.rules.map((rule) => ({
-        id: 0,
-        name: rule.name,
-        predicate: `tr.description.toUpperCase().includes('${rule.name.toUpperCase()}')`,
-        //    category: this.categoriesService.findCategoryByLabel(rule.category)?.id || 0,
-      }));
-      //      this.dataModelService.rulesView.push(...exampleRules);
-      this.store.dispatch(resetState({ state: 'TODO' }));
+      this.store.dispatch(resetState({}));
+      environment.exampleData.categories
+        .map((cat) => ({ id: 0, label: cat }))
+        .forEach((category) => this.store.dispatch(createCategory({ category })));
+
+      this.store
+        .select(selectCategories)
+        .pipe(first())
+        .forEach((cats) => {
+          environment.exampleData.rules
+            .map((rule) => ({
+              id: 0,
+              name: rule.name,
+              predicate: `tr.description.toUpperCase().includes('${rule.name.toUpperCase()}')`,
+              category: findCategoryByLabel(rule.category, cats)?.id || 0,
+            }))
+            .forEach((rule) => this.store.dispatch(createRule({ rule })));
+        });
     }
     if (environment.exampleStatement) {
-      //      const transactions = this.transactionService.parseCitibankXML(environment.exampleStatement);
-      //    this.transactionService.importTransactions(transactions);
-      //  this.messageService.info('Ukończono importowanie danych przykładowych.');
+      const transactions = parseCitibankXML(environment.exampleStatement);
+      this.store.dispatch(createTransactions({ transactions }));
+      this.messageService.info('Ukończono importowanie danych przykładowych.');
     }
   }
 }
