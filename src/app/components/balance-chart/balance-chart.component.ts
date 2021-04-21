@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { DataModelService, Transaction } from 'src/app/services/data-model.service';
+import { AppState, Store } from 'src/app/store/reducer';
 import * as Collections from 'typescript-collections';
+import { selectTransactions } from '../../store/selectors';
 
 @Component({
   selector: 'app-balance-chart',
@@ -37,9 +39,9 @@ export class BalanceChartComponent implements OnDestroy {
 
   private readonly subscription;
 
-  constructor(private datePipe: DatePipe, dmService: DataModelService) {
-    this.subscription = dmService.transactionsView
-      .observableValues()
+  constructor(private datePipe: DatePipe, store: Store<AppState>) {
+    this.subscription = store
+      .select(selectTransactions)
       .subscribe((transactions) => this.plot(computeBalanceForEachDay(transactions)));
   }
   ngOnDestroy(): void {

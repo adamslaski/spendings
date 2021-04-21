@@ -2,6 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { DataModelService, Transaction } from 'src/app/services/data-model.service';
 import * as Collections from 'typescript-collections';
+import { AppState, Store } from 'src/app/store/reducer';
+import { combineLatest } from 'rxjs';
+import { selectTransactions, selectCategories } from '../../store/selectors';
 
 @Component({
   selector: 'app-spendings-chart',
@@ -16,25 +19,25 @@ export class SpendingsChartComponent implements OnDestroy {
   };
   private readonly subscription;
 
-  constructor(dmService: DataModelService, private datePipe: DatePipe) {
-    this.subscription = dmService.transactionsView.observableValues().subscribe((_transactions) => {
-      const transactions = _transactions
-        .filter((tr) => tr.amount < 0)
-        .map((tr) => Object.assign({}, tr, { amount: -tr.amount }));
-      if (transactions.length > 0) {
-        const begin = new Date(transactions[0].date);
-        const end = new Date();
-        const data = dmService.categoriesView.values().map((t) => ({
-          label: t.label,
-          data: computeBalanceForEachDay(
-            begin,
-            end,
-            transactions.filter((tr) => tr.category === t.id),
-          ),
-        }));
-        this.plot(computeRangeLabels(begin, end), data);
-      }
-    });
+  constructor(store: Store<AppState>, private datePipe: DatePipe) {
+    this.subscription = combineLatest([store.select(selectTransactions), store.select(selectCategories)]).subscribe(
+      ([_transactions, categories]) => {
+        const transactions = _transactions.filter((tr) => tr.amount < 0).map((tr) => ({ ...tr, amount: -tr.amount }));
+        if (transactions.length > 0) {
+          const begin = new Date(transactions[0].date);
+          const end = new Date();
+          const data = categories.map((t) => ({
+            label: t.label,
+            data: computeBalanceForEachDay(
+              begin,
+              end,
+              transactions.filter((tr) => tr.category === t.id),
+            ),
+          }));
+          this.plot(computeRangeLabels(begin, end), data);
+        }
+      },
+    );
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
