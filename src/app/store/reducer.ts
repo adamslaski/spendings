@@ -1,19 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { Category, Rule, Transaction } from './entities';
 import * as actions from './actions';
-import { Message } from '../services/message.service';
 import { removeDuplicates } from '../utils/transactions.helper';
+import { SpendingsState } from './store';
 export { Store } from '@ngrx/store';
-
-export interface SpendingsState {
-  readonly transactions: Transaction[];
-  transactionSequence: number;
-  readonly rules: Rule[];
-  ruleSequence: number;
-  readonly categories: Category[];
-  categorySequence: number;
-  message?: Message;
-}
 
 const initialState: SpendingsState = {
   transactions: [],
@@ -24,10 +13,6 @@ const initialState: SpendingsState = {
   categorySequence: 1,
   message: undefined,
 };
-
-export interface AppState {
-  spendings: SpendingsState;
-}
 
 export const spendingsReducer = createReducer(
   initialState,

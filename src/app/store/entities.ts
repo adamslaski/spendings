@@ -22,3 +22,6 @@ export interface Category extends EntityWithId {
   label: string;
   notEditable?: `don't edit or delete this item`;
 }
+
+export type MessageType = 'info' | 'warn' | 'error';
+export type Message = { message: string; type: MessageType };

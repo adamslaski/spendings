@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppState, Store } from 'src/app/store/reducer';
 import { selectCategories } from 'src/app/store/selectors';
 import { findCategoryById } from 'src/app/utils/categories.helper';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-display-category',

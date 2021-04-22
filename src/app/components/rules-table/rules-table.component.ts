@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { AppState, Store } from 'src/app/store/reducer';
 import { selectRules } from 'src/app/store/selectors';
 import { createRule, deleteRule, moveRule } from 'src/app/store/actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-rules-table',

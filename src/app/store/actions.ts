@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Category, Rule, Transaction } from './entities';
-import { Message } from '../services/message.service';
-import { SpendingsState } from './reducer';
+import { Category, Message, Rule, Transaction } from './entities';
+import { SpendingsState } from './store';
 
 export const createCategory = createAction('[CATEGORY] create', props<{ category: Category }>());
 export const updateCategory = createAction('[CATEGORY] update', props<{ category: Category }>());

@@ -39,10 +39,10 @@ import { SummaryChartComponent } from './components/summary-chart/summary-chart.
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { spendingsReducer } from './store/reducer';
-import { LoggingEffect } from './store/logging-effect';
+import { LoggingEffect } from './effects/logging-effect';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { LocalStoraEffect } from './store/local-storage-effect';
+import { LocalStoraEffect } from './effects/local-storage-effect';
 
 @NgModule({
   declarations: [

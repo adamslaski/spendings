@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/operators';
 import { loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from 'src/app/store/actions';
-import { AppState } from 'src/app/store/reducer';
+import { AppState } from 'src/app/store/store';
 import { parseCitibankXML } from 'src/app/utils/citi-bank.helper';
 import { environment } from 'src/environments/environment';
 import { createCategory, createRule, createTransactions, sendMessage } from '../../store/actions';

@@ -1,9 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import { Subscription, combineLatest } from 'rxjs';
-import { AppState, Store } from 'src/app/store/reducer';
 import { selectCategories, selectTransactions } from '../../store/selectors';
 import { findCategoryByLabel } from '../../utils/categories.helper';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-summary-chart',

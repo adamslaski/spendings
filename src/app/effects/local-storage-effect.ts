@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Store } from 'src/app/store/reducer';
-import { loadStateFromLocalStorage, saveStateToLocalStorage, resetState, sendMessage } from './actions';
-import { AppState } from './reducer';
+import { loadStateFromLocalStorage, saveStateToLocalStorage, resetState, sendMessage } from '../store/actions';
+import { AppState } from '../store/store';
 import { combineLatest } from 'rxjs';
 
 @Injectable()

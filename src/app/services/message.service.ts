@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, OperatorFunction, Subject, zip } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/reducer';
+import { AppState } from '../store/store';
 import { selectMessage } from '../store/selectors';
 import { filter, map } from 'rxjs/operators';
-
-export type MessageType = 'info' | 'warn' | 'error';
-export type Message = { message: string; type: MessageType };
+import { Message } from '../store/entities';
 
 @Injectable({
   providedIn: 'root',

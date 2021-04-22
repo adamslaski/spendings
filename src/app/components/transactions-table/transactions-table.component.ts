@@ -7,9 +7,10 @@ import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { AppState, Store } from 'src/app/store/reducer';
+import { AppState } from 'src/app/store/store';
 import { selectTransactions } from '../../store/selectors';
 import { updateTransaction } from '../../store/actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-transactions-table',

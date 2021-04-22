@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { AppState, SpendingsState } from './reducer';
+import { AppState, SpendingsState } from './store';
 
 const selectSpendings = createFeatureSelector<AppState, SpendingsState>('spendings');
 

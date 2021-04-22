@@ -1,7 +1,9 @@
-import { Transaction } from '../store/entities';
-import { MessageType } from '../services/message.service';
+import { MessageType, Transaction, Message } from '../store/entities';
 
-export function removeDuplicates(newTransactions: Transaction[], existingTransactions: Transaction[]) {
+export function removeDuplicates(
+  newTransactions: Transaction[],
+  existingTransactions: Transaction[],
+): { withoutDuplicates: Transaction[]; message?: Message } {
   const eq = (tr1: Transaction, tr2: Transaction) =>
     tr1.amount === tr2.amount &&
     tr1.balanceAfter === tr2.balanceAfter &&
