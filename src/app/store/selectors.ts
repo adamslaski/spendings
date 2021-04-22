@@ -6,4 +6,3 @@ const selectSpendings = createFeatureSelector<AppState, SpendingsState>('spendin
 export const selectCategories = createSelector(selectSpendings, (state: SpendingsState) => state.categories);
 export const selectRules = createSelector(selectSpendings, (state: SpendingsState) => state.rules);
 export const selectTransactions = createSelector(selectSpendings, (state: SpendingsState) => state.transactions);
-export const selectMessage = createSelector(selectSpendings, (state: SpendingsState) => state.message);

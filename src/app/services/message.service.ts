@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, OperatorFunction, Subject, zip } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppState } from '../store/store';
-import { selectMessage } from '../store/selectors';
-import { filter, map } from 'rxjs/operators';
+import { BehaviorSubject, Subject, zip } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Message } from '../store/entities';
+
+export const MESSAGE_SUBJECT = new Subject<Message>();
 
 @Injectable({
   providedIn: 'root',
@@ -14,16 +13,8 @@ export class MessageService {
   ref?: MatSnackBarRef<TextOnlySnackBar>;
   private readonly tokens$: Subject<[]> = new BehaviorSubject([]);
 
-  constructor(store: Store<AppState>, private snackBar: MatSnackBar) {
-    zip(
-      this.tokens$,
-      store
-        .select(selectMessage)
-        .pipe(
-          filter((msg) => msg !== undefined) as OperatorFunction<Message | undefined, Message>,
-          map(this.logMessage),
-        ),
-    ).subscribe(([[], msg]) => this.open(msg));
+  constructor(private snackBar: MatSnackBar) {
+    zip(this.tokens$, MESSAGE_SUBJECT.pipe(map(this.logMessage))).subscribe(([[], msg]) => this.open(msg));
   }
 
   private readonly open = (msg: Message) => {

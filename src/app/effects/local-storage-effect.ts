@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Store } from 'src/app/store/reducer';
-import { loadStateFromLocalStorage, saveStateToLocalStorage, resetState, sendMessage } from '../store/actions';
+import { loadStateFromLocalStorage, saveStateToLocalStorage, resetState } from '../store/actions';
 import { AppState } from '../store/store';
 import { combineLatest } from 'rxjs';
+import { MESSAGE_SUBJECT } from '../services/message.service';
 
 @Injectable()
 export class LocalStoraEffect {
@@ -15,6 +16,7 @@ export class LocalStoraEffect {
     combineLatest([actions$, store]).subscribe(([action, appState]) => {
       if (action.type === saveStateToLocalStorage.type) {
         window.localStorage.setItem(spendings, JSON.stringify(appState.spendings));
+        MESSAGE_SUBJECT.next({ message: `Zapisano stan do local storage.`, type: 'info' });
       }
     });
 
@@ -24,11 +26,9 @@ export class LocalStoraEffect {
         if (storedState) {
           const state = JSON.parse(storedState || '', parseDate);
           store.dispatch(resetState({ state }));
-          store.dispatch(sendMessage({ message: { message: `Wczytano stan z local storage.`, type: 'info' } }));
+          MESSAGE_SUBJECT.next({ message: `Wczytano stan z local storage.`, type: 'info' });
         } else {
-          store.dispatch(
-            sendMessage({ message: { message: `Local storage nie zawiera zapisanego stanu.`, type: 'error' } }),
-          );
+          MESSAGE_SUBJECT.next({ message: `Local storage nie zawiera zapisanego stanu.`, type: 'error' });
         }
       }
     });

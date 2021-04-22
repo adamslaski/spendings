@@ -11,7 +11,6 @@ const initialState: SpendingsState = {
   ruleSequence: 0,
   categories: [{ id: 0, label: 'inne', notEditable: `don't edit or delete this item` }],
   categorySequence: 1,
-  message: undefined,
 };
 
 export const spendingsReducer = createReducer(
@@ -49,15 +48,14 @@ export const spendingsReducer = createReducer(
   }), //todo recount transactions
 
   on(actions.createTransactions, (state, { transactions }) => {
-    const withoutDuplicatesResult = removeDuplicates(transactions, state.transactions);
+    const withoutDuplicates = removeDuplicates(transactions, state.transactions);
     const trs = [...state.transactions];
     let seq = state.transactionSequence;
-    withoutDuplicatesResult.withoutDuplicates.forEach((tr) => trs.push({ ...tr, id: seq++ }));
+    withoutDuplicates.forEach((tr) => trs.push({ ...tr, id: seq++ }));
     return {
       ...state,
       transactions: trs, //todo recount transactions
       transactionSequence: seq,
-      message: withoutDuplicatesResult.message,
     };
   }),
   on(actions.updateTransaction, (state, { transaction }) => ({
@@ -66,6 +64,4 @@ export const spendingsReducer = createReducer(
   })),
 
   on(actions.resetState, (state, { state: newState }) => (newState ? newState : initialState)),
-
-  on(actions.sendMessage, (state, { message }) => ({ ...state, message })),
 );

@@ -1,9 +1,7 @@
 import { MessageType, Transaction, Message } from '../store/entities';
+import { MESSAGE_SUBJECT } from '../services/message.service';
 
-export function removeDuplicates(
-  newTransactions: Transaction[],
-  existingTransactions: Transaction[],
-): { withoutDuplicates: Transaction[]; message?: Message } {
+export function removeDuplicates(newTransactions: Transaction[], existingTransactions: Transaction[]): Transaction[] {
   const eq = (tr1: Transaction, tr2: Transaction) =>
     tr1.amount === tr2.amount &&
     tr1.balanceAfter === tr2.balanceAfter &&
@@ -16,11 +14,11 @@ export function removeDuplicates(
     return result === undefined;
   });
   const numberOfDuplicates = newTransactions.length - withoutDuplicates.length;
-  return {
-    withoutDuplicates,
-    message:
-      numberOfDuplicates > 0
-        ? { type: 'warn' as MessageType, message: `Pominięto ${numberOfDuplicates} zduplikowane transakcje.` }
-        : undefined,
-  };
+  if (numberOfDuplicates > 0) {
+    MESSAGE_SUBJECT.next({
+      type: 'warn' as MessageType,
+      message: `Pominięto ${numberOfDuplicates} zduplikowane transakcje.`,
+    });
+  }
+  return withoutDuplicates;
 }

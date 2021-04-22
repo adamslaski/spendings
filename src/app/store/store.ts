@@ -1,4 +1,4 @@
-import { Category, Message, Rule, Transaction } from './entities';
+import { Category, Rule, Transaction } from './entities';
 
 export interface SpendingsState {
   readonly transactions: Transaction[];
@@ -7,7 +7,6 @@ export interface SpendingsState {
   ruleSequence: number;
   readonly categories: Category[];
   categorySequence: number;
-  message?: Message;
 }
 
 export interface AppState {

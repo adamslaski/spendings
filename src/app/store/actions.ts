@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Category, Message, Rule, Transaction } from './entities';
+import { Category, Rule, Transaction } from './entities';
 import { SpendingsState } from './store';
 
 export const createCategory = createAction('[CATEGORY] create', props<{ category: Category }>());
@@ -16,5 +16,3 @@ export const updateTransaction = createAction('[TRANSACTION] update', props<{ tr
 export const saveStateToLocalStorage = createAction('[STATE] save to local storage');
 export const loadStateFromLocalStorage = createAction('[STATE] load from local storage');
 export const resetState = createAction('[STATE] reset', props<{ state?: SpendingsState }>());
-
-export const sendMessage = createAction('[MESSAGE] send', props<{ message: Message }>());

@@ -5,9 +5,10 @@ import { loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from '
 import { AppState } from 'src/app/store/store';
 import { parseCitibankXML } from 'src/app/utils/citi-bank.helper';
 import { environment } from 'src/environments/environment';
-import { createCategory, createRule, createTransactions, sendMessage } from '../../store/actions';
+import { createCategory, createRule, createTransactions } from '../../store/actions';
 import { selectCategories } from '../../store/selectors';
 import { findCategoryByLabel } from '../../utils/categories.helper';
+import { MESSAGE_SUBJECT } from '../../services/message.service';
 
 @Component({
   selector: 'app-data-toolbar',
@@ -43,15 +44,13 @@ export class DataToolbarComponent {
           file?.text().then((text) => {
             const transactions = parseCitibankXML(text);
             this.store.dispatch(createTransactions({ transactions }));
-            this.store.dispatch(sendMessage({ message: { message: 'Ukończono importowanie wyciągu.', type: 'info' } }));
+            MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
           });
         } catch (e) {
-          this.store.dispatch(
-            sendMessage({ message: { message: `Błąd w czasie imporowania: ${(e as Error)?.message}`, type: 'error' } }),
-          );
+          MESSAGE_SUBJECT.next({ message: `Błąd w czasie imporowania: ${(e as Error)?.message}`, type: 'error' });
         }
       } else {
-        this.store.dispatch(sendMessage({ message: { message: 'Plik nie istnieje', type: 'error' } }));
+        MESSAGE_SUBJECT.next({ message: 'Plik nie istnieje', type: 'error' });
       }
     }
   }
@@ -88,9 +87,7 @@ export class DataToolbarComponent {
     if (environment.exampleStatement) {
       const transactions = parseCitibankXML(environment.exampleStatement);
       this.store.dispatch(createTransactions({ transactions }));
-      this.store.dispatch(
-        sendMessage({ message: { message: 'Ukończono importowanie danych przykładowych.', type: 'info' } }),
-      );
     }
+    MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie danych przykładowych.', type: 'info' });
   }
 }
