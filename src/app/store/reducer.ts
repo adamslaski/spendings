@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Category, Rule, Transaction } from '../services/data-model.service';
+import { Category, Rule, Transaction } from './entities';
 import * as actions from './actions';
 import { Message } from '../services/message.service';
 import { removeDuplicates } from '../utils/transactions.helper';

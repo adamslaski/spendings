@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Transaction } from 'src/app/services/data-model.service';
+import { Transaction } from 'src/app/store/entities';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';

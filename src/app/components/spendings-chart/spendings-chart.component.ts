@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { Transaction } from 'src/app/services/data-model.service';
+import { Transaction } from 'src/app/store/entities';
 import * as Collections from 'typescript-collections';
 import { AppState, Store } from 'src/app/store/reducer';
 import { combineLatest } from 'rxjs';

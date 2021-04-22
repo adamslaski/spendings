@@ -1,4 +1,4 @@
-import { Transaction, Rule } from '../services/data-model.service';
+import { Transaction, Rule } from '../store/entities';
 const apply = (trs: Transaction[], ...rules: Rule[]) => {
   applyWithFunction(
     (tr, rule) => {

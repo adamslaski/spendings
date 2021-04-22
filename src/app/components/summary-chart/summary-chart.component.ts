@@ -3,7 +3,7 @@ import { ChartOptions } from 'chart.js';
 import { Subscription, combineLatest } from 'rxjs';
 import { AppState, Store } from 'src/app/store/reducer';
 import { selectCategories, selectTransactions } from '../../store/selectors';
-import { findCategoryByLabel } from '../../utils/utils';
+import { findCategoryByLabel } from '../../utils/categories.helper';
 
 @Component({
   selector: 'app-summary-chart',

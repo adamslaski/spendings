@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Transaction } from './data-model.service';
+import { Transaction } from '../store/entities';
 import { MessageService } from './message.service';
 
 @Injectable({

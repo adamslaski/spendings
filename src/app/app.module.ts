@@ -42,6 +42,7 @@ import { spendingsReducer } from './store/reducer';
 import { LoggingEffect } from './store/logging-effect';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { LocalStoraEffect } from './store/local-storage-effect';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,7 @@ import { environment } from '../environments/environment';
     MatPaginatorModule,
     MatButtonToggleModule,
     StoreModule.forRoot({ spendings: spendingsReducer }),
-    EffectsModule.forRoot([LoggingEffect]),
+    EffectsModule.forRoot([LoggingEffect, LocalStoraEffect]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [DatePipe],

@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppState, Store } from 'src/app/store/reducer';
 import { selectCategories } from 'src/app/store/selectors';
-import { findCategoryById } from 'src/app/utils/utils';
+import { findCategoryById } from 'src/app/utils/categories.helper';
 
 @Component({
   selector: 'app-display-category',

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { Transaction } from 'src/app/services/data-model.service';
+import { Transaction } from 'src/app/store/entities';
 import { PredicateService } from 'src/app/services/predicate.service';
 import { passAllFilter } from '../transactions-table/transactions-table.component';
 

@@ -1,4 +1,4 @@
-import { Transaction } from '../services/data-model.service';
+import { Transaction } from '../store/entities';
 import { MessageType } from '../services/message.service';
 
 export function removeDuplicates(newTransactions: Transaction[], existingTransactions: Transaction[]) {
