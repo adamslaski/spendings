@@ -3,8 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Transaction } from 'src/app/store/entities';
-import { PredicateService } from 'src/app/services/predicate.service';
 import { passAllFilter } from '../transactions-table/transactions-table.component';
+import { compile } from 'src/app/utils/rules.helper';
 
 @Component({
   selector: 'app-transactions-filtering',
@@ -24,7 +24,7 @@ export class TransactionsFilteringComponent implements OnInit {
     end: new FormControl(),
   });
 
-  constructor(private router: Router, private predicateService: PredicateService) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -57,7 +57,7 @@ export class TransactionsFilteringComponent implements OnInit {
   }
 
   filter(query: string) {
-    this.filterSubject.next(this.predicateService.compile(query));
+    this.filterSubject.next(compile(query));
   }
 
   addRule(query: string) {

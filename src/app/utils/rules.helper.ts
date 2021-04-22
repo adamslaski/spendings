@@ -3,7 +3,6 @@ const apply = (trs: Transaction[], ...rules: Rule[]) => {
   applyWithFunction(
     (tr, rule) => {
       tr.category = rule.category;
-      tr.comment = tr.comment + ' ' + rule.name + ' applied';
     },
     trs,
     ...rules,
@@ -16,12 +15,12 @@ const applyWithFunction = (fn: (tr: Transaction, rule: Rule) => void, trs: Trans
   trs.forEach((tr) => {
     const rule = compiledRules.find((r) => r.compiledPredicate(tr));
     if (rule) {
-      fn(tr, rule);
+      tr.category = rule.category;
     }
   });
 };
 
-function compile(exp: string): (a: Transaction) => boolean {
+export function compile(exp: string): (a: Transaction) => boolean {
   return (a: Transaction) => {
     // eslint-disable-next-line no-eval
     const f = eval('(function(tr) { return ' + exp + ';})');
