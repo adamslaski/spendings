@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,6 +43,7 @@ import { LoggingEffect } from './effects/logging-effect';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { LocalStoraEffect } from './effects/local-storage-effect';
+import { MessageService } from './services/message.service';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,10 @@ import { LocalStoraEffect } from './effects/local-storage-effect';
     EffectsModule.forRoot([LoggingEffect, LocalStoraEffect]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: APP_INITIALIZER, multi: true, deps: [MessageService], useFactory: (x: MessageService) => () => null },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

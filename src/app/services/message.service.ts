@@ -14,6 +14,7 @@ export class MessageService {
   private readonly tokens$: Subject<[]> = new BehaviorSubject([]);
 
   constructor(private snackBar: MatSnackBar) {
+    console.log('hello from messgae service');
     zip(this.tokens$, MESSAGE_SUBJECT.pipe(map(this.logMessage))).subscribe(([[], msg]) => this.open(msg));
   }
 

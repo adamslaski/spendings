@@ -1,22 +1,11 @@
 import { Transaction, Rule } from '../store/entities';
-const apply = (trs: Transaction[], ...rules: Rule[]) => {
-  applyWithFunction(
-    (tr, rule) => {
-      tr.category = rule.category;
-    },
-    trs,
-    ...rules,
-  );
-};
 
-const applyWithFunction = (fn: (tr: Transaction, rule: Rule) => void, trs: Transaction[], ...rules: Rule[]) => {
-  const compiledRules = rules.map((rule) => Object.assign(rule, { compiledPredicate: compile(rule.predicate) }));
+export const apply = (trs: Transaction[], ...rules: Rule[]): Transaction[] => {
+  const compiledRules = rules.map((rule) => ({ rule, compiledPredicate: compile(rule.predicate) }));
 
-  trs.forEach((tr) => {
+  return trs.map((tr) => {
     const rule = compiledRules.find((r) => r.compiledPredicate(tr));
-    if (rule) {
-      tr.category = rule.category;
-    }
+    return { ...tr, category: rule ? rule.rule.category : 0 };
   });
 };
 
