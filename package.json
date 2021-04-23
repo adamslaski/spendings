@@ -1,6 +1,13 @@
 {
   "name": "spendings",
   "version": "0.0.0",
+  "description": "This app helps to track home spendings",
+  "keywords": ["bank", "statement", "home finance", "spendings"],
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Adam Slaski",
+    "email": "adam.slaski@gmail.com"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

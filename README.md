@@ -1,5 +1,21 @@
 # Spendings
 
+This app helps to track home spendings. It runs only within browser, no data is sent to any external server. Main features include:
+* importing banks' statements (at the moment only Citibank PL);
+* defining categories of transactions and rules that assign each transaction to one of categories;
+* visualizing your spendings patterns on charts
+* saving state to Local Storage
+
+At the moment only Polish language version is available.
+
+List of transactions:
+![list of transactions](transactions-list.png "list of transactions")
+
+Summary chart:
+![summary chart](summary-chart.png "summary chart")
+
+## Development
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
 
 ## Development server
