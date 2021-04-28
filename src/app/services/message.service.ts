@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Subject, zip } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Message } from '../store/entities';
 
 export const MESSAGE_SUBJECT = new Subject<Message>();
@@ -11,11 +11,10 @@ export const MESSAGE_SUBJECT = new Subject<Message>();
 })
 export class MessageService {
   ref?: MatSnackBarRef<TextOnlySnackBar>;
-  private readonly tokens$: Subject<[]> = new BehaviorSubject([]);
+  private readonly tokens$ = new BehaviorSubject(void 0);
 
   constructor(private snackBar: MatSnackBar) {
-    console.log('hello from messgae service');
-    zip(this.tokens$, MESSAGE_SUBJECT.pipe(map(this.logMessage))).subscribe(([[], msg]) => this.open(msg));
+    zip(this.tokens$, MESSAGE_SUBJECT.pipe(tap(this.logMessage))).subscribe(([undef, msg]) => this.open(msg));
   }
 
   private readonly open = (msg: Message) => {
@@ -26,7 +25,7 @@ export class MessageService {
       panelClass: [`${msg.type}-message`],
     });
     ref.afterDismissed().subscribe((x) => {
-      this.tokens$.next([]);
+      this.tokens$.next(void 0);
     });
   };
 
@@ -45,6 +44,5 @@ export class MessageService {
         break;
       }
     }
-    return msg;
   };
 }

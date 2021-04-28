@@ -6,7 +6,7 @@ import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-select-category',
-  template: `<mat-form-field>
+  template: ` <mat-form-field>
     <mat-label>Kategoria</mat-label>
     <mat-select [(value)]="value">
       <mat-option *ngFor="let cat of categories$ | async" [value]="cat.id">{{ cat.label }}</mat-option>

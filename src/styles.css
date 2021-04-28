@@ -29,3 +29,6 @@ body {
   background-color: lightskyblue;
   color: black;
 }
+.filtering-element .mat-form-field {
+  width: 220px;
+}

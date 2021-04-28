@@ -1,0 +1,31 @@
+.table-column {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.table-column--slim {
+  flex: 0 0 120px !important;
+}
+.table-column--medium {
+  flex: 0 0 240px !important;
+}
+.table-column--wide {
+  flex: 0 0 360px !important;
+}
+
+.mat-cell {
+  padding-right: 10px;
+}
+
+.mat-header-cell {
+  padding-right: 10px;
+}

@@ -3,7 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { Transaction } from 'src/app/store/entities';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { AppState } from 'src/app/store/store';
 import { selectTransactions } from '../../store/selectors';
 import { updateTransaction } from '../../store/actions';
 import { Store } from '@ngrx/store';
+import { Predicate } from '../../store/entities';
 
 @Component({
   selector: 'app-transactions-table',
@@ -28,7 +29,11 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
     this.dataSource = new MatTableDataSource<Transaction>([]);
     this.subscription = combineLatest([this.store.select(selectTransactions), this.filterSubject])
-      .pipe(map(([a, b]) => a.filter(b)))
+      .pipe(
+        tap(([a, b]) => console.log('transactions', a, 'predicate', b)),
+        map(([a, b]) => a.filter(b)),
+        tap((trs) => console.log('transactions after filtering', trs)),
+      )
       .subscribe((x) => {
         this.dataSource = new MatTableDataSource<Transaction>(x);
         this.dataSource.sort = this.sort ? this.sort : null;

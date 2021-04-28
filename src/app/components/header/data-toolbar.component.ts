@@ -78,7 +78,7 @@ export class DataToolbarComponent {
             .map((rule) => ({
               id: 0,
               name: rule.name,
-              predicate: `tr.description.toUpperCase().includes('${rule.name.toUpperCase()}')`,
+              predicate: { description: [rule.name.toUpperCase()] },
               category: findCategoryByLabel(rule.category, cats)?.id || 0,
             }))
             .forEach((rule) => this.store.dispatch(createRule({ rule })));

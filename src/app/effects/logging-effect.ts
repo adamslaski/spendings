@@ -6,7 +6,7 @@ import { AppState } from '../store/store';
 @Injectable()
 export class LoggingEffect {
   constructor(private actions$: Actions, private store: Store<AppState>) {
-    this.actions$.subscribe((a) => console.log('ACTION', a));
-    this.store.subscribe((s) => console.log('STORE', s));
+    //this.actions$.subscribe((a) => console.log('ACTION', a));
+    //this.store.subscribe((s) => console.log('STORE', s));
   }
 }

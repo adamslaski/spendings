@@ -1,79 +1,76 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Transaction } from 'src/app/store/entities';
 import { passAllFilter } from '../transactions-table/transactions-table.component';
 import { compile } from 'src/app/utils/rules.helper';
+import { Predicate } from '../../store/entities';
+import { DescriptionFilterComponent } from './description-filter.component';
+import { TypeFilterComponent } from './type-filter.component';
+import { AmountFilterComponent } from './amount-filter.component';
+import { CategoryFilterComponent } from './category-filter.component';
+import { DateFilterComponent } from './date-filter.component';
+import { Filter } from '../../utils/filter';
 
 @Component({
   selector: 'app-transactions-filtering',
-  templateUrl: './transactions-filtering.component.html',
+  template: `<div class="filtering-element">
+      <app-description-filter></app-description-filter>
+    </div>
+    <div class="filtering-element">
+      <app-type-filter></app-type-filter>
+    </div>
+    <div class="filtering-element">
+      <app-category-filter></app-category-filter>
+    </div>
+    <div class="filtering-element">
+      <app-amount-filter></app-amount-filter>
+    </div>
+    <div class="filtering-element">
+      <app-date-filter></app-date-filter>
+    </div>
+
+    <div class="filtering-element">
+      <button mat-flat-button class="search-form-button" (click)="filter()" color="primary">filtruj</button>
+      <button mat-flat-button class="search-form-button" (click)="clearFiltering()">
+        <i class="material-icons" style="font-size: 18px">cancel</i>
+      </button>
+      <button mat-flat-button class="search-form-button" (click)="addRule()" color="accent">dodaj regułę</button>
+    </div>`,
   styleUrls: ['./transactions-filtering.component.css'],
 })
-export class TransactionsFilteringComponent implements OnInit {
+export class TransactionsFilteringComponent implements OnInit, AfterViewInit {
   @Input()
   filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
-  advancedQuery = '';
-  descriptionQuery = '';
-  typeQuery = '';
-  categoryQuery = 0;
-  amountQuery: AmountRange = { type: 'debit' };
-  dateRangeQuery = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
-  });
+  @ViewChild(DescriptionFilterComponent)
+  private descriptionQuery?: DescriptionFilterComponent;
+  @ViewChild(TypeFilterComponent)
+  private typeQuery?: TypeFilterComponent;
+  @ViewChild(AmountFilterComponent)
+  private amountQuery?: AmountFilterComponent;
+  @ViewChild(CategoryFilterComponent)
+  private categoryQuery?: CategoryFilterComponent;
+  @ViewChild(DateFilterComponent)
+  private dateQuery?: DateFilterComponent;
+  children: (Filter | undefined)[] = [];
 
-  constructor(private router: Router) {}
+  ngAfterViewInit(): void {
+    this.children = [this.descriptionQuery, this.typeQuery, this.amountQuery, this.categoryQuery, this.dateQuery];
+  }
 
   ngOnInit(): void {}
 
-  makeDescriptionQuery(query: string) {
-    const upperCaseQuery = query.toUpperCase();
-    return `tr.description.toUpperCase().includes("${upperCaseQuery}")`;
-  }
-
-  makeTypeQuery(query: string) {
-    const upperCaseQuery = query.toUpperCase();
-    return `tr.type.toUpperCase().includes("${upperCaseQuery}")`;
-  }
-
-  makeCategoryQuery(category: number) {
-    return `tr.category === ${category}`;
-  }
-
-  makeAmountQuery(amountRange: AmountRange, type: 'credit' | 'debit') {
-    const max = amountRange.maxAmount === undefined ? Number.MAX_VALUE : amountRange.maxAmount;
-    const min = amountRange.minAmount ? amountRange.minAmount : 0;
-    if (type === 'credit') {
-      return `tr.amount >= ${min} && tr.amount <= ${max}`;
-    } else {
-      return `tr.amount <= ${-min} && tr.amount >= ${-max}`;
-    }
-  }
-
-  makeDateRangeQuery(range: { start: Date; end: Date }) {
-    return `tr.date.getTime() >= ${range.start.getTime()} && tr.date.getTime() <= ${range.end.getTime()}`;
-  }
-
-  filter(query: string) {
+  filter() {
+    const query = this.children.reduce((acc, v) => ({ ...acc, ...v?.makeQuery() }), {});
+    console.log('filter', query);
     this.filterSubject.next(compile(query));
   }
 
-  addRule(query: string) {
-    this.router.navigateByUrl('/rules-table/' + btoa(query));
+  addRule() {
+    //this.router.navigateByUrl('/rules-table/' + btoa(query));
   }
 
   clearFiltering() {
     this.filterSubject.next(passAllFilter);
-    this.advancedQuery = '';
-    this.descriptionQuery = '';
-    this.typeQuery = '';
+    this.children.forEach((c) => c?.clear());
   }
-}
-
-interface AmountRange {
-  type: 'credit' | 'debit';
-  minAmount?: number;
-  maxAmount?: number;
 }

@@ -1,48 +1,61 @@
-<app-transactions-filtering [filterSubject]="filterSubject"></app-transactions-filtering>
+<div style="display: inline-flex;">
+  <app-transactions-filtering [filterSubject]="filterSubject"></app-transactions-filtering>
 
-<mat-table #table matSort [dataSource]="dataSource">
-  <!--- Note that these columns can be defined in any order.
+  <div>
+    <mat-table style="width: 1404px;" #table matSort [dataSource]="dataSource">
+      <!--- Note that these columns can be defined in any order.
                 The actual rendered columns are set as a property on the row definition" -->
 
-  <ng-container matColumnDef="date">
-    <mat-header-cell *matHeaderCellDef [ngClass]="'slimColumn'" mat-sort-header> Data </mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="'slimColumn'" (click)="openDialog(element)">
-      {{ element.date | date: 'dd-MM-y' }}
-    </mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'table-column table-column--slim'" mat-sort-header> Data
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'table-column table-column--slim'" (click)="openDialog(element)">
+          {{ element.date | date: 'dd-MM-y' }}
+        </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="type">
-    <mat-header-cell *matHeaderCellDef [ngClass]="'mediumColumn'" mat-sort-header> Typ transakcji </mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="'mediumColumn'">
-      <span *ngIf="element.type != 'Płatność kartą'"> {{ element.type }} </span>
-    </mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'table-column table-column--medium'" mat-sort-header> Typ
+          transakcji
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'table-column table-column--medium'">
+          {{ element.type }}
+        </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="amount">
-    <mat-header-cell *matHeaderCellDef [ngClass]="'slimColumn'" mat-sort-header> Kwota </mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="'slimColumn'"> {{ element.amount | number: '1.2-2' }} </mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'table-column table-column--slim'" mat-sort-header> Kwota
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'table-column table-column--slim'"> {{ element.amount | number:
+          '1.2-2' }}
+        </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Opis </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <span *ngIf="element.type != 'Płatność kartą'">{{ element.description }}</span>
-    </mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'table-column table-column--wide'" mat-sort-header> Opis
+        </mat-header-cell>
+        <mat-cell [ngClass]="'table-column table-column--wide'" *matCellDef="let element">
+          {{ element.description }}
+        </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="comment">
-    <mat-header-cell *matHeaderCellDef> Komentarz </mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.comment }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="category">
+        <mat-header-cell [ngClass]="'table-column table-column--slim'" *matHeaderCellDef mat-sort-header> Kategoria
+        </mat-header-cell>
+        <mat-cell [ngClass]="'table-column table-column--slim'" *matCellDef="let element">
+          <app-display-category [category]="element.category"></app-display-category>
+        </mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="category">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Kategoria </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <app-display-category [category]="element.category"></app-display-category>
-    </mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="comment">
+        <mat-header-cell [ngClass]="'table-column table-column--wide'" *matHeaderCellDef> Komentarz </mat-header-cell>
+        <mat-cell [ngClass]="'table-column table-column--wide'" *matCellDef="let element">{{ element.comment }}
+        </mat-cell>
+      </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns" (click)="openDialog(row)"></mat-row>
-</mat-table>
-<mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns" (click)="openDialog(row)"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

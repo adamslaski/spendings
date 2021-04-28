@@ -44,6 +44,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { LocalStoraEffect } from './effects/local-storage-effect';
 import { MessageService } from './services/message.service';
+import { DescriptionFilterComponent } from './components/transactions-filtering/description-filter.component';
+import { TypeFilterComponent } from './components/transactions-filtering/type-filter.component';
+import { AmountFilterComponent } from './components/transactions-filtering/amount-filter.component';
+import { DateFilterComponent } from './components/transactions-filtering/date-filter.component';
+import { CategoryFilterComponent } from './components/transactions-filtering/category-filter.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +66,11 @@ import { MessageService } from './services/message.service';
     DisplayCategoryComponent,
     TransactionsFilteringComponent,
     SummaryChartComponent,
+    DescriptionFilterComponent,
+    TypeFilterComponent,
+    AmountFilterComponent,
+    DateFilterComponent,
+    CategoryFilterComponent,
   ],
   imports: [
     BrowserModule,

@@ -30,7 +30,9 @@ export class RulesTableComponent {
   public create() {
     if (this.name !== '' && this.predicate !== '') {
       this.store.dispatch(
-        createRule({ rule: { id: 0, name: this.name, predicate: this.predicate, category: this.category } }),
+        createRule({
+          rule: { id: 0, name: this.name, predicate: { description: [this.predicate] }, category: this.category },
+        }),
       );
       this.category = 0;
       this.predicate = '';
