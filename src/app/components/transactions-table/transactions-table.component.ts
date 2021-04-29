@@ -58,7 +58,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
     const trCopy = Object.assign({}, tr);
     const dialogRef = this.dialog.open(TransactionDialogComponent, {
       width: '550px',
-      height: '550px',
+      height: '600px',
       data: trCopy,
     });
 
