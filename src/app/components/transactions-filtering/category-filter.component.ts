@@ -6,15 +6,15 @@ import { Filter } from 'src/app/utils/filter';
   selector: 'app-category-filter',
   template: `
     <div class="search-tab-description">Wybierz kategorię.</div>
-    <app-select-category [(ngModel)]="categoryQuery"></app-select-category>
+    <app-select-category [(ngModel)]="categoryQuery" [showBlank]="true"></app-select-category>
   `,
   styles: [],
 })
 export class CategoryFilterComponent implements OnInit, Filter {
   @Input()
-  categoryQuery = 0;
+  categoryQuery?: number = undefined;
   clear(): void {
-    this.categoryQuery = 0;
+    this.categoryQuery = undefined;
   }
   makeQuery(): Predicate {
     return { category: this.categoryQuery };

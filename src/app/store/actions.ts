@@ -7,6 +7,7 @@ export const updateCategory = createAction('[CATEGORY] update', props<{ category
 export const deleteCategory = createAction('[CATEGORY] delete', props<{ id: number }>());
 
 export const createRule = createAction('[RULE] create', props<{ rule: Rule }>());
+export const updateRule = createAction('[RULE] update', props<{ rule: Rule }>());
 export const deleteRule = createAction('[RULE] delete', props<{ id: number }>());
 export const moveRule = createAction('[RULE] move', props<{ prevIndex: number; newIndex: number }>());
 

@@ -1,15 +1,17 @@
-import { Component, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Transaction } from 'src/app/store/entities';
 import { passAllFilter } from '../transactions-table/transactions-table.component';
 import { compile } from 'src/app/utils/rules.helper';
-import { Predicate } from '../../store/entities';
 import { DescriptionFilterComponent } from './description-filter.component';
 import { TypeFilterComponent } from './type-filter.component';
 import { AmountFilterComponent } from './amount-filter.component';
 import { CategoryFilterComponent } from './category-filter.component';
 import { DateFilterComponent } from './date-filter.component';
 import { Filter } from '../../utils/filter';
+import { RuleDialogComponent } from '../rule-dialog/rule-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Rule } from '../../store/entities';
 
 @Component({
   selector: 'app-transactions-filtering',
@@ -34,11 +36,13 @@ import { Filter } from '../../utils/filter';
       <button mat-flat-button class="search-form-button" (click)="clearFiltering()">
         <i class="material-icons" style="font-size: 18px">cancel</i>
       </button>
-      <button mat-flat-button class="search-form-button" (click)="addRule()" color="accent">dodaj regułę</button>
+      <button mat-flat-button class="search-form-button" (click)="openDialog()" color="accent">dodaj regułę</button>
     </div>`,
   styleUrls: ['./transactions-filtering.component.css'],
 })
-export class TransactionsFilteringComponent implements OnInit, AfterViewInit {
+export class TransactionsFilteringComponent implements AfterViewInit {
+  constructor(private dialog: MatDialog) {}
+
   @Input()
   filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
   @ViewChild(DescriptionFilterComponent)
@@ -57,16 +61,21 @@ export class TransactionsFilteringComponent implements OnInit, AfterViewInit {
     this.children = [this.descriptionQuery, this.typeQuery, this.amountQuery, this.categoryQuery, this.dateQuery];
   }
 
-  ngOnInit(): void {}
+  private getQuery = () => this.children.reduce((acc, v) => ({ ...acc, ...v?.makeQuery() }), {});
 
   filter() {
-    const query = this.children.reduce((acc, v) => ({ ...acc, ...v?.makeQuery() }), {});
+    const query = this.getQuery();
     console.log('filter', query);
     this.filterSubject.next(compile(query));
   }
 
-  addRule() {
-    //this.router.navigateByUrl('/rules-table/' + btoa(query));
+  openDialog(): void {
+    const data: Rule = { id: 0, predicate: { ...this.getQuery() }, name: '', category: 0 };
+    this.dialog.open(RuleDialogComponent, {
+      width: '560px',
+      height: '500px',
+      data,
+    });
   }
 
   clearFiltering() {

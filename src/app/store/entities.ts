@@ -12,20 +12,24 @@ export interface Transaction extends EntityWithId {
   category: number;
 }
 
+export type AmountRange = {
+  min?: number;
+  max?: number;
+};
+
 export type Predicate = {
   description?: string[];
   type?: string[];
   category?: number;
-  amountMin?: number;
-  amountMax?: number;
+  amountRange?: AmountRange;
   dateFrom?: Date;
   dateTo?: Date;
 };
 
 export interface Rule extends EntityWithId {
   name: string;
-  readonly predicate: Predicate;
-  readonly category: number;
+  predicate: Predicate;
+  category: number;
 }
 
 export interface Category extends EntityWithId {

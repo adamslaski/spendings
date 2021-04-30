@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { selectCategories } from 'src/app/store/selectors';
 import { Store } from '@ngrx/store';
@@ -6,9 +6,10 @@ import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-select-category',
-  template: ` <mat-form-field>
+  template: ` <mat-form-field style="width: 100%">
     <mat-label>Kategoria</mat-label>
     <mat-select [(value)]="value">
+      <mat-option *ngIf="showBlank"></mat-option>
       <mat-option *ngFor="let cat of categories$ | async" [value]="cat.id">{{ cat.label }}</mat-option>
     </mat-select>
   </mat-form-field>`,
@@ -21,6 +22,8 @@ import { AppState } from '../../store/store';
   ],
 })
 export class SelectCategoryComponent implements ControlValueAccessor {
+  @Input()
+  showBlank = false;
   category = 0;
   categories$ = this.store.select(selectCategories);
   onChange = (v: number) => {};

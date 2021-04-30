@@ -26,7 +26,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   private readonly subscription;
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) {
+  constructor(private dialog: MatDialog, private store: Store<AppState>) {
     this.dataSource = new MatTableDataSource<Transaction>([]);
     this.subscription = combineLatest([this.store.select(selectTransactions), this.filterSubject])
       .pipe(

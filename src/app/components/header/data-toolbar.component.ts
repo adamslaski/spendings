@@ -5,7 +5,7 @@ import { loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from '
 import { AppState } from 'src/app/store/store';
 import { parseCitibankXML } from 'src/app/utils/citi-bank.helper';
 import { environment } from 'src/environments/environment';
-import { createCategory, createRule, createTransactions } from '../../store/actions';
+import { createCategory, createTransactions, createRule } from '../../store/actions';
 import { selectCategories } from '../../store/selectors';
 import { findCategoryByLabel } from '../../utils/categories.helper';
 import { MESSAGE_SUBJECT } from '../../services/message.service';

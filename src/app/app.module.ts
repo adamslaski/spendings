@@ -49,6 +49,7 @@ import { TypeFilterComponent } from './components/transactions-filtering/type-fi
 import { AmountFilterComponent } from './components/transactions-filtering/amount-filter.component';
 import { DateFilterComponent } from './components/transactions-filtering/date-filter.component';
 import { CategoryFilterComponent } from './components/transactions-filtering/category-filter.component';
+import { RuleDialogComponent } from './components/rule-dialog/rule-dialog.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { CategoryFilterComponent } from './components/transactions-filtering/cat
     AmountFilterComponent,
     DateFilterComponent,
     CategoryFilterComponent,
+    RuleDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Predicate } from 'src/app/store/entities';
 import { Filter } from '../../utils/filter';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -9,16 +9,16 @@ import { MatInput } from '@angular/material/input';
   template: `
     <div class="search-tab-description">Wybierz zakres dat.</div>
     <mat-form-field>
-      <mat-date-range-input [formGroup]="dateRangeQuery" [rangePicker]="picker">
+      <mat-date-range-input [formGroup]="dateRangeQuery!" [rangePicker]="picker">
         <input #startDate matStartDate formControlName="start" placeholder="Start" />
         <input #endDate matEndDate formControlName="end" placeholder="Koniec" />
       </mat-date-range-input>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
-      <mat-error *ngIf="dateRangeQuery.controls.start.hasError('matStartDateInvalid')"
+      <mat-error *ngIf="dateRangeQuery?.controls?.start?.hasError('matStartDateInvalid')"
         >Nieprawidłowa data początkowa
       </mat-error>
-      <mat-error *ngIf="dateRangeQuery.controls.end.hasError('matEndDateInvalid')"
+      <mat-error *ngIf="dateRangeQuery?.controls?.end?.hasError('matEndDateInvalid')"
         >Nieprawidłowa data końcowa
       </mat-error> </mat-form-field
     ><br />
@@ -26,18 +26,26 @@ import { MatInput } from '@angular/material/input';
   styles: [],
 })
 export class DateFilterComponent implements OnInit, Filter {
-  dateRangeQuery = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
-  });
+  @Input()
+  dateFrom?: Date;
+
+  @Input()
+  dateTo?: Date;
+
+  dateRangeQuery?: FormGroup;
 
   clear(): void {
-    this.dateRangeQuery.reset();
+    this.dateRangeQuery?.reset();
   }
 
   makeQuery(): Predicate {
-    return { dateFrom: this.dateRangeQuery.value.start, dateTo: this.dateRangeQuery.value.end };
+    return { dateFrom: this.dateRangeQuery?.value.start, dateTo: this.dateRangeQuery?.value.end };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dateRangeQuery = new FormGroup({
+      start: new FormControl(this.dateFrom),
+      end: new FormControl(this.dateTo),
+    });
+  }
 }

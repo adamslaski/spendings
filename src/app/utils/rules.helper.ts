@@ -1,4 +1,5 @@
 import { Transaction, Rule, Predicate } from '../store/entities';
+import { within } from './amount-range.helper';
 
 export const apply = (trs: Transaction[], ...rules: Rule[]): Transaction[] => {
   const compiledRules = rules.map((rule) => ({ rule, compiledPredicate: compile(rule.predicate) }));
@@ -8,8 +9,6 @@ export const apply = (trs: Transaction[], ...rules: Rule[]): Transaction[] => {
     return { ...tr, category: rule ? rule.rule.category : 0 };
   });
 };
-
-const isEmptyList = <T>(l: T[] | undefined): l is T[] => l === undefined || l === null || l.length === 0;
 
 export function compile(pred: Predicate): (a: Transaction) => boolean {
   return (a: Transaction) => {
@@ -24,10 +23,7 @@ export function compile(pred: Predicate): (a: Transaction) => boolean {
     if (pred.category !== undefined && pred.category !== a.category) {
       return false;
     }
-    if (pred.amountMax !== undefined && pred.amountMax < a.amount) {
-      return false;
-    }
-    if (pred.amountMin !== undefined && pred.amountMin > a.amount) {
+    if (!within(a.amount, pred.amountRange)) {
       return false;
     }
     if (pred.dateFrom !== undefined && pred.dateFrom !== null && pred.dateFrom.getTime() > a.date.getTime()) {

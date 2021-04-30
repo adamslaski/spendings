@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-transaction-dialog',
-  template: `<h1 mat-dialog-title>Transaction details</h1>
+  template: `<h1 mat-dialog-title>Szczegóły transakcji</h1>
     <div mat-dialog-content class="grid-container">
       <div>Data</div>
       <div>{{ data.date | date: 'd-M-y' }}</div>
@@ -37,7 +37,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
         grid-template-columns: 1fr 3fr;
         grid-template-rows: repeat(7, 1fr);
         gap: 10px 10px;
-        grid-template-areas: repeat(7, '. .');
       }
     `,
   ],
