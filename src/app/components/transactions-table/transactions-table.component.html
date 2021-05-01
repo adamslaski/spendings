@@ -53,8 +53,18 @@
         </mat-cell>
       </ng-container>
 
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell [ngClass]="'table-column table-column--slim'" *matHeaderCellDef></mat-header-cell>
+        <mat-cell [ngClass]="'table-column table-column--slim'" *matCellDef="let element">
+          <button mat-flat-button class="box-button" (click)="openDialog(element)">
+            <i class="material-icons" style="font-size: 18px">edit</i>
+          </button>
+        </mat-cell>
+      </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns" (click)="openDialog(row)"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
   </div>

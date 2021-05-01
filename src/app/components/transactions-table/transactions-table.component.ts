@@ -11,7 +11,6 @@ import { AppState } from 'src/app/store/store';
 import { selectTransactions } from '../../store/selectors';
 import { updateTransaction } from '../../store/actions';
 import { Store } from '@ngrx/store';
-import { Predicate } from '../../store/entities';
 
 @Component({
   selector: 'app-transactions-table',
@@ -19,7 +18,7 @@ import { Predicate } from '../../store/entities';
   styleUrls: ['./transactions-table.component.css'],
 })
 export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
-  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment'];
+  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment', 'actions'];
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
   dataSource: MatTableDataSource<Transaction>;
   @ViewChild(MatSort) sort?: MatSort;

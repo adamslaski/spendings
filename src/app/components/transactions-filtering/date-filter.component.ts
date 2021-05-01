@@ -48,4 +48,8 @@ export class DateFilterComponent implements OnInit, Filter {
       end: new FormControl(this.dateTo),
     });
   }
+
+  isValid(): boolean {
+    return true;
+  }
 }

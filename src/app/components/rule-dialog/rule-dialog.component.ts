@@ -15,7 +15,14 @@ import { createRule, updateRule } from '../../store/actions';
   template: `<h1 mat-dialog-title>{{ rule.id ? 'Edycja reguły' : 'Tworzenie reguły' }}</h1>
     <div mat-dialog-content>
       <div class="grid-container">
-        <mat-form-field> <input matInput [(ngModel)]="rule.name" placeholder="nazwa" /> </mat-form-field>
+        <div>
+          <mat-form-field>
+            <input matInput [(ngModel)]="rule.name" #name="ngModel" placeholder="nazwa" required />
+          </mat-form-field>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="validator-message">
+            <div *ngIf="name.errors?.required">Reguła musi posiadać nazwę.</div>
+          </div>
+        </div>
         <app-select-category [(ngModel)]="rule.category" style="width: 100%"></app-select-category>
         <div class="filtering-element">
           <app-description-filter
@@ -82,18 +89,20 @@ export class RuleDialogComponent implements AfterViewInit {
   }
 
   save = () => {
-    const predicate: Predicate = this.children.reduce((acc, v) => ({ ...acc, ...v?.makeQuery() }), {});
-    console.log(this.rule);
-    const rule: Rule = {
-      ...this.rule,
-      predicate,
-    };
-    if (!rule.id) {
-      this.store.dispatch(createRule({ rule }));
-    } else {
-      this.store.dispatch(updateRule({ rule }));
+    if (this.rule.name && this.children.every((child) => child?.isValid() || false)) {
+      const predicate: Predicate = this.children.reduce((acc, v) => ({ ...acc, ...v?.makeQuery() }), {});
+      console.log(this.rule);
+      const rule: Rule = {
+        ...this.rule,
+        predicate,
+      };
+      if (!rule.id) {
+        this.store.dispatch(createRule({ rule }));
+      } else {
+        this.store.dispatch(updateRule({ rule }));
+      }
+      this.dialogRef.close();
     }
-    this.dialogRef.close();
   };
 
   cancel() {

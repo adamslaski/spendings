@@ -36,7 +36,9 @@ import { Rule } from '../../store/entities';
       <button mat-flat-button class="search-form-button" (click)="clearFiltering()">
         <i class="material-icons" style="font-size: 18px">cancel</i>
       </button>
-      <button mat-flat-button class="search-form-button" (click)="openDialog()" color="accent">dodaj regułę</button>
+      <button mat-flat-button class="search-form-button" (click)="openAddRuleDialog()" color="accent">
+        dodaj regułę
+      </button>
     </div>`,
   styleUrls: ['./transactions-filtering.component.css'],
 })
@@ -62,20 +64,25 @@ export class TransactionsFilteringComponent implements AfterViewInit {
   }
 
   private getQuery = () => this.children.reduce((acc, v) => ({ ...acc, ...v?.makeQuery() }), {});
+  private childrenAreValid = () => this.children.every((child) => child?.isValid() || false);
 
   filter() {
-    const query = this.getQuery();
-    console.log('filter', query);
-    this.filterSubject.next(compile(query));
+    if (this.childrenAreValid()) {
+      const query = this.getQuery();
+      console.log('filter', query);
+      this.filterSubject.next(compile(query));
+    }
   }
 
-  openDialog(): void {
-    const data: Rule = { id: 0, predicate: { ...this.getQuery() }, name: '', category: 0 };
-    this.dialog.open(RuleDialogComponent, {
-      width: '560px',
-      height: '500px',
-      data,
-    });
+  openAddRuleDialog(): void {
+    if (this.childrenAreValid()) {
+      const data: Rule = { id: 0, predicate: { ...this.getQuery() }, name: '', category: 0 };
+      this.dialog.open(RuleDialogComponent, {
+        width: '560px',
+        height: '500px',
+        data,
+      });
+    }
   }
 
   clearFiltering() {

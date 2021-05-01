@@ -12,7 +12,7 @@ import { Filter } from '../../utils/filter';
   `,
   styles: [],
 })
-export class DescriptionFilterComponent implements OnInit, Filter {
+export class DescriptionFilterComponent implements Filter {
   @Input()
   descriptionQuery = '';
 
@@ -30,5 +30,9 @@ export class DescriptionFilterComponent implements OnInit, Filter {
         .map((s) => s.trim())
         .filter((s) => s !== ''),
     };
+  }
+
+  isValid(): boolean {
+    return true;
   }
 }

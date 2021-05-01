@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Predicate } from 'src/app/store/entities';
 import { Filter } from '../../utils/filter';
 
@@ -12,7 +12,7 @@ import { Filter } from '../../utils/filter';
   `,
   styles: [],
 })
-export class TypeFilterComponent implements OnInit, Filter {
+export class TypeFilterComponent implements Filter {
   @Input()
   typeQuery = '';
 
@@ -30,5 +30,7 @@ export class TypeFilterComponent implements OnInit, Filter {
     };
   }
 
-  ngOnInit(): void {}
+  isValid(): boolean {
+    return true;
+  }
 }

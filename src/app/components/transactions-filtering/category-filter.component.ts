@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Predicate } from 'src/app/store/entities';
 import { Filter } from 'src/app/utils/filter';
 
@@ -10,7 +10,7 @@ import { Filter } from 'src/app/utils/filter';
   `,
   styles: [],
 })
-export class CategoryFilterComponent implements OnInit, Filter {
+export class CategoryFilterComponent implements Filter {
   @Input()
   categoryQuery?: number = undefined;
   clear(): void {
@@ -20,5 +20,7 @@ export class CategoryFilterComponent implements OnInit, Filter {
     return { category: this.categoryQuery };
   }
 
-  ngOnInit(): void {}
+  isValid(): boolean {
+    return true;
+  }
 }
