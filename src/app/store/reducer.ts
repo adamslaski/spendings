@@ -12,6 +12,8 @@ const initialState: SpendingsState = {
   ruleSequence: 1,
   categories: [{ id: 0, label: 'inne', notEditable: `don't edit or delete this item` }],
   categorySequence: 1,
+  accounts: [],
+  accountSequence: 0,
 };
 
 export const spendingsReducer = createReducer(
@@ -82,6 +84,11 @@ export const spendingsReducer = createReducer(
   on(actions.updateTransaction, (state, { transaction }) => ({
     ...state,
     transactions: state.transactions.map((t) => (t.id === transaction.id ? transaction : t)),
+  })),
+  on(actions.createAccount, (state, { account }) => ({
+    ...state,
+    accounts: [...state.accounts, { ...account, id: state.accountSequence }],
+    accountSequence: state.accountSequence + 1,
   })),
 
   on(actions.resetState, (state, { state: newState }) => (newState ? newState : initialState)),

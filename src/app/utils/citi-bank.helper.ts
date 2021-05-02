@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 const parser = new DOMParser();
 
-export const parseCitibankXML = (text: string) => {
+export const parseCitibankXML = (text: string, accountId: number) => {
   const transactions = [];
   const doc = parser.parseFromString(text, 'application/xml');
   // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -20,6 +20,7 @@ export const parseCitibankXML = (text: string) => {
         comment: '',
         description: transaction.getElementsByTagName('description')[0].innerHTML,
         category: 0,
+        account: accountId,
       });
     }
   }

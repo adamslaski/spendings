@@ -5,7 +5,7 @@ import { loadStateFromLocalStorage, resetState, saveStateToLocalStorage } from '
 import { AppState } from 'src/app/store/store';
 import { parseCitibankXML } from 'src/app/utils/citi-bank.helper';
 import { environment } from 'src/environments/environment';
-import { createCategory, createTransactions, createRule } from '../../store/actions';
+import { createCategory, createTransactions, createRule, createAccount } from '../../store/actions';
 import { selectCategories } from '../../store/selectors';
 import { findCategoryByLabel } from '../../utils/categories.helper';
 import { MESSAGE_SUBJECT } from '../../services/message.service';
@@ -42,7 +42,7 @@ export class DataToolbarComponent {
       if (file) {
         try {
           file?.text().then((text) => {
-            const transactions = parseCitibankXML(text);
+            const transactions = parseCitibankXML(text, 0);
             this.store.dispatch(createTransactions({ transactions }));
             MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
           });
@@ -69,6 +69,9 @@ export class DataToolbarComponent {
       environment.exampleData.categories
         .map((cat) => ({ id: 0, label: cat }))
         .forEach((category) => this.store.dispatch(createCategory({ category })));
+      environment.exampleData.accounts
+        .map((account) => ({ id: 0, name: account.name, bank: account.bank }))
+        .forEach((account) => this.store.dispatch(createAccount({ account })));
 
       this.store
         .select(selectCategories)
@@ -85,7 +88,7 @@ export class DataToolbarComponent {
         });
     }
     if (environment.exampleStatement) {
-      const transactions = parseCitibankXML(environment.exampleStatement);
+      const transactions = parseCitibankXML(environment.exampleStatement, 0);
       this.store.dispatch(createTransactions({ transactions }));
     }
     MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie danych przykładowych.', type: 'info' });

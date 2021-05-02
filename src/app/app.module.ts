@@ -51,6 +51,8 @@ import { DateFilterComponent } from './components/transactions-filtering/date-fi
 import { CategoryFilterComponent } from './components/transactions-filtering/category-filter.component';
 import { RuleDialogComponent } from './components/rule-dialog/rule-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { DisplayAccountComponent } from './components/display-account.component';
+import { AccountsTableComponent } from './components/accounts-table/accounts-table.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +76,8 @@ import { MatIconModule } from '@angular/material/icon';
     DateFilterComponent,
     CategoryFilterComponent,
     RuleDialogComponent,
+    DisplayAccountComponent,
+    AccountsTableComponent,
   ],
   imports: [
     BrowserModule,

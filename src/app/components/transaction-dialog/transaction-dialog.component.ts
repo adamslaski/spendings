@@ -23,11 +23,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       </div>
       <div>Oryginalna Kategoria</div>
       <div>
-        <app-display-category [(ngModel)]="data.category"></app-display-category>
+        <app-display-category [category]="data.category"></app-display-category>
       </div>
       <div>Nadpisana Kategoria</div>
       <div>
         <app-select-category [(ngModel)]="data.categoryOverride" [showBlank]="true"></app-select-category>
+      </div>
+      <div>Konto</div>
+      <div>
+        <app-display-account [account]="data.account"></app-display-account>
       </div>
     </div>
     <div mat-dialog-actions>
@@ -39,7 +43,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       .grid-container {
         display: grid;
         grid-template-columns: 2fr 3fr;
-        grid-template-rows: repeat(7, 1fr);
+        grid-template-rows: repeat(9, 1fr);
         gap: 10px 10px;
       }
     `,

@@ -11,6 +11,7 @@ export interface Transaction extends EntityWithId {
   comment: string;
   readonly category: number;
   categoryOverride?: number;
+  readonly account: number;
 }
 
 export type AmountRange = {
@@ -40,3 +41,10 @@ export interface Category extends EntityWithId {
 
 export type MessageType = 'info' | 'warn' | 'error';
 export type Message = { message: string; type: MessageType };
+
+export type Bank = 'Citi Handlowy';
+
+export interface Account extends EntityWithId {
+  name: string;
+  readonly bank: Bank;
+}

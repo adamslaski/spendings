@@ -1,8 +1,14 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+import { Bank } from 'src/app/store/entities';
 
-export const environment = {
+export const environment: {
+  production: boolean;
+  exampleData: {
+    rules: { name: string; category: string }[];
+    categories: string[];
+    accounts: { name: string; bank: Bank }[];
+  };
+  exampleStatement: string;
+} = {
   production: false,
   exampleData: {
     rules: [
@@ -41,6 +47,7 @@ export const environment = {
       'kredyt',
       'chemia i kosmetyki',
     ],
+    accounts: [{ name: 'konto testowe', bank: 'Citi Handlowy' }],
   },
   /* eslint-disable */
   exampleStatement: `<?xml version="1.0" encoding="UTF-8"?>

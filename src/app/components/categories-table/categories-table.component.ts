@@ -7,7 +7,7 @@ import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-categories-table',
-  template: ` <mat-form-field>
+  template: `<mat-form-field>
       <input matInput type="text" name="newLabel" #newLabel placeholder="nazwa kategorii" />
     </mat-form-field>
     <button mat-flat-button (click)="create(newLabel.value); newLabel.value = ''" color="primary">dodaj</button>

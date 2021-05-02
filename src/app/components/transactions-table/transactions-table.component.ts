@@ -28,11 +28,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   constructor(private dialog: MatDialog, private store: Store<AppState>) {
     this.dataSource = new MatTableDataSource<Transaction>([]);
     this.subscription = combineLatest([this.store.select(selectTransactions), this.filterSubject])
-      .pipe(
-        tap(([a, b]) => console.log('transactions', a, 'predicate', b)),
-        map(([a, b]) => a.filter(b)),
-        tap((trs) => console.log('transactions after filtering', trs)),
-      )
+      .pipe(map(([a, b]) => a.filter(b)))
       .subscribe((x) => {
         this.dataSource = new MatTableDataSource<Transaction>(x);
         this.dataSource.sort = this.sort ? this.sort : null;
@@ -56,7 +52,7 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   openDialog(tr: Transaction): void {
     const trCopy = Object.assign({}, tr);
     const dialogRef = this.dialog.open(TransactionDialogComponent, {
-      height: '670px',
+      height: '750px',
       width: '750px',
       data: trCopy,
     });

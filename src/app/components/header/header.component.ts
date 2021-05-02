@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
     <button mat-button routerLink="/summary-chart" routerLinkActive="active">Podsumowanie wydatków</button>
     <button mat-button routerLink="/rules-table" routerLinkActive="active">Reguły</button>
     <button mat-button routerLink="/categories-table" routerLinkActive="active">Kategorie</button>
+    <button mat-button routerLink="/accounts" routerLinkActive="active">Konta</button>
     <span class="fill-remaining-space"></span>
     <app-data-toolbar></app-data-toolbar>
   </mat-toolbar>`,
