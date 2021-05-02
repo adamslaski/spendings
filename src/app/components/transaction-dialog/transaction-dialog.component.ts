@@ -18,12 +18,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       <div>Komentarz</div>
       <div>
         <mat-form-field style="width: 100%;">
-          <input matInput name="comment" [(ngModel)]="data.comment" />
+          <input matInput name="comment" [(ngModel)]="data.comment" maxLength="60" />
         </mat-form-field>
       </div>
-      <div>Kategoria</div>
+      <div>Oryginalna Kategoria</div>
       <div>
-        <app-select-category [(ngModel)]="data.category"></app-select-category>
+        <app-display-category [(ngModel)]="data.category"></app-display-category>
+      </div>
+      <div>Nadpisana Kategoria</div>
+      <div>
+        <app-select-category [(ngModel)]="data.categoryOverride" [showBlank]="true"></app-select-category>
       </div>
     </div>
     <div mat-dialog-actions>
@@ -34,7 +38,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     `
       .grid-container {
         display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: 2fr 3fr;
         grid-template-rows: repeat(7, 1fr);
         gap: 10px 10px;
       }

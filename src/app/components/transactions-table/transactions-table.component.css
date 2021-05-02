@@ -29,3 +29,14 @@
 .mat-header-cell {
   padding-right: 10px;
 }
+mat-table div.table-column--actions {
+  display: none;
+}
+mat-table mat-row:hover div.table-column--actions {
+  display: block;
+}
+.cell-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

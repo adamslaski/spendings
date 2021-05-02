@@ -18,11 +18,11 @@ import { MatDialog } from '@angular/material/dialog';
         <div style="width: 10em;">{{ rule.name }}</div>
         <app-display-category [category]="rule.category" style="width: 30em;"></app-display-category>
         <span class="fill-remaining-space"></span>
-        <button mat-flat-button (click)="openDialog(rule)" color="primary" class="box-button">
-          <i class="material-icons" style="font-size: 18px">edit</i>
+        <button mat-icon-button (click)="openDialog(rule)" color="primary" class="box-button">
+          <mat-icon>edit</mat-icon>
         </button>
-        <button mat-flat-button (click)="delete(rule.id)" color="primary" class="box-button">
-          <i class="material-icons" style="font-size: 18px">cancel</i>
+        <button mat-icon-button (click)="delete(rule.id)" color="primary" class="box-button">
+          <mat-icon>cancel</mat-icon>
         </button>
       </div>
     </div>

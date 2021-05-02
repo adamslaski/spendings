@@ -33,11 +33,11 @@ import { Rule } from '../../store/entities';
 
     <div class="filtering-element">
       <button mat-flat-button class="search-form-button" (click)="filter()" color="primary">filtruj</button>
-      <button mat-flat-button class="search-form-button" (click)="clearFiltering()">
-        <i class="material-icons" style="font-size: 18px">cancel</i>
-      </button>
       <button mat-flat-button class="search-form-button" (click)="openAddRuleDialog()" color="accent">
         dodaj regułę
+      </button>
+      <button mat-icon-button (click)="clearFiltering()">
+        <mat-icon color="primary-darker">cancel</mat-icon>
       </button>
     </div>`,
   styleUrls: ['./transactions-filtering.component.css'],

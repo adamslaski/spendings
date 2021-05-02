@@ -27,8 +27,8 @@ import { AppState } from '../../store/store';
           </mat-form-field>
         </td>
         <td>
-          <button *ngIf="!cat.notEditable" mat-flat-button (click)="delete(cat.id)" color="primary">
-            <i class="material-icons" style="font-size: 18px">cancel</i>
+          <button *ngIf="!cat.notEditable" mat-icon-button (click)="delete(cat.id)" color="primary">
+            <mat-icon>cancel</mat-icon>
           </button>
         </td>
       </tr>

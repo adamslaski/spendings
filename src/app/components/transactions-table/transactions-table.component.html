@@ -2,7 +2,7 @@
   <app-transactions-filtering [filterSubject]="filterSubject"></app-transactions-filtering>
 
   <div>
-    <mat-table style="width: 1404px;" #table matSort [dataSource]="dataSource">
+    <mat-table style="width: 1284px;" #table matSort [dataSource]="dataSource">
       <!--- Note that these columns can be defined in any order.
                 The actual rendered columns are set as a property on the row definition" -->
 
@@ -43,23 +43,23 @@
         <mat-header-cell [ngClass]="'table-column table-column--slim'" *matHeaderCellDef mat-sort-header> Kategoria
         </mat-header-cell>
         <mat-cell [ngClass]="'table-column table-column--slim'" *matCellDef="let element">
-          <app-display-category [category]="element.category"></app-display-category>
+
+          <app-display-category
+            [category]="element.categoryOverride !== undefined ? element.categoryOverride : element.category">
+          </app-display-category>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="comment">
-        <mat-header-cell [ngClass]="'table-column table-column--wide'" *matHeaderCellDef> Komentarz </mat-header-cell>
-        <mat-cell [ngClass]="'table-column table-column--wide'" *matCellDef="let element">{{ element.comment }}
-        </mat-cell>
-      </ng-container>
-
-
-      <ng-container matColumnDef="actions">
-        <mat-header-cell [ngClass]="'table-column table-column--slim'" *matHeaderCellDef></mat-header-cell>
-        <mat-cell [ngClass]="'table-column table-column--slim'" *matCellDef="let element">
-          <button mat-flat-button class="box-button" (click)="openDialog(element)">
-            <i class="material-icons" style="font-size: 18px">edit</i>
-          </button>
+        <mat-header-cell [ngClass]="'table-column table-column--medium'" *matHeaderCellDef> Komentarz </mat-header-cell>
+        <mat-cell [ngClass]="'table-column table-column--medium'" *matCellDef="let element">
+          <div class="cell-text">{{ element.comment }}</div>
+          <span class="fill-remaining-space"></span>
+          <div class="table-column--actions">
+            <button mat-icon-button class="box-button" (click)="openDialog(element)" color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
         </mat-cell>
       </ng-container>
 

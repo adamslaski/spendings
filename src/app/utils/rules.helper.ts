@@ -20,7 +20,10 @@ export function compile(pred: Predicate): (a: Transaction) => boolean {
     if (pred.type && pred.type.length > 0 && !pred.type.some((t) => trType.includes(t))) {
       return false;
     }
-    if (pred.category !== undefined && pred.category !== a.category) {
+    if (
+      pred.category !== undefined &&
+      pred.category !== (a.categoryOverride === undefined ? a.category : a.categoryOverride)
+    ) {
       return false;
     }
     if (!within(a.amount, pred.amountRange)) {

@@ -9,7 +9,8 @@ export interface Transaction extends EntityWithId {
   readonly balanceAfter: number;
   readonly description: string;
   comment: string;
-  category: number;
+  readonly category: number;
+  categoryOverride?: number;
 }
 
 export type AmountRange = {

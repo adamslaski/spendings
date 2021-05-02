@@ -18,7 +18,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./transactions-table.component.css'],
 })
 export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
-  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment', 'actions'];
+  readonly displayedColumns = ['date', 'type', 'amount', 'description', 'category', 'comment'];
   readonly filterSubject = new BehaviorSubject<(x: Transaction) => boolean>(passAllFilter);
   dataSource: MatTableDataSource<Transaction>;
   @ViewChild(MatSort) sort?: MatSort;
@@ -56,8 +56,8 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   openDialog(tr: Transaction): void {
     const trCopy = Object.assign({}, tr);
     const dialogRef = this.dialog.open(TransactionDialogComponent, {
-      width: '550px',
-      height: '600px',
+      height: '670px',
+      width: '750px',
       data: trCopy,
     });
 

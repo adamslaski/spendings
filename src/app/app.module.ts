@@ -50,6 +50,7 @@ import { AmountFilterComponent } from './components/transactions-filtering/amoun
 import { DateFilterComponent } from './components/transactions-filtering/date-filter.component';
 import { CategoryFilterComponent } from './components/transactions-filtering/category-filter.component';
 import { RuleDialogComponent } from './components/rule-dialog/rule-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { RuleDialogComponent } from './components/rule-dialog/rule-dialog.compon
     MatSortModule,
     MatPaginatorModule,
     MatButtonToggleModule,
+    MatIconModule,
     StoreModule.forRoot({ spendings: spendingsReducer }),
     EffectsModule.forRoot([LoggingEffect, LocalStoraEffect]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
