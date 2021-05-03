@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { selectRules } from 'src/app/store/selectors';
 import { deleteRule, moveRule } from 'src/app/store/actions';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/store';
-import { Rule } from '../../store/entities';
-import { RuleDialogComponent } from '../rule-dialog/rule-dialog.component';
+import { AppState } from 'src/app/store/store';
+import { Rule } from 'src/app/store/entities';
 import { MatDialog } from '@angular/material/dialog';
+import { RuleDialogComponent } from '../../rule-dialog.component';
 
 @Component({
   selector: 'app-rules-table',

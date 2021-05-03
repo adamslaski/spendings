@@ -1,17 +1,17 @@
 import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Transaction } from 'src/app/store/entities';
-import { passAllFilter } from '../transactions-table/transactions-table.component';
+import { passAllFilter } from './transactions-table.component';
 import { compile } from 'src/app/utils/rules.helper';
-import { DescriptionFilterComponent } from './description-filter.component';
-import { TypeFilterComponent } from './type-filter.component';
-import { AmountFilterComponent } from './amount-filter.component';
-import { CategoryFilterComponent } from './category-filter.component';
-import { DateFilterComponent } from './date-filter.component';
-import { Filter } from '../../utils/filter';
-import { RuleDialogComponent } from '../rule-dialog/rule-dialog.component';
+import { Filter } from '../../../utils/filter';
+import { RuleDialogComponent } from '../../rule-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Rule } from '../../store/entities';
+import { Rule } from 'src/app/store/entities';
+import { DescriptionFilterComponent } from '../../transactions-filtering/description-filter.component';
+import { TypeFilterComponent } from '../../transactions-filtering/type-filter.component';
+import { AmountFilterComponent } from '../../transactions-filtering/amount-filter.component';
+import { CategoryFilterComponent } from '../../transactions-filtering/category-filter.component';
+import { DateFilterComponent } from '../../transactions-filtering/date-filter.component';
 
 @Component({
   selector: 'app-transactions-filtering',

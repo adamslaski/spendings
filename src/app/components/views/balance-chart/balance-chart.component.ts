@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { Transaction } from 'src/app/store/entities';
 import * as Collections from 'typescript-collections';
-import { selectTransactions } from '../../store/selectors';
+import { selectTransactions } from 'src/app/store/selectors';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/store';
+import { AppState } from 'src/app/store/store';
 
 @Component({
   selector: 'app-balance-chart',

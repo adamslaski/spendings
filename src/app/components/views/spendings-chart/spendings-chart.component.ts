@@ -3,9 +3,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { Transaction } from 'src/app/store/entities';
 import * as Collections from 'typescript-collections';
 import { combineLatest } from 'rxjs';
-import { selectTransactions, selectCategories } from '../../store/selectors';
+import { selectTransactions, selectCategories } from 'src/app/store/selectors';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/store';
+import { AppState } from 'src/app/store/store';
 
 @Component({
   selector: 'app-spendings-chart',

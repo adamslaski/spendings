@@ -2,7 +2,7 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { selectCategories } from 'src/app/store/selectors';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/store';
+import { AppState } from 'src/app/store/store';
 
 @Component({
   selector: 'app-select-category',

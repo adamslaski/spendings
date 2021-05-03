@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BalanceChartComponent } from './components/balance-chart/balance-chart.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { RulesTableComponent } from './components/rules-table/rules-table.component';
-import { SpendingsChartComponent } from './components/spendings-chart/spendings-chart.component';
-import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
-import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
-import { SummaryChartComponent } from './components/summary-chart/summary-chart.component';
-import { AccountsTableComponent } from './components/accounts-table/accounts-table.component';
+import { PageNotFoundComponent } from './components/views/page-not-found.component';
+import { RulesTableComponent } from './components/views/rules-table/rules-table.component';
+import { TransactionsTableComponent } from './components/views/transactions-table/transactions-table.component';
+import { AccountsTableComponent } from './components/views/accounts-table.component';
+import { CategoriesTableComponent } from './components/views/categories-table.component';
+import { BalanceChartComponent } from './components/views/balance-chart/balance-chart.component';
+import { SpendingsChartComponent } from './components/views/spendings-chart/spendings-chart.component';
+import { SummaryChartComponent } from './components/views/summary-chart/summary-chart.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full' },

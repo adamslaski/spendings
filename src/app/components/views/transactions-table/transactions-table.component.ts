@@ -1,15 +1,15 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { Transaction } from 'src/app/store/entities';
-import { TransactionDialogComponent } from 'src/app/components/transaction-dialog/transaction-dialog.component';
+import { TransactionDialogComponent } from 'src/app/components/transaction-dialog.component';
 import { map, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppState } from 'src/app/store/store';
-import { selectTransactions } from '../../store/selectors';
-import { updateTransaction } from '../../store/actions';
+import { selectTransactions } from 'src/app/store/selectors';
+import { updateTransaction } from 'src/app/store/actions';
 import { Store } from '@ngrx/store';
 
 @Component({

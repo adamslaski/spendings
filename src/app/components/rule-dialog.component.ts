@@ -1,14 +1,14 @@
 import { Component, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DescriptionFilterComponent } from '../transactions-filtering/description-filter.component';
-import { TypeFilterComponent } from '../transactions-filtering/type-filter.component';
-import { AmountFilterComponent } from '../transactions-filtering/amount-filter.component';
-import { DateFilterComponent } from '../transactions-filtering/date-filter.component';
-import { Filter } from '../../utils/filter';
+import { DescriptionFilterComponent } from './transactions-filtering/description-filter.component';
+import { TypeFilterComponent } from './transactions-filtering/type-filter.component';
+import { AmountFilterComponent } from './transactions-filtering/amount-filter.component';
+import { DateFilterComponent } from './transactions-filtering/date-filter.component';
+import { Filter } from '../utils/filter';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/store';
-import { Rule, Predicate } from '../../store/entities';
-import { createRule, updateRule } from '../../store/actions';
+import { AppState } from '../store/store';
+import { Rule, Predicate } from '../store/entities';
+import { createRule, updateRule } from '../store/actions';
 
 @Component({
   selector: 'app-rule-dialog',

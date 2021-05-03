@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Category } from 'src/app/store/entities';
 import { createCategory, deleteCategory, updateCategory } from 'src/app/store/actions';
 import { selectCategories } from 'src/app/store/selectors';
-import { AppState } from '../../store/store';
+import { AppState } from 'src/app/store/store';
 
 @Component({
   selector: 'app-categories-table',

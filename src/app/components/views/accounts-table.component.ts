@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { selectAccounts } from '../../store/selectors';
-import { AppState } from '../../store/store';
+import { selectAccounts } from 'src/app/store/selectors';
+import { AppState } from 'src/app/store/store';
 import { Store } from '@ngrx/store';
-import { createAccount } from '../../store/actions';
+import { createAccount } from 'src/app/store/actions';
 import { Bank } from 'src/app/store/entities';
 
 @Component({

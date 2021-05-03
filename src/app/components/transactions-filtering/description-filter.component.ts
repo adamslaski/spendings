@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Predicate } from '../../store/entities';
+import { Predicate } from 'src/app/store/entities';
 import { Filter } from '../../utils/filter';
 
 @Component({

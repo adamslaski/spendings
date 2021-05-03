@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { selectCategories } from 'src/app/store/selectors';
 import { findCategoryById } from 'src/app/utils/categories.helper';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/store';
+import { AppState } from '../store/store';
 
 @Component({
   selector: 'app-display-category',

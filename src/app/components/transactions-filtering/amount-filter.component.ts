@@ -6,7 +6,7 @@ import {
   amountRangeStringToAmountRange,
   amountRangeToAmountRangeString,
 } from '../../utils/amount-range.helper';
-import { AmountRange } from '../../store/entities';
+import { AmountRange } from 'src/app/store/entities';
 import { FormGroup, FormControl, ValidatorFn, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
