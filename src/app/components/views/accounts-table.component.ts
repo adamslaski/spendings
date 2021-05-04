@@ -13,6 +13,7 @@ import { Bank } from 'src/app/store/entities';
     <mat-form-field>
       <mat-select #newBank>
         <mat-option [value]="'Citi Handlowy'">Citi Handlowy</mat-option>
+        <mat-option [value]="'mBank'">mBank</mat-option>
       </mat-select>
     </mat-form-field>
     <button

@@ -53,6 +53,7 @@ import { RuleDialogComponent } from './components/rule-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DisplayAccountComponent } from './components/display-account.component';
 import { AccountsTableComponent } from './components/views/accounts-table.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { AccountsTableComponent } from './components/views/accounts-table.compon
     MatPaginatorModule,
     MatButtonToggleModule,
     MatIconModule,
+    MatMenuModule,
     StoreModule.forRoot({ spendings: spendingsReducer }),
     EffectsModule.forRoot([LoggingEffect, LocalStoraEffect]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),

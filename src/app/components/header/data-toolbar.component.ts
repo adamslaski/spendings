@@ -9,20 +9,24 @@ import { createCategory, createTransactions, createRule, createAccount } from 's
 import { selectCategories } from 'src/app/store/selectors';
 import { findCategoryByLabel } from '../../utils/categories.helper';
 import { MESSAGE_SUBJECT } from '../../services/message.service';
+import { selectAccounts } from '../../store/selectors';
+import { Account } from '../../store/entities';
+import { parseMBankCSV } from '../../utils/mbank.helper';
 
 @Component({
   selector: 'app-data-toolbar',
-  template: ` <span class="form-group">
-      <label for="file">
-        <span
-          class="mat-focus-indicator data-toolbar-button mat-button mat-button-base
-          _mat-animation-noopable"
-          color="accent"
-          >Importuj wyciąg</span
-        >
-        <input type="file" id="file" hidden (change)="import($event)" />
-      </label>
-    </span>
+  template: ` <button mat-button class="data-toolbar-button" [matMenuTriggerFor]="menu">Importuj wyciąg</button>
+    <mat-menu #menu="matMenu">
+      <div *ngIf="accounts$ | async as accounts">
+        <div mat-menu-item *ngIf="accounts.length === 0">Najpierw musisz zdefiniować konto.</div>
+        <span *ngFor="let account of accounts" mat-menu-item class="form-group">
+          <label for="file-{{ account.id }}">
+            <span mat-button>{{ account.name }} ({{ account.bank }})</span>
+            <input id="file-{{ account.id }}" type="file" hidden (change)="import($event, account)" />
+          </label>
+        </span>
+      </div>
+    </mat-menu>
     <button mat-button class="data-toolbar-button" (click)="loadData()">Wczytaj</button>
     <button mat-button class="data-toolbar-button" (click)="saveData()">Zapisz</button>
     <button mat-button class="data-toolbar-button" (click)="loadExampleData()" *ngIf="!isProduction">
@@ -32,19 +36,27 @@ import { MESSAGE_SUBJECT } from '../../services/message.service';
 })
 export class DataToolbarComponent {
   isProduction = environment.production;
+  accounts$ = this.store.select(selectAccounts);
 
   constructor(private store: Store<AppState>) {}
 
-  import(event: any) {
+  import(event: any, account: Account) {
     const list = event.target.files as FileList;
     if (list.length > 0) {
       const file = list.item(0);
       if (file) {
         try {
-          file?.text().then((text) => {
-            const transactions = parseCitibankXML(text, 0);
-            this.store.dispatch(createTransactions({ transactions }));
-            MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
+          if (account.bank === 'Citi Handlowy') {
+            this.importCiti(file);
+            return;
+          }
+          if (account.bank === 'mBank') {
+            this.importMBank(file);
+            return;
+          }
+          MESSAGE_SUBJECT.next({
+            message: `Importer dla wyciągu z ${account.bank} nie został zdefiniowany.`,
+            type: 'warn',
           });
         } catch (e) {
           MESSAGE_SUBJECT.next({ message: `Błąd w czasie imporowania: ${(e as Error)?.message}`, type: 'error' });
@@ -54,6 +66,19 @@ export class DataToolbarComponent {
       }
     }
   }
+
+  private importMBank = async (file: File) => {
+    const transactions = await parseMBankCSV(file, 0);
+    this.store.dispatch(createTransactions({ transactions }));
+    MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
+  };
+
+  private importCiti = async (file: File) => {
+    const text = await file?.text();
+    const transactions = parseCitibankXML(text, 0);
+    this.store.dispatch(createTransactions({ transactions }));
+    MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
+  };
 
   loadData() {
     this.store.dispatch(loadStateFromLocalStorage());

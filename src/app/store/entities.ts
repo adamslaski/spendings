@@ -42,7 +42,7 @@ export interface Category extends EntityWithId {
 export type MessageType = 'info' | 'warn' | 'error';
 export type Message = { message: string; type: MessageType };
 
-export type Bank = 'Citi Handlowy';
+export type Bank = 'Citi Handlowy' | 'mBank';
 
 export interface Account extends EntityWithId {
   name: string;

@@ -35,7 +35,7 @@
         <mat-header-cell *matHeaderCellDef [ngClass]="'table-column table-column--wide'" mat-sort-header> Opis
         </mat-header-cell>
         <mat-cell [ngClass]="'table-column table-column--wide'" *matCellDef="let element">
-          {{ element.description }}
+          <div class="cell-text--description">{{ element.description }}</div>
         </mat-cell>
       </ng-container>
 
