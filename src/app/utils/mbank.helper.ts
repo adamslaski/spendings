@@ -48,7 +48,9 @@ export const parseMBankCSV = async (file: File, accountId: number) => {
   });
   if (result.errors.length > 0) {
     MESSAGE_SUBJECT.next({
-      message: `W czasie importowania wystąpiły następujące błędy: ${result.errors.join(', ')}`,
+      message: `W czasie importowania wystąpiły następujące błędy: ${result.errors
+        .map((error) => `code: ${error.code} message: ${error.message} row: ${error.row} type: ${error.type}`)
+        .join(', ')}`,
       type: 'error',
     });
     return [];
