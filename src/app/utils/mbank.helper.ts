@@ -69,9 +69,7 @@ export const parseMBankCSV = async (file: File, accountId: number) => {
       account: accountId,
     };
   });
-  console.log(result);
-  console.log(trs);
-  return trs;
+  return trs.reverse();
 };
 
 const parseDescription = (s: string) => {

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Transaction } from 'src/app/store/entities';
 import { TransactionDialogComponent } from 'src/app/components/transaction-dialog.component';
 import { map, tap } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppState } from 'src/app/store/store';
@@ -23,27 +23,10 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   dataSource: MatTableDataSource<Transaction>;
   @ViewChild(MatSort) sort?: MatSort;
   @ViewChild(MatPaginator) paginator?: MatPaginator;
-  private readonly subscription;
+  private readonly subscription = new Subscription();
 
   constructor(private dialog: MatDialog, private store: Store<AppState>) {
     this.dataSource = new MatTableDataSource<Transaction>([]);
-    this.subscription = combineLatest([this.store.select(selectTransactions), this.filterSubject])
-      .pipe(map(([a, b]) => a.filter(b)))
-      .subscribe((x) => {
-        this.dataSource = new MatTableDataSource<Transaction>(x);
-        this.dataSource.sort = this.sort ? this.sort : null;
-        this.dataSource.paginator = this.paginator ? this.paginator : null;
-        const sortData = this.dataSource.sortData;
-        this.dataSource.sortData = (data, sort) => {
-          const active = sort.active;
-          const direction = sort.direction;
-          if (active === 'category' && direction) {
-            return data.sort((a, b) => (a.category - b.category) * (direction === 'asc' ? 1 : -1));
-          } else {
-            return sortData(data, sort);
-          }
-        };
-      });
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -67,6 +50,23 @@ export class TransactionsTableComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort ? this.sort : null;
     this.dataSource.paginator = this.paginator ? this.paginator : null;
+    const sortData = this.dataSource.sortData;
+    this.dataSource.sortData = (data, sort) => {
+      const active = sort.active;
+      const direction = sort.direction;
+      if (active === 'category' && direction) {
+        return data.sort((a, b) => (a.category - b.category) * (direction === 'asc' ? 1 : -1));
+      } else {
+        return sortData(data, sort);
+      }
+    };
+    this.subscription.add(
+      combineLatest([this.store.select(selectTransactions), this.filterSubject])
+        .pipe(map(([a, b]) => a.filter(b)))
+        .subscribe((x) => {
+          this.dataSource.data = x;
+        }),
+    );
   }
 }
 

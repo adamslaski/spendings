@@ -6,6 +6,7 @@ import { combineLatest } from 'rxjs';
 import { selectTransactions, selectCategories } from 'src/app/store/selectors';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/store';
+import { selectSortedTransactions } from '../../../store/selectors';
 
 @Component({
   selector: 'app-spendings-chart',
@@ -21,24 +22,25 @@ export class SpendingsChartComponent implements OnDestroy {
   private readonly subscription;
 
   constructor(store: Store<AppState>, private datePipe: DatePipe) {
-    this.subscription = combineLatest([store.select(selectTransactions), store.select(selectCategories)]).subscribe(
-      ([_transactions, categories]) => {
-        const transactions = _transactions.filter((tr) => tr.amount < 0).map((tr) => ({ ...tr, amount: -tr.amount }));
-        if (transactions.length > 0) {
-          const begin = new Date(transactions[0].date);
-          const end = new Date();
-          const data = categories.map((t) => ({
-            label: t.label,
-            data: computeBalanceForEachDay(
-              begin,
-              end,
-              transactions.filter((tr) => tr.category === t.id),
-            ),
-          }));
-          this.plot(computeRangeLabels(begin, end), data);
-        }
-      },
-    );
+    this.subscription = combineLatest([
+      store.select(selectSortedTransactions),
+      store.select(selectCategories),
+    ]).subscribe(([_transactions, categories]) => {
+      const transactions = _transactions.filter((tr) => tr.amount < 0).map((tr) => ({ ...tr, amount: -tr.amount }));
+      if (transactions.length > 0) {
+        const begin = new Date(transactions[0].date);
+        const end = new Date();
+        const data = categories.map((t) => ({
+          label: t.label,
+          data: computeBalanceForEachDay(
+            begin,
+            end,
+            transactions.filter((tr) => tr.category === t.id),
+          ),
+        }));
+        this.plot(computeRangeLabels(begin, end), data);
+      }
+    });
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

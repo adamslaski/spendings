@@ -47,11 +47,11 @@ export class DataToolbarComponent {
       if (file) {
         try {
           if (account.bank === 'Citi Handlowy') {
-            this.importCiti(file);
+            this.importCiti(file, account.id);
             return;
           }
           if (account.bank === 'mBank') {
-            this.importMBank(file);
+            this.importMBank(file, account.id);
             return;
           }
           MESSAGE_SUBJECT.next({
@@ -67,15 +67,15 @@ export class DataToolbarComponent {
     }
   }
 
-  private importMBank = async (file: File) => {
-    const transactions = await parseMBankCSV(file, 0);
+  private importMBank = async (file: File, accountId: number) => {
+    const transactions = await parseMBankCSV(file, accountId);
     this.store.dispatch(createTransactions({ transactions }));
     MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
   };
 
-  private importCiti = async (file: File) => {
+  private importCiti = async (file: File, accountId: number) => {
     const text = await file?.text();
-    const transactions = parseCitibankXML(text, 0);
+    const transactions = parseCitibankXML(text, accountId);
     this.store.dispatch(createTransactions({ transactions }));
     MESSAGE_SUBJECT.next({ message: 'Ukończono importowanie wyciągu.', type: 'info' });
   };

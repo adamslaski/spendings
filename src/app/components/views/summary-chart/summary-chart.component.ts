@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ChartOptions } from 'chart.js';
 import { Subscription, combineLatest } from 'rxjs';
-import { selectCategories, selectTransactions } from 'src/app/store/selectors';
+import { selectCategories, selectSortedTransactions, selectTransactions } from 'src/app/store/selectors';
 import { findCategoryByLabel } from 'src/app/utils/categories.helper';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/store';
@@ -34,7 +34,7 @@ export class SummaryChartComponent implements OnDestroy {
   ];
   private readonly subscribtion: Subscription = combineLatest([
     this.store.select(selectCategories),
-    this.store.select(selectTransactions),
+    this.store.select(selectSortedTransactions),
   ]).subscribe(([cats, trs]) => {
     this.labels.splice(0, this.labels.length, ...cats.map((cat) => cat.label));
     const m = trs
