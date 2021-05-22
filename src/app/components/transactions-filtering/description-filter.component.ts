@@ -16,8 +16,6 @@ export class DescriptionFilterComponent implements Filter {
   @Input()
   descriptionQuery = '';
 
-  ngOnInit(): void {}
-
   clear() {
     this.descriptionQuery = '';
   }
@@ -35,4 +33,5 @@ export class DescriptionFilterComponent implements Filter {
   isValid(): boolean {
     return true;
   }
+
 }
